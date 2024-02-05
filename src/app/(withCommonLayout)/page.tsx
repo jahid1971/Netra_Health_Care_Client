@@ -1,10 +1,10 @@
-
+import HeroSection from "@/components/ui/homepage/heroSection/HeroSection";
 
 
 const HomePage = () => {
     return (
         <>
-    this is homepage
+            <HeroSection />
         
         </>
     );
