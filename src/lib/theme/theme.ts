@@ -21,6 +21,13 @@ export const theme = createTheme({
                 },
             },
         },
+        MuiTextField: {
+            defaultProps: {
+                variant: "outlined",
+                size: "small",
+                fullWidth: true,
+            },
+        },
         MuiContainer: {
             defaultProps: {
                 maxWidth: "lg",
