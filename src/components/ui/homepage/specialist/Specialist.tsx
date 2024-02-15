@@ -11,7 +11,7 @@ const Specialist = async () => {
 
     return (
         <Container>
-            <Box my={2} textAlign={"center"}>
+            <Box mt={2} textAlign={"center"}>
                 <Box>
                     <Typography variant="h4" fontWeight={600}>
                         Explore Treatments Across Specialties

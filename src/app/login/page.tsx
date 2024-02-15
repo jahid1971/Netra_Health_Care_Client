@@ -1,9 +1,44 @@
+"use client";
 import assets from "@/assets";
+import NForm from "@/components/forms/NForm";
+import NInput from "@/components/forms/NInput";
+import { storeUserInfo } from "@/services/actions/auth.services";
+import { userLogIn } from "@/services/actions/userLogin";
+import tryCatch from "@/utils/tryCatch";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Container, Stack, TextField, Typography } from "@mui/material";
+import { red } from "@mui/material/colors";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FieldValues } from "react-hook-form";
+import { z } from "zod";
+
+export const logInvalidationSchema = z.object({
+    email: z.string().email("Please enter a valid email address!"),
+    password: z.string().min(1, "Password is required"),
+});
 
 const LogInPage = () => {
+    const router = useRouter();
+    const [error, setError] = useState("");
+
+    const onSubmit = async (data: FieldValues) => {
+        tryCatch(
+            async () => {
+                const res = await userLogIn(data);
+                if (res?.data?.accessToken) {
+                    storeUserInfo(res?.data?.accessToken);
+                    router.push("/");
+                } else setError(res?.message);
+                return res;
+            },
+            "Logged in successfully",
+            "Logging in"
+        );
+    };
+
     return (
         <Container
             sx={{
@@ -21,25 +56,26 @@ const LogInPage = () => {
                         Login Netra HealthCare
                     </Typography>
                 </Stack>
-                <form>
+
+                <NForm onSubmit={onSubmit} resolver={zodResolver(logInvalidationSchema)} error={error}>
                     <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 2, md: 2 }} mt={2}>
-                        <TextField label="Email" type="email" />
-                        <TextField label="Password" type="password" />
+                        <NInput name="email" label="Email" type="email" />
+                        <NInput name="password" label="Password" type="password" />
                     </Stack>
 
                     <Typography textAlign={"right"} variant="body2" mt={1}>
                         Forgot password?
                     </Typography>
 
-                    <Button sx={{ my: 2 }} fullWidth>
+                    <Button type="submit" sx={{ my: 2 }} fullWidth>
                         LOG IN
                     </Button>
-                </form>
+                </NForm>
 
                 <Typography variant="body2" fontWeight={300}>
                     Don&apos;t have an account?
                     <Box component={"span"} color="primary.main" fontWeight={600}>
-                        <Link href="/login"> Create an account</Link>
+                        <Link href="/register"> Create an account</Link>
                     </Box>
                 </Typography>
             </Box>
