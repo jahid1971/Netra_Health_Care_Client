@@ -30,7 +30,7 @@ const LogInPage = () => {
                 const res = await userLogIn(data);
                 if (res?.data?.accessToken) {
                     storeUserInfo(res?.data?.accessToken);
-                    router.push("/");
+                    router.push("/dashboard");
                 } else setError(res?.message);
                 return res;
             },
