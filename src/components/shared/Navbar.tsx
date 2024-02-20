@@ -2,7 +2,7 @@
 
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Link from "next/link";
-import { isLoggedIn } from "../../../services/actions/auth.services";
+import { isLoggedIn } from "../../services/actions/auth.services";
 import { logOutUser } from "@/services/actions/logOutuser";
 import { useRouter } from "next/navigation";
 

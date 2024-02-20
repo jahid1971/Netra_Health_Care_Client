@@ -13,7 +13,7 @@ type TInputProps = {
     defaultValue?: string;
 };
 
-const NInput = ({
+const N_Input = ({
     name,
     label,
     type = "text",
@@ -47,4 +47,4 @@ const NInput = ({
     );
 };
 
-export default NInput;
+export default N_Input;

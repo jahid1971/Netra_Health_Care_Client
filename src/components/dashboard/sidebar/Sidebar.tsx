@@ -11,8 +11,6 @@ import {
     Toolbar,
     Typography,
 } from "@mui/material";
-import MailIcon from "@mui/icons-material/Mail";
-import InboxIcon from "@mui/icons-material/Inbox";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Link from "next/link";
@@ -23,6 +21,7 @@ import { drawerItems } from "./SidebarMenus";
 import { getUserInfo } from "@/services/actions/auth.services";
 import { TUserRole } from "@/types/common";
 import { usePathname } from "next/navigation";
+import { blue } from "@mui/material/colors";
 
 const Sidebar = ({ drawerWidth, setDrawerWidth }) => {
     const pathname = usePathname();
@@ -39,6 +38,7 @@ const Sidebar = ({ drawerWidth, setDrawerWidth }) => {
 
     return (
         <Box whiteSpace={"nowrap"}>
+            {/* Sidebar Header....................Sidebar Header */}
             <Toolbar
                 sx={{
                     display: "flex",
@@ -80,13 +80,18 @@ const Sidebar = ({ drawerWidth, setDrawerWidth }) => {
 
             <Divider />
 
+            {/* SideBar Items.......................SideBar Items */}
             <List>
                 {drawerItems(userRole).map((item, index) => (
                     <Link key={index} href={`/dashboard/${item.path}`}>
                         <ListItem
                             sx={{
                                 ...(pathname === `/dashboard/${item.path}`
-                                    ? { borderRight: "3px solid #1586FD", "& svg": { color: "#1586FD" } }
+                                    ? {
+                                          borderRight: "3px solid #1586FD",
+                                          "& svg": { color: "#1586FD" },
+                                          backgroundColor: blue[50],
+                                      }
                                     : {}),
                             }}
                             disablePadding>

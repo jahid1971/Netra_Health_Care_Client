@@ -1,7 +1,9 @@
 "use client";
 import assets from "@/assets";
-import NForm from "@/components/forms/NForm";
-import NInput from "@/components/forms/NInput";
+import N_Form from "@/components/forms/N_Form";
+import N_Input from "@/components/forms/N_Input";
+
+
 import { storeUserInfo } from "@/services/actions/auth.services";
 import { userLogIn } from "@/services/actions/userLogin";
 import tryCatch from "@/utils/tryCatch";
@@ -57,10 +59,10 @@ const LogInPage = () => {
                     </Typography>
                 </Stack>
 
-                <NForm onSubmit={onSubmit} resolver={zodResolver(logInvalidationSchema)} error={error}>
+                <N_Form onSubmit={onSubmit} resolver={zodResolver(logInvalidationSchema)} error={error}>
                     <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 2, md: 2 }} mt={2}>
-                        <NInput name="email" label="Email" type="email" />
-                        <NInput name="password" label="Password" type="password" />
+                        <N_Input name="email" label="Email" type="email" />
+                        <N_Input name="password" label="Password" type="password" />
                     </Stack>
 
                     <Typography textAlign={"right"} variant="body2" mt={1}>
@@ -70,7 +72,7 @@ const LogInPage = () => {
                     <Button type="submit" sx={{ my: 2 }} fullWidth>
                         LOG IN
                     </Button>
-                </NForm>
+                </N_Form>
 
                 <Typography variant="body2" fontWeight={300}>
                     Don&apos;t have an account?

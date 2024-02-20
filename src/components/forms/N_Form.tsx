@@ -13,7 +13,7 @@ type TFormProps = {
     error?: string;
 } & TFormConfig;
 
-const NForm = ({ children, onSubmit, resolver, defaultValues, error }: TFormProps) => {
+const N_Form = ({ children, onSubmit, resolver, defaultValues, error }: TFormProps) => {
     const formConfig: TFormConfig = {};
 
     if (resolver) {
@@ -43,4 +43,4 @@ const NForm = ({ children, onSubmit, resolver, defaultValues, error }: TFormProp
     );
 };
 
-export default NForm;
+export default N_Form;

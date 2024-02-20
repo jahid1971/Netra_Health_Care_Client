@@ -1,32 +1,30 @@
 import { toast } from "sonner";
 
-type WithErrorHandlingFunction = (
+type tryCatch = (
     action: () => Promise<any>,
-    successMessage: string,
-    toastId?: string | undefined,
+    loadingMessage?: string,
+    successMessage?: string,
     action_2?: () => void
 ) => Promise<void>;
 
-export const tryCatch: WithErrorHandlingFunction = async (
-    action,
-    successMessage,
-    loadingMessage,
-    action_2
-) => {
+export const tryCatch: tryCatch = async (action, loadingMessage, successMessage, action_2) => {
     const toastId = (loadingMessage ? toast.loading(`${loadingMessage}...`) : undefined) as
         | string
         | undefined;
 
     try {
         const res = await action();
-        console.log(res, "res in try block");
+        console.log(res, "response in try block");
 
         if (res?.success || res?.data?.success || res?.data?.data?.success) {
             toast.success(successMessage, { id: toastId });
             if (action_2) action_2();
-        } else if (res?.success === false && res?.message)
-            toast.error(res?.message, { id: toastId });
-        else if (res?.success === false) toast.error("Something went wrong", { id: toastId });
+        } else if (
+            (res?.success === false || res?.error) &&
+            (res?.message || res?.error?.data?.errorMessages)
+        ) {
+            toast.error(res?.message ?? res?.error?.data?.errorMessages[0]?.message, { id: toastId });
+        } else if (res?.success === false || res?.error) toast.error("Something went wrong", { id: toastId });
 
         return res;
     } catch (err: any) {

@@ -56,7 +56,7 @@ export const drawerItems = (role: TUserRole): IDrawerItem[] => {
             },
             {
                title: 'Specialties',
-               path: `${role}/specialties`,
+               path: `${role}/specialities`,
                icon: TryIcon,
             },
             {

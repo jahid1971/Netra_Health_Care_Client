@@ -1,7 +1,8 @@
 "use client";
 import assets from "@/assets";
-import NForm from "@/components/forms/NForm";
-import NInput from "@/components/forms/NInput";
+import N_Form from "@/components/forms/N_Form";
+import N_Input from "@/components/forms/N_Input";
+
 import { storeUserInfo } from "@/services/actions/auth.services";
 import { registerPatient } from "@/services/actions/registerPatient";
 import { userLogIn } from "@/services/actions/userLogin";
@@ -78,25 +79,25 @@ const RegisterPage = () => {
                     </Typography>
                 </Stack>
 
-                <NForm onSubmit={onSubmit} resolver={zodResolver(registerPatientSchema)} error={error}>
+                <N_Form onSubmit={onSubmit} resolver={zodResolver(registerPatientSchema)} error={error}>
                     <Stack spacing={2} mt={2}>
-                        <NInput label="Name" name="patient.name" />
+                        <N_Input label="Name" name="patient.name" />
 
                         <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 2, md: 2 }}>
-                            <NInput label="Email" type="email" name="patient.email" />
-                            <NInput label="Password" type="password" name="password" />
+                            <N_Input label="Email" type="email" name="patient.email" />
+                            <N_Input label="Password" type="password" name="password" />
                         </Stack>
 
                         <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 2, md: 2 }}>
-                            <NInput label="Contact Number" name="patient.contactNumber" />
-                            <NInput label="Address" size="small" name="patient.address" />
+                            <N_Input label="Contact Number" name="patient.contactNumber" />
+                            <N_Input label="Address" size="small" name="patient.address" />
                         </Stack>
                     </Stack>
 
                     <Button type="submit" sx={{ my: 2 }} fullWidth>
                         Register
                     </Button>
-                </NForm>
+                </N_Form>
 
                 <Typography variant="body2" fontWeight={300}>
                     Do you already have an account?
