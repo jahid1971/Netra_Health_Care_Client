@@ -4,18 +4,18 @@ import { DataGrid } from "@mui/x-data-grid";
 type TDataGridProps = {
     rows: any[];
     columns: any[];
-    isFetching?: boolean;
+    isLoading?: boolean;
     hideFooter?: boolean;
     autoHeight?: boolean;
-    notFoundTitle?: string;
+    notFoundFor?: string;
 };
 
-const N_DataGrid = ({ rows, columns, isFetching, hideFooter, autoHeight, notFoundTitle }: TDataGridProps) => {
+const N_DataGrid = ({ rows, columns, isLoading, hideFooter, autoHeight, notFoundFor }: TDataGridProps) => {
     
     const CustomNoRowsOverlay = () => {
         return (
             <Stack height={"100%"} textAlign={"center"} justifyContent={"center"}>
-                <Typography>No {notFoundTitle ? notFoundTitle : "Data"} Found</Typography>
+                <Typography>No {notFoundFor ? notFoundFor : "Data"} Found</Typography>
             </Stack>
         );
     };
@@ -25,7 +25,7 @@ const N_DataGrid = ({ rows, columns, isFetching, hideFooter, autoHeight, notFoun
             <DataGrid
                 rows={rows}
                 columns={columns}
-                loading={isFetching}
+                loading={isLoading}
                 hideFooter={hideFooter}
                 autoHeight={autoHeight}
                 slotProps={{

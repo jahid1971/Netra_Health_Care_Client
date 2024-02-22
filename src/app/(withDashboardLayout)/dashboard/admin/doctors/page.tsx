@@ -74,8 +74,8 @@ const DoctorsPage = () => {
             <N_DataGrid
                 rows={doctors?.data}
                 columns={columnDef}
-                isFetching={isFetching}
-                notFoundTitle="Doctor"
+                isLoading={isFetching}
+                notFoundFor="Doctor"
             />
         </Box>
     );

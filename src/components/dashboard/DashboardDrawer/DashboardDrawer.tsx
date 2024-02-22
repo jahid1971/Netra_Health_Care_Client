@@ -20,6 +20,8 @@ import Typography from "@mui/material/Typography";
 import Sidebar from "../sidebar/Sidebar";
 import { Avatar, Badge, Stack } from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { useGetSingleUserQuery } from "@/redux/api/authApi";
+import AccountMenu from "../AccountMenu/AccountMenu";
 
 // let drawerWidth = 250;
 
@@ -33,10 +35,10 @@ interface Props {
 
 export default function DashboardDrawer({
     children,
-    window,
+   
 }: {
     children: React.ReactNode;
-    window?: () => Window;
+ 
 }) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
@@ -57,8 +59,9 @@ export default function DashboardDrawer({
         }
     };
 
-    // Remove this const when copying and pasting into your project.
-    const container = window !== undefined ? () => window().document.body : undefined;
+    const { data: profileData, isLoading } = useGetSingleUserQuery({});
+console.log(profileData, "profileData")
+   
 
     return (
         <Box sx={{ display: "flex" }}>
@@ -95,7 +98,7 @@ export default function DashboardDrawer({
                                 noWrap
                                 component="div"
                                 sx={{ color: "rgba(11, 17, 52, 0.6)" }}>
-                                {/* Hi, {isLoading ? "Loading..." : data?.name}, */}
+                                Hi, {isLoading ? "Loading..." : profileData?.name}
                             </Typography>
                             <Typography variant="h6" noWrap component="div" sx={{ color: "primary.main" }}>
                                 Welcome to NETRA Health Care!
@@ -107,8 +110,8 @@ export default function DashboardDrawer({
                                     <NotificationsNoneIcon color="action" />
                                 </IconButton>
                             </Badge>
-                            {/* <Avatar alt={data?.name} src={data?.profilePhoto} /> */}
-                            {/* <AccountMenu /> */}
+                            <Avatar alt={profileData?.name} src={profileData?.profilePhoto} />
+                            <AccountMenu />
                         </Stack>
                     </Box>
                 </Toolbar>
@@ -119,7 +122,6 @@ export default function DashboardDrawer({
                 aria-label="mailbox folders">
                 {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Drawer
-                    container={container}
                     variant="temporary"
                     open={mobileOpen}
                     onTransitionEnd={handleDrawerTransitionEnd}

@@ -1,4 +1,5 @@
 import { USER_ROLE } from "@/constants/role";
+import { BaseQueryApi } from "@reduxjs/toolkit/query";
 
 export interface IMeta {
     page: number;
@@ -40,3 +41,12 @@ export type IGenericErrorResponse = {
     message: string;
   };
   
+
+  export type IResponse<T> = {
+    data?: T;
+    error?: any;
+    meta?: IMeta;
+    success: boolean;
+    message: string;
+};
+export type IResponseRedux<T> = IResponse<T> & BaseQueryApi;
