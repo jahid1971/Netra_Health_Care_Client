@@ -12,6 +12,8 @@ import { TOpenState } from "@/types/common";
 import { grey } from "@mui/material/colors";
 import { TransitionProps } from "@mui/material/transitions";
 import { Slide } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { closeModal, selectIsOpen } from "@/redux/features/modal/modalSlice";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -32,19 +34,16 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 type TModalProps = {
-    title: string;
+    title?: string;
     children: React.ReactNode;
     fullScreen?: boolean;
 } & TOpenState;
 
-export default function N_Modal({
-    open = false,
-    setOpen,
-    title = "",
-    children,
-    fullScreen = false,
-}: TModalProps) {
-    const handleClose = () => setOpen?.(false);
+export default function N_Modal({ title = "", children, fullScreen = false }: TModalProps) {
+    const isOpen = useAppSelector(selectIsOpen);
+    const dispatch = useAppDispatch();
+
+    const handleClose = () => dispatch(closeModal());
 
     return (
         <React.Fragment>
@@ -53,7 +52,7 @@ export default function N_Modal({
                 TransitionComponent={fullScreen ? Transition : undefined}
                 onClose={handleClose}
                 aria-labelledby="customized-dialog-title"
-                open={open}>
+                open={isOpen}>
                 <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
                     {title}
                 </DialogTitle>

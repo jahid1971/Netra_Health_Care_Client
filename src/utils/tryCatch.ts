@@ -28,10 +28,10 @@ export const tryCatch: tryCatch = async (action, loadingMessage, successMessage,
 
         return res;
     } catch (err: any) {
-        console.log(err, " in catch block");
-        // err?.data?.message || err?.data?.errorMessage
-        //     ? toast.error(err?.data?.message || err?.data?.errorMessage, { id: toastId })
-        //     : toast.error("Something went wrong ", { id: toastId });
+        console.log(err?.message, "error in catch block");
+        err?.message
+            ? toast.error(err?.message, { id: toastId })
+            : toast.error("Something went wrong ", { id: toastId });
     }
 };
 export default tryCatch;
