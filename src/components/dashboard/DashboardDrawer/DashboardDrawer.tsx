@@ -69,7 +69,7 @@ export default function DashboardDrawer({
                     background: "#F4F7FE",
                     boxShadow: "none",
                     width: { sm: `calc(100% - ${drawerWidth}px)` },
-                    transition: "width 0.3s",
+                    transition: "width 0.1s",
                     ml: { sm: `${drawerWidth}px` },
                     borderBottom: "1px solid #ddd",
                 }}>
@@ -115,7 +115,7 @@ export default function DashboardDrawer({
             </AppBar>
             <Box
                 component="nav"
-                sx={{ width: { sm: drawerWidth }, transition: "width 0.3s", flexShrink: { sm: 0 } }}
+                sx={{ width: { sm: drawerWidth }, transition: "width 0.1s", flexShrink: { sm: 0 } }}
                 aria-label="mailbox folders">
                 {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Drawer
@@ -140,7 +140,7 @@ export default function DashboardDrawer({
                         "& .MuiDrawer-paper": {
                             boxSizing: "border-box",
                             width: drawerWidth,
-                            transition: "width 0.3s",
+                            transition: "width 0.1s",
                         },
                     }}
                     open>

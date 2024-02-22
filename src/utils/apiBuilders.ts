@@ -5,7 +5,7 @@ export const createApiBuilder = (url: string) => {
     return (data: any) => ({
         url: url,
         method: "POST",
-        body: data,
+        data,
     });
 };
 
@@ -26,22 +26,13 @@ export const deleteApiBuilder = (url: string) => {
 };
 
 // api builder for query
-import { TQueryParam } from "@/types/global.types";
 
 export const queryApiBuilder = (url: string) => {
-    return (args?: TQueryParam[]) => {
-        const params = new URLSearchParams();
-
-        if (args) {
-            args.forEach((item: TQueryParam) => {
-                params.append(item.name, item.value as string);
-            });
-        }
-
+    return (args?: Record<string, any>) => {
         return {
             url: url,
             method: "GET",
-            params: params,
+            params: args,
         };
     };
 };

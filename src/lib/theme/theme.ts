@@ -1,4 +1,6 @@
 import { createTheme } from "@mui/material/styles";
+import type {} from '@mui/x-data-grid/themeAugmentation';
+
 
 export const theme = createTheme({
     palette: {
@@ -33,7 +35,14 @@ export const theme = createTheme({
                 maxWidth: "lg",
             },
         },
+        MuiDataGrid:{
+            defaultProps: {
+               hideFooter: true,
+               autoHeight: true,
+            },
+        }
     },
+
 
     typography: {
         body1: {

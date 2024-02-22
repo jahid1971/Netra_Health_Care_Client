@@ -10,6 +10,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import { TOpenState } from "@/types/common";
 import { grey } from "@mui/material/colors";
+import { TransitionProps } from "@mui/material/transitions";
+import { Slide } from "@mui/material";
+
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement;
+    },
+    ref: React.Ref<unknown>
+) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
@@ -23,15 +34,26 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 type TModalProps = {
     title: string;
     children: React.ReactNode;
-    sx?: SxProps;
+    fullScreen?: boolean;
 } & TOpenState;
 
-export default function N_Modal({ open = false, setOpen, title = "", children, sx }: TModalProps) {
+export default function N_Modal({
+    open = false,
+    setOpen,
+    title = "",
+    children,
+    fullScreen = false,
+}: TModalProps) {
     const handleClose = () => setOpen?.(false);
 
     return (
         <React.Fragment>
-            <BootstrapDialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+            <BootstrapDialog
+                fullScreen={fullScreen}
+                TransitionComponent={fullScreen ? Transition : undefined}
+                onClose={handleClose}
+                aria-labelledby="customized-dialog-title"
+                open={open}>
                 <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
                     {title}
                 </DialogTitle>
@@ -41,7 +63,7 @@ export default function N_Modal({ open = false, setOpen, title = "", children, s
                     sx={{ position: "absolute", right: 8, top: 8, color: grey[500] }}>
                     <CloseIcon />
                 </IconButton>
-                <DialogContent dividers={title ? true : false}>{children}</DialogContent>
+                <DialogContent dividers={!!title}>{children}</DialogContent>
             </BootstrapDialog>
         </React.Fragment>
     );

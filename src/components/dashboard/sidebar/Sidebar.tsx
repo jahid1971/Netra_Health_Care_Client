@@ -67,13 +67,13 @@ const Sidebar = ({ drawerWidth, setDrawerWidth }) => {
                 <IconButton
                     edge="start"
                     onClick={lgScreenDrawerToggle}
-                    sx={{ opacity: drawerWidth === 50 ? 1 : 0, transition: "opacity 0.3s ease-in-out" }}>
+                    sx={{ opacity: drawerWidth === 50 ? 1 : 0, transition: "opacity 0.1s ease-in-out" }}>
                     <MenuIcon />
                 </IconButton>
                 <IconButton
                     edge="end"
                     onClick={lgScreenDrawerToggle}
-                    sx={{ opacity: drawerWidth === 50 ? 0 : 1, transition: "opacity 0.3s ease-in-out" }}>
+                    sx={{ opacity: drawerWidth === 50 ? 0 : 1, transition: "opacity .1s ease-in-out" }}>
                     <ChevronLeftIcon />
                 </IconButton>
             </Toolbar>

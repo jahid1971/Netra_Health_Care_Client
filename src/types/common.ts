@@ -40,4 +40,3 @@ export type IGenericErrorResponse = {
     message: string;
   };
   
-  export const Gender = ["MALE", "FEMALE"];
