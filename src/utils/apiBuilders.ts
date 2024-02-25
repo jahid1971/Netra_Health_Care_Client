@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+export type TUpdateArgs = {
+    id: string;
+    data: any;
+};
+
 // api builder for create,
 export const createApiBuilder = (url: string) => {
     return (data: any) => ({
@@ -9,14 +14,22 @@ export const createApiBuilder = (url: string) => {
     });
 };
 
-// api builder for update
-export const updateApiBuilder = (url: string, method = "PATCH") => {
-    return (args: { data?: any; id?: string }) => ({
-        url: `${url}/${args?.id}`,
-        method: method,
-        body: args?.data,
+
+export const updateApiBuilder = (build: any, url: string, method = "PATCH", tagTypes: string[]) => {
+    return build.mutation({
+        query: (args: TUpdateArgs) => {
+            console.log("args in updateApiBuilder", args);
+            return {
+                url: `${url}/${args?.id}`,
+                method: method,
+                data: args?.data,
+            };
+        },
+        invalidatesTags: tagTypes,
     });
 };
+
+
 
 export const deleteApiBuilder = (url: string) => {
     return (id: string) => ({
@@ -25,7 +38,7 @@ export const deleteApiBuilder = (url: string) => {
     });
 };
 
-// api builder for query
+
 
 export const queryApiBuilder = (url: string) => {
     return (args?: Record<string, any>) => {

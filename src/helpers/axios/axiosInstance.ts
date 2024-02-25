@@ -55,7 +55,7 @@ instance.interceptors.response.use(
                     return instance(originalRequest);
                 } else {
                     localStorage.removeItem(authKey);
-                    window.location.href = "/";
+                    window.location.href = "/";  //route doesnt work here bas its not react component
                 }
             } catch (refreshError) {
                 console.log(refreshError, "Token refresh failed");

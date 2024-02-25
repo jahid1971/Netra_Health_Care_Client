@@ -1,3 +1,4 @@
+"use client";
 import N_FileUploader from "@/components/forms/N_FileUploader";
 import N_Form from "@/components/forms/N_Form";
 import N_Input from "@/components/forms/N_Input";
@@ -11,67 +12,32 @@ import { modifyPayload } from "@/utils/modifyPayload";
 import tryCatch from "@/utils/tryCatch";
 import { Button, Grid, Stack } from "@mui/material";
 import { FieldValues } from "react-hook-form";
+import DoctorForm from "./DoctorForm";
+import { useAppDispatch } from "@/redux/hooks";
+import { closeModal } from "@/redux/features/modal/modalSlice";
 
 const CreateDoctor = ({ open, setOpen }: TOpenState) => {
     const [createDoctor] = useCreateDoctorMutation();
+    const dispatch = useAppDispatch();
 
     const handleSubmit = async (values: FieldValues) => {
-        values.doctor.experience = Number(values.doctor.experience);
-        values.doctor.apointmentFee = Number(values.doctor.apointmentFee);
-        const data = modifyPayload(values);
+        values.experience = Number(values.experience);
+        values.apointmentFee = Number(values.apointmentFee);
+
+        const password = values.password;
+        delete values.password;
+        const data = { doctor: values, password };
+        const updateData = modifyPayload(data);
         tryCatch(
-            async () => await createDoctor(data),
+            async () => await createDoctor(updateData),
             "Creating Doctor",
             "Doctor created successfully",
-            () => setOpen?.(false)
+            () => dispatch(closeModal())
         );
     };
     return (
-        <N_Modal fullScreen open={open} setOpen={setOpen} title="Create  New Doctor">
-            <N_Form onSubmit={handleSubmit}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="doctor.name" label="Name" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="doctor.email" label="Email" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="password" type="password" label="Password" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="doctor.contactNumber" label="Contract Number" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="doctor.address" label="Address" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="doctor.registrationNumber" label="Registration Number" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="doctor.experience" type="number" label="Experience" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Select items={Gender} name="doctor.gender" label="Gender" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="doctor.apointmentFee" type="number" label="ApointmentFee" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="doctor.qualification" label="Qualification" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="doctor.currentWorkingPlace" label="Current Working Place" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="doctor.designation" label="Designation" />
-                    </Grid>
-                </Grid>
-
-                <Stack direction="row" justifyContent="flex-end" mt={2}>
-                    <Button type="submit">Create</Button>
-                </Stack>
-            </N_Form>
+        <N_Modal fullScreen title="Create  New Doctor" modalId="createDoctor">
+            <DoctorForm handleSubmit={handleSubmit} actionTitle="Create" />
         </N_Modal>
     );
 };

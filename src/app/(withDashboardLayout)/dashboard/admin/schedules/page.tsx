@@ -61,6 +61,7 @@ const SchedulePage = () => {
                 columns={columns}
                 isLoading={isFetching}
                 notFoundFor="Schedule"
+                hideFooter={false}
             />
         </Box>
     );

@@ -8,11 +8,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { tryCatch } from "@/utils/tryCatch";
 import CreateDoctor from "./compopnent/CreateDoctor";
 import { useDeleteDoctorMutation, useGetDoctorsQuery } from "@/redux/api/doctorsApi";
-import { useDebounced } from "@/redux/hooks";
+import { useAppDispatch, useDebounced } from "@/redux/hooks";
 import N_DataGrid from "@/components/dataGrid/DataGrid";
+import EditIcon from "@mui/icons-material/Edit";
+import Link from "next/link";
+import { openModal } from "@/redux/features/modal/modalSlice";
+import EditDoctor from "./compopnent/EditDoctor";
 
 const DoctorsPage = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+    const dispatch = useAppDispatch();
     const query: Record<string, any> = {};
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -37,9 +42,17 @@ const DoctorsPage = () => {
             headerName: "Action",
             flex: 1,
             renderCell: ({ row }) => (
-                <IconButton onClick={() => handleDelete(row.id)} aria-label="delete">
-                    <DeleteIcon sx={{ color: "red" }} />
-                </IconButton>
+                <Box>
+                    <IconButton onClick={() => handleDelete(row.id)} aria-label="delete">
+                        <DeleteIcon sx={{ color: "red" }} />
+                    </IconButton>
+
+                    <IconButton
+                        onClick={() => dispatch(openModal({ modalId: "editDoctor", modalData: row }))}
+                        aria-label="delete">
+                        <EditIcon />
+                    </IconButton>
+                </Box>
             ),
         },
     ];
@@ -47,8 +60,9 @@ const DoctorsPage = () => {
     return (
         <Box>
             <Stack direction={"row"} justifyContent={"space-between"}>
-                <Button onClick={() => setIsModalOpen(true)}>Create New Doctor</Button>
-                <CreateDoctor open={isModalOpen} setOpen={setIsModalOpen} />
+                <Button onClick={() => dispatch(openModal({ modalId: "createDoctor" }))}>
+                    Create New Doctor
+                </Button>
 
                 <TextField
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -58,25 +72,14 @@ const DoctorsPage = () => {
                 />
             </Stack>
 
-            {/* <Box my={2}>
-                    <DataGrid
-                        rows={doctors?.data}
-                        columns={columnDef}
-                        loading={isFetching ? true : false}
-                        slotProps={{
-                            loadingOverlay: {
-                              variant: 'linear-progress',
-                              noRowsVariant: 'skeleton',
-                            },
-                          }}
-                    />
-                </Box> */}
             <N_DataGrid
                 rows={doctors?.data}
                 columns={columnDef}
                 isLoading={isFetching}
                 notFoundFor="Doctor"
             />
+            <CreateDoctor />
+            <EditDoctor />
         </Box>
     );
 };
