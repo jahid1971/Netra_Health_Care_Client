@@ -20,8 +20,10 @@ import Typography from "@mui/material/Typography";
 import Sidebar from "../sidebar/Sidebar";
 import { Avatar, Badge, Stack } from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import { useGetSingleUserQuery } from "@/redux/api/authApi";
+
 import AccountMenu from "../AccountMenu/AccountMenu";
+import { useGetMyProfileQuery } from "@/redux/api/myProfile";
+
 
 // let drawerWidth = 250;
 
@@ -59,7 +61,7 @@ export default function DashboardDrawer({
         }
     };
 
-    const { data: profileData, isLoading } = useGetSingleUserQuery({});
+    const { data: profileData, isLoading } = useGetMyProfileQuery(undefined)
 
    
 

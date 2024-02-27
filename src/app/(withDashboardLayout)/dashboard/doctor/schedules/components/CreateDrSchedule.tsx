@@ -33,7 +33,7 @@ const CreateDrSchedule = () => {
     const { handleSubmit, watch, reset, setError } = methods;
 
     const pickedDate = watch("pickDate");
-    console.log("pickedDate", pickedDate);
+
 
     // if (pickedDate) {
     //     query.startDate = new Date(pickedDate).toISOString()
@@ -53,6 +53,7 @@ const CreateDrSchedule = () => {
     }
 
     const { data: schedules } = useGetSchedulesQuery(query, { skip: !pickedDate });
+
 
     // if (schedules?.data?.length === 0) {
     //     setError("pickDate", {

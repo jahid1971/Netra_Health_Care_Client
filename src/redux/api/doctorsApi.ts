@@ -6,11 +6,8 @@ const doctorsApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         createDoctor:createApiBuilder( build, "/user/create-doctor", [tagTypes.doctor]),
  
-        getDoctors: build.query({
-            query: queryApiBuilder("/doctor"),
-            providesTags: [tagTypes.doctor],
-        }),
-
+        getDoctors: queryApiBuilder(build, "/doctor", [tagTypes.doctor]),
+        
         editDoctor: updateApiBuilder(build, "/doctor",  [tagTypes.doctor]),
 
 

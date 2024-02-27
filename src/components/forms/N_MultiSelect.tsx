@@ -16,6 +16,7 @@ type TMultiselect = {
     methods?: any;
     disabled?: boolean;
     required?: boolean;
+    size?: "small" | "medium";
 };
 
 const ITEM_HEIGHT = 48;
@@ -36,6 +37,7 @@ export default function N_MultiSelect({
     disabled,
     required = true,
     methods,
+    size="small"
 }: TMultiselect) {
     
     const {
@@ -51,7 +53,7 @@ export default function N_MultiSelect({
 
 
     return (
-        <FormControl sx={{ width: "100%" }}>
+        <FormControl sx={{ width: "100%" }}    size={size}>
             <InputLabel id={`${name}-label`}>{label}</InputLabel>
             <Controller
                 control={control}
@@ -76,6 +78,7 @@ export default function N_MultiSelect({
                             </Box>
                         )}
                         disabled={disabled}
+                     
                         MenuProps={MenuProps}>
                         {items?.map((item) => (
                             <MenuItem key={item.value} value={item.value}>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { IDoctor } from "@/types/Doctors";
 import {
     Box,
@@ -42,7 +42,14 @@ const TopRatedDoctors = async () => {
                             <Card>
                                 <Box
                                     sx={{
-                                        "& img": { width: "500px", height: "250px", objectFit: "cover" },
+                                        width: "100%",
+                                        height: 300,
+                                        "& img": {
+                                            width: "100%",
+                                            height: "100%",
+                                            overflow: "hidden",
+                                            objectFit: "cover",
+                                        },
                                     }}>
                                     <Image
                                         src={doctor?.profilePhoto || assets.images.doctor3}

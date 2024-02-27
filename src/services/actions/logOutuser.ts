@@ -4,5 +4,5 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 export const logOutUser = (router:AppRouterInstance) => {
    localStorage.removeItem(authKey)
    router.push("/")
-   router.refresh()
+   // router.refresh()
 }

@@ -36,6 +36,28 @@ export const updateApiBuilder = (build: any, url: string, tagTypes: string[], me
     });
 };
 
+export const queryApiBuilder = (build: any, url: string, tagTypes?: string[]) => {
+    return build.query({
+        query: (args?: Record<string, any>) => {
+            return {
+                url: url,
+                method: "GET",
+                params: args,
+            };
+        },
+        providesTags: tagTypes,
+
+        // transformResponse: (response: any) => {
+        //     return {
+        //         data: response?.data
+        //     }
+
+        // }
+    });
+
+}
+
+
 
 
 export const deleteApiBuilder = (url: string) => {
@@ -47,15 +69,16 @@ export const deleteApiBuilder = (url: string) => {
 
 
 
-export const queryApiBuilder = (url: string) => {
-    return (args?: Record<string, any>) => {
-        return {
-            url: url,
-            method: "GET",
-            params: args,
-        };
-    };
-};
+// export const queryApiBuilder = (url: string) => {
+//     return (args?: Record<string, any>) => {
+//         return {
+//             url: url,
+//             method: "GET",
+//             params: args,
+//         };
+//     };
+// };
+
 
 // api builder for single query
 export const singleQueryApiBuilder = (url: string) => {

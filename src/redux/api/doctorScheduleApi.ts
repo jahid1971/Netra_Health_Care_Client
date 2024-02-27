@@ -1,4 +1,4 @@
-import { createApiBuilder } from "@/utils/apiBuilders";
+import { createApiBuilder, queryApiBuilder } from "@/utils/apiBuilders";
 import { baseApi } from "./baseApi";
 import { tagTypes } from "../tagTypes";
 
@@ -8,6 +8,10 @@ const doctorScheduleApi = baseApi.injectEndpoints({
             tagTypes.doctorSchedule,
             tagTypes.schedule,
         ]),
+
+        getDoctorSchedules: queryApiBuilder(build, "/doctor-schedule", [tagTypes.doctorSchedule]),
+
+
     }),
 });
-export const { useCreateDoctorScheduleMutation } = doctorScheduleApi;
+export const { useCreateDoctorScheduleMutation,useGetDoctorSchedulesQuery } = doctorScheduleApi;

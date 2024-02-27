@@ -16,5 +16,7 @@ export interface IDoctor {
     createdAt?: string; 
     updatedAt?: string; 
     averageRating: number;
+    role: string;
+    status: string;
   }
   
