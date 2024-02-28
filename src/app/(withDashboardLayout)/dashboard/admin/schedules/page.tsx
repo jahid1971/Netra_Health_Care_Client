@@ -54,7 +54,7 @@ const SchedulePage = () => {
 
     return (
         <Box>
-            <Button onClick={() => dispatch(openModal())}>Create Schedule</Button>
+            <Button onClick={() => dispatch(openModal({modalId:"createSchedule"}))}>Create Schedule</Button>
             <CreateSchedule />
             <N_DataGrid
                 rows={allSchedules}

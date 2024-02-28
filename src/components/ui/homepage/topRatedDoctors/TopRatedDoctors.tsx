@@ -1,3 +1,4 @@
+"use client"
 import { IDoctor } from "@/types/Doctors";
 import {
     Box,
@@ -13,10 +14,13 @@ import {
 import { grey } from "@mui/material/colors";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Image from "next/image";
+import assets from "@/assets";
 
 const TopRatedDoctors = async () => {
     const res = await fetch("http://localhost:5000/api/v1/doctor?page=1&limit=3");
     const { data: doctors } = await res.json();
+
+    console.log(doctors, "doctors");
 
     return (
         <Box
@@ -36,19 +40,28 @@ const TopRatedDoctors = async () => {
                     {doctors?.map((doctor: IDoctor) => (
                         <Grid item key={doctor.id} md={4}>
                             <Card>
-                                <Box>
-                                    <Image src={doctor.profilePhoto} alt="doctor" width={400} height={100} />
+                                <Box
+                                    sx={{
+                                        "& img": { width: "500px", height: "250px", objectFit: "cover" },
+                                    }}>
+                                    <Image
+                                        src={doctor?.profilePhoto || assets.images.doctor3}
+                                        alt="doctor"
+                                        width={400}
+                                        height={100}
+                                        objectFit="cover"
+                                    />
                                 </Box>
 
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">
-                                        {doctor.name}
+                                        {doctor?.name}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        {doctor.qualification},{doctor.designation}
+                                        {doctor?.qualification},{doctor.designation}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary" mt={2}>
-                                        <LocationOnIcon /> {doctor.address}
+                                        <LocationOnIcon /> {doctor?.address}
                                     </Typography>
                                 </CardContent>
 
@@ -63,9 +76,7 @@ const TopRatedDoctors = async () => {
                     ))}
                 </Grid>
                 <Box mt={"30px"} textAlign={"center"}>
-                    <Button  variant="outlined">
-                        View All Doctors
-                    </Button>
+                    <Button variant="outlined">View All Doctors</Button>
                 </Box>
             </Container>
         </Box>

@@ -1,3 +1,4 @@
+"use client"
 import {
     Box,
     Divider,
@@ -23,12 +24,12 @@ import { TUserRole } from "@/types/common";
 import { usePathname } from "next/navigation";
 import { blue } from "@mui/material/colors";
 
-const Sidebar = ({ drawerWidth, setDrawerWidth }) => {
+const Sidebar = ({ drawerWidth, setDrawerWidth }: any) => {
     const pathname = usePathname();
-    const [userRole, setUserRole] = useState<TUserRole>("");
+    const [userRole, setUserRole] = useState<TUserRole>("user");
 
     useEffect(() => {
-        const { role } = getUserInfo() as any;
+        const { role } = getUserInfo() as { role: TUserRole };
         setUserRole(role);
     }, []);
 

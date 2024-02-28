@@ -1,4 +1,4 @@
-
+"use client"
 const DashboardHomePage = () => {
   return (
     <div>

@@ -1,3 +1,4 @@
+"use client"
 import { TSpecialty } from "@/types/Specialities";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
@@ -39,10 +40,10 @@ const Specialist = async () => {
                                     mx: "auto",
                                 },
                             }}>
-                            <Image src={speciality?.icon ?? ""} width={100} height={100} alt="speciality" />
+                            <Image src={speciality?.icon || ""} width={100} height={100} alt="speciality" />
 
                             <Typography textAlign={"center"} mt={1}>
-                                {speciality.title}{" "}
+                                {speciality?.title}
                             </Typography>
                         </Box>
                     ))}

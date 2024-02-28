@@ -21,6 +21,7 @@ const modalSlice = createSlice({
             state.isOpen = true;
             state.modalId = action.payload.modalId;
             state.modalData = action.payload.modalData;
+            console.log("modalData in modalSlice", state.isOpen)
         },
         closeModal: (state) => {
             state.isOpen = false;

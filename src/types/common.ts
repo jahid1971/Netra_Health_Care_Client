@@ -7,7 +7,7 @@ export interface IMeta {
     total: number;
 }
 
-export type TUserRole = keyof typeof USER_ROLE;
+export type TUserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 export interface IDrawerItem {
     title: string;
@@ -21,28 +21,27 @@ export type TResponeSuccess = {
     success?: boolean;
     data: any;
     meta: IMeta;
+    
 };
 
 export type TOpenState = {
     open?: boolean;
     setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  };
-
+};
 
 export type IGenericErrorResponse = {
     status: number;
     errorType: string;
     message: string;
     errorMessages: IGenericErrorMessage[];
-  };
-  
-  export type IGenericErrorMessage = {
+};
+
+export type IGenericErrorMessage = {
     path: string | number;
     message: string;
-  };
-  
+};
 
-  export type IResponse<T> = {
+export type IResponse<T> = {
     data?: T;
     error?: any;
     meta?: IMeta;

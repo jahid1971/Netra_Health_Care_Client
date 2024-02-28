@@ -8,12 +8,13 @@ import { useAppDispatch } from "@/redux/hooks";
 import { TOpenState } from "@/types/common";
 import { tryCatch } from "@/utils/tryCatch";
 import { Button, Grid, Modal } from "@mui/material";
+import { FieldValues } from "react-hook-form";
 
 const CreateSchedule = () => {
     const dispatch = useAppDispatch();
 
     const [createSchedule] = useCreateScheduleMutation();
-    const handleSubmit = (values) => {
+    const handleSubmit = (values:FieldValues) => {
         tryCatch(
             async () => {
                 const res = await createSchedule(values);
@@ -24,15 +25,11 @@ const CreateSchedule = () => {
             "Schedule created successfully",
             () => dispatch(closeModal())
         );
-
-        // values.startDate = new Date(values.startDate);
-        // values.endDate = new Date(values.endDate);
-        // values.startTime = new Date(values.startTime);
-        // values.endTime = new Date(values.endTime);
+  
     };
 
     return (
-        <N_Modal title="Create Schedule">
+        <N_Modal title="Create Schedule" modalId="createSchedule">
             <N_Form onSubmit={handleSubmit}>
                 <Grid container spacing={2} width={"400px"}>
                     <Grid item xs={12}>

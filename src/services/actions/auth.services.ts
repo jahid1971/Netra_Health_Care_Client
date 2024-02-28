@@ -3,7 +3,6 @@ import { instance } from "@/helpers/axios/axiosInstance";
 import { getFromLocalStorage, removeFromLocalStorage, setTolocalStorage } from "@/utils/localStorage";
 import { jwtDecode } from "jwt-decode";
 
-
 export const storeUserInfo = (accessToken: string) => setTolocalStorage(authKey, accessToken);
 
 export const getUserInfo = () => {
@@ -14,7 +13,7 @@ export const getUserInfo = () => {
         decodedToken = jwtDecode(authToken);
         return {
             ...decodedToken,
-            role: decodedToken?.role?.toLowerCase(),
+            role: (decodedToken as any)?.role?.toLowerCase(),
         };
     } else return "";
 };
@@ -26,10 +25,9 @@ export const isLoggedIn = () => {
 
 export const getNewAccessToken = async () => {
     return await instance({
-       url: 'http://localhost:5000/api/v1/auth/refresh-token',
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       withCredentials: true,
+        url: "http://localhost:5000/api/v1/auth/refresh-token",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
     });
- };
- 
+};

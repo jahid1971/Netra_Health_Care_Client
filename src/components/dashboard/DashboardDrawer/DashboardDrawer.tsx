@@ -60,7 +60,7 @@ export default function DashboardDrawer({
     };
 
     const { data: profileData, isLoading } = useGetSingleUserQuery({});
-console.log(profileData, "profileData")
+
    
 
     return (

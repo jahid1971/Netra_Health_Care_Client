@@ -4,16 +4,15 @@ import { tagTypes } from "../tagTypes";
 
 const schedulesApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        createSchedule: build.mutation({
-            query: createApiBuilder("/schedule"),
-            invalidatesTags: [tagTypes.schedule],
-        }),
+        createSchedule: createApiBuilder(build, "/schedule", [tagTypes.schedule]),
 
         getSchedules: build.query({
             query: queryApiBuilder("/schedule"),
             providesTags: [tagTypes.schedule],
         }),
+
+       
     }),
 });
 
-export const { useCreateScheduleMutation,useGetSchedulesQuery } = schedulesApi;
+export const { useCreateScheduleMutation, useGetSchedulesQuery } = schedulesApi;

@@ -6,16 +6,23 @@ export type TUpdateArgs = {
 };
 
 // api builder for create,
-export const createApiBuilder = (url: string) => {
-    return (data: any) => ({
-        url: url,
-        method: "POST",
-        data,
+export const createApiBuilder = (build:any, url: string, tagTypes: string[]) => {
+    return build.mutation({
+        query: (args: any) => {
+            console.log("args in createApiBuilder", args)
+            return {
+                url: url,
+                method: "POST",
+                data: args,
+            };
+        },
+        invalidatesTags: tagTypes,
     });
-};
+
+}
 
 
-export const updateApiBuilder = (build: any, url: string, method = "PATCH", tagTypes: string[]) => {
+export const updateApiBuilder = (build: any, url: string, tagTypes: string[], method = "PATCH") => {
     return build.mutation({
         query: (args: TUpdateArgs) => {
             console.log("args in updateApiBuilder", args);

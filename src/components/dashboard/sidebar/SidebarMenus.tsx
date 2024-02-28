@@ -1,3 +1,4 @@
+"use client"
 import { USER_ROLE } from '@/constants/role'; 
 
 //icons

@@ -1,4 +1,5 @@
 
+"use client";
 const AdminDashboard = () => {
   return (
     <div>

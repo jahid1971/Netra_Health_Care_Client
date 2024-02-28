@@ -1,11 +1,9 @@
 import { authKey } from "@/constants/authKey";
 import { baseUrl } from "@/constants/commmon";
-import { useAppDispatch } from "@/redux/hooks";
-import { logOutUser } from "@/services/actions/logOutuser";
-import { IGenericErrorResponse, TResponeSuccess } from "@/types/common";
+
+import { TResponeSuccess } from "@/types/common";
 import { getFromLocalStorage } from "@/utils/localStorage";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import axios, { AxiosResponse } from "axios";
 
 const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";
@@ -29,43 +27,41 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-    //@ts-ignore
-    function (response) {
+    function (response): AxiosResponse<any, any> {
         console.log(response?.data, "response in axios instance");
 
-        const responseObject: TResponeSuccess = {
+        const responseObject: any = {
             data: response?.data,
             meta: response?.data?.meta,
         };
         return responseObject;
     },
-    async function (error) {
-
-        const originalRequest = error.config;
-        // ._retry is to prevent infinite loop
-        if (error?.response?.status === 500 && !originalRequest._retry) {
-            originalRequest._retry = true;
-            try {
-                const response = await getNewAccessToken();
-                const accessToken = response?.data?.data?.accessToken;
-                if (accessToken) {
-                    originalRequest.headers["Authorization"] = accessToken;
-                    localStorage.setItem(authKey, accessToken);
-                    //  setAccessToken(accessToken);
-                    return instance(originalRequest);
-                } else {
-                    localStorage.removeItem(authKey);
-                    window.location.href = "/";  //route doesnt work here bas its not react component
-                }
-            } catch (refreshError) {
-                console.log(refreshError, "Token refresh failed");
-                localStorage.removeItem(authKey);
-                window.location.href = "/";
-                return Promise.reject(refreshError);
-            }
-        }
-        return Promise.reject(error);
-    }
+    // async function (error) {
+    //     const originalRequest = error.config;
+    //     // ._retry is to prevent infinite loop
+    //     if (error?.response?.status === 500 && !originalRequest._retry) {
+    //         originalRequest._retry = true;
+    //         try {
+    //             const response = await getNewAccessToken();
+    //             const accessToken = response?.data?.data?.accessToken;
+    //             if (accessToken) {
+    //                 originalRequest.headers["Authorization"] = accessToken;
+    //                 localStorage.setItem(authKey, accessToken);
+    //                 //  setAccessToken(accessToken);
+    //                 return instance(originalRequest);
+    //             } else {
+    //                 localStorage.removeItem(authKey);
+    //                 // window.location.href = "/";  //route doesnt work here bas its not react component
+    //             }
+    //         } catch (refreshError) {
+    //             console.log(refreshError, "Token refresh failed");
+    //             localStorage.removeItem(authKey);
+    //             // window.location.href = "/";
+    //             return Promise.reject(refreshError);
+    //         }
+    //     }
+    //     return Promise.reject(error);
+    // }
 );
 
 const getNewAccessToken = async () => {

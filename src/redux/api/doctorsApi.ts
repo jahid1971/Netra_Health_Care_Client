@@ -4,17 +4,14 @@ import { tagTypes } from "../tagTypes";
 
 const doctorsApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        createDoctor: build.mutation({
-            query: createApiBuilder("/user/create-doctor"),
-            invalidatesTags: [tagTypes.doctor],
-        }),
-
+        createDoctor:createApiBuilder( build, "/user/create-doctor", [tagTypes.doctor]),
+ 
         getDoctors: build.query({
             query: queryApiBuilder("/doctor"),
             providesTags: [tagTypes.doctor],
         }),
 
-        editDoctor: updateApiBuilder(build, "/doctor", "PATCH", [tagTypes.doctor]),
+        editDoctor: updateApiBuilder(build, "/doctor",  [tagTypes.doctor]),
 
 
 
