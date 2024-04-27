@@ -6,10 +6,10 @@ export type TUpdateArgs = {
 };
 
 // api builder for create,
-export const createApiBuilder = (build:any, url: string, tagTypes: string[]) => {
+export const createApiBuilder = (build: any, url: string, tagTypes: string[]) => {
     return build.mutation({
         query: (args: any) => {
-            console.log("args in createApiBuilder", args)
+            console.log("args in createApiBuilder", args);
             return {
                 url: url,
                 method: "POST",
@@ -18,18 +18,23 @@ export const createApiBuilder = (build:any, url: string, tagTypes: string[]) => 
         },
         invalidatesTags: tagTypes,
     });
+};
 
-}
-
-
-export const updateApiBuilder = (build: any, url: string, tagTypes: string[], method = "PATCH") => {
+export const updateApiBuilder = (
+    build: any,
+    url: string,
+    tagTypes: string[],
+    options: { method?: string; contentType?: string } = {}
+) => {
     return build.mutation({
         query: (args: TUpdateArgs) => {
-            console.log("args in updateApiBuilder", args);
+            console.log("options in updateApiBuilder", options);
+            console.log("args in updateApiBuilderrrrr", args);
             return {
-                url: `${url}/${args?.id}`,
-                method: method,
+                url: `${url}${args.id ? `/${args.id}` : ""}`,
+                method: options.method ?? "PATCH",
                 data: args?.data,
+                contentType: options.contentType ?? "application/json",
             };
         },
         invalidatesTags: tagTypes,
@@ -54,36 +59,23 @@ export const queryApiBuilder = (build: any, url: string, tagTypes?: string[]) =>
 
         // }
     });
+};
 
-}
-
-
-
+export const singleQueryApiBuilder = (build: any, url: string, tagTypes?: string[]) => {
+    return build.query({
+        query: (id: string) => {
+            return {
+                url: `${url}/${id}`,
+                method: "GET",
+            };
+        },
+        providesTags: tagTypes,
+    });
+};
 
 export const deleteApiBuilder = (url: string) => {
     return (id: string) => ({
         url: `${url}/${id}`,
         method: "DELETE",
-    });
-};
-
-
-
-// export const queryApiBuilder = (url: string) => {
-//     return (args?: Record<string, any>) => {
-//         return {
-//             url: url,
-//             method: "GET",
-//             params: args,
-//         };
-//     };
-// };
-
-
-// api builder for single query
-export const singleQueryApiBuilder = (url: string) => {
-    return (id: string) => ({
-        url: `${url}/${id}`,
-        method: "GET",
     });
 };

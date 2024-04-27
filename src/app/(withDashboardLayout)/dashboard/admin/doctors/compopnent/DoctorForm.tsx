@@ -4,7 +4,7 @@ import N_Select from "@/components/forms/N_Select";
 import { Gender } from "@/constants/commmon";
 import { Button, Grid, Stack } from "@mui/material";
 
-const DoctorForm = ({ handleSubmit, actionTitle, defaultValue, passwordField = true, isLoading }: any) => {
+const DoctorForm = ({ handleSubmit, submitTitle, defaultValue, passwordField = true, isLoading }: any) => {
     return (
         <N_Form onSubmit={handleSubmit} defaultValues={defaultValue}>
             <Grid container spacing={2}>
@@ -50,7 +50,7 @@ const DoctorForm = ({ handleSubmit, actionTitle, defaultValue, passwordField = t
 
             <Stack direction="row" justifyContent="flex-end" mt={2}>
                 <Button disabled={isLoading} type="submit">
-                    {actionTitle}
+                    {submitTitle}
                 </Button>
             </Stack>
         </N_Form>

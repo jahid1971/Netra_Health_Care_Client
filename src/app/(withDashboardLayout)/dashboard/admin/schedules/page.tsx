@@ -11,12 +11,16 @@ import { useGetSchedulesQuery } from "@/redux/api/schedulesApi";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { ISchedule } from "@/types/schedules";
+import N_Pagination from "@/components/pagination/Pagination";
 
 const SchedulePage = () => {
     const [allSchedules, setAllSchedule] = useState<any>([]);
     const dispatch = useAppDispatch();
 
+    const [query, setQuery] = useState<Record<string, any>>({});
+
     const { data: schedules, isFetching } = useGetSchedulesQuery(undefined);
+    const meta = data?.meta;
 
     useEffect(() => {
         const schedulesData = schedules?.data?.map((schedule: ISchedule, index: number) => ({
@@ -54,7 +58,9 @@ const SchedulePage = () => {
 
     return (
         <Box>
-            <Button onClick={() => dispatch(openModal({modalId:"createSchedule"}))}>Create Schedule</Button>
+            <Button onClick={() => dispatch(openModal({ modalId: "createSchedule" }))}>
+                Create Schedule
+            </Button>
             <CreateSchedule />
             <N_DataGrid
                 rows={allSchedules}
@@ -62,6 +68,9 @@ const SchedulePage = () => {
                 isLoading={isFetching}
                 notFoundFor="Schedule"
                 hideFooter={false}
+                slots={{
+                    footer: () => <N_Pagination setQuery={setQuery} meta={meta} />,
+                }}
             />
         </Box>
     );

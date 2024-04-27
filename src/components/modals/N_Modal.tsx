@@ -44,6 +44,7 @@ export default function N_Modal({ title = "", modalId, children, fullScreen = fa
     const isOpen = useAppSelector(selectIsOpen);
     const currentModalId = useAppSelector(selectModalId);
     const dispatch = useAppDispatch();
+    console.log("currentModalId", currentModalId , "modalId", modalId, "isOpen", isOpen);
 
     const handleClose = () => dispatch(closeModal());
 

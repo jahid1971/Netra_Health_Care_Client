@@ -9,7 +9,7 @@ import { IDoctor } from "@/types/Doctors";
 
 const EditDoctor = () => {
     const doctorInfo: Partial<IDoctor> = useAppSelector(selectModalData) || {};
-    const [editDoctor,{isLoading}] = useEditDoctorMutation();
+    const [editDoctor, { isLoading }] = useEditDoctorMutation();
     const dispatch = useAppDispatch();
 
     const defaultValue = {
@@ -33,7 +33,7 @@ const EditDoctor = () => {
         const payload = { id: doctorInfo?.id as string, data: data };
 
         tryCatch(
-            () => editDoctor(payload),
+            async () => await editDoctor(payload),
             "Updating Doctor",
             "Doctor Updated Successfully",
             () => dispatch(closeModal())
@@ -44,7 +44,7 @@ const EditDoctor = () => {
             <DoctorForm
                 handleSubmit={handleSubmit}
                 defaultValue={defaultValue}
-                actionTitle="Edit"
+                submitTitle="Edit"
                 passwordField={false}
                 isLoading={isLoading}
             />

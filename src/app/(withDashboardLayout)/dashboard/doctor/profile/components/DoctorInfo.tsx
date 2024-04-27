@@ -37,7 +37,7 @@ const DoctorInfo: React.FC<DoctorInfoProps> = ({ drProfile }) => {
 
     return (
         <>
-            <Typography variant="h5" color="primary.main" mb={2}>
+            <Typography variant="h5" color="primary.main" mb={1}>
                 Personal Information
             </Typography>
             <Grid container spacing={2}>
@@ -47,11 +47,12 @@ const DoctorInfo: React.FC<DoctorInfoProps> = ({ drProfile }) => {
                 <ProfileField label="Contact Number" value={drProfile?.contactNumber} />
             </Grid>
 
-            <Typography variant="h5" color="primary.main" my={2}>
-                Personal Information
+            <Typography variant="h5" color="primary.main" mb={1} mt={2}>
+                Professional Information
             </Typography>
             <Grid container spacing={2}>
                 <ProfileField label ="Designation" value={drProfile?.designation} />
+                {/* <ProfileField label ="specialty" value={drProfile?.specialty?.title} /> */}
                 <ProfileField label="  Anointment Fee" value={drProfile?.apointmentFee} />
                 <ProfileField label="Qualification" value={drProfile?.qualification} />
                 <ProfileField label="Experience" value={`${drProfile?.experience} years`} />

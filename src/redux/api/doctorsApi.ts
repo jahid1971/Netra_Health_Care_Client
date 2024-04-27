@@ -1,16 +1,22 @@
-import { createApiBuilder, deleteApiBuilder, queryApiBuilder, updateApiBuilder } from "@/utils/apiBuilders";
+import {
+    createApiBuilder,
+    deleteApiBuilder,
+    queryApiBuilder,
+    singleQueryApiBuilder,
+    updateApiBuilder,
+} from "@/utils/apiBuilders";
 import { baseApi } from "./baseApi";
 import { tagTypes } from "../tagTypes";
 
 const doctorsApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        createDoctor:createApiBuilder( build, "/user/create-doctor", [tagTypes.doctor]),
- 
+        createDoctor: createApiBuilder(build, "/user/create-doctor", [tagTypes.doctor]),
+
         getDoctors: queryApiBuilder(build, "/doctor", [tagTypes.doctor]),
-        
-        editDoctor: updateApiBuilder(build, "/doctor",  [tagTypes.doctor]),
 
+        editDoctor: updateApiBuilder(build, "/doctor", [tagTypes.doctor,tagTypes.user]),
 
+        getSingleDoctor: singleQueryApiBuilder(build, "/doctor", [tagTypes.doctor]),
 
         deleteDoctor: build.mutation({
             query: deleteApiBuilder("/doctor/soft"),
@@ -19,5 +25,10 @@ const doctorsApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useCreateDoctorMutation, useGetDoctorsQuery, useDeleteDoctorMutation, useEditDoctorMutation } =
-    doctorsApi;
+export const {
+    useCreateDoctorMutation,
+    useGetDoctorsQuery,
+    useDeleteDoctorMutation,
+    useEditDoctorMutation,
+    useGetSingleDoctorQuery,
+} = doctorsApi;

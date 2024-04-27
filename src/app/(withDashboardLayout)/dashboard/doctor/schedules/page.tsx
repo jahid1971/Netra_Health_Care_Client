@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Pagination } from "@mui/material";
 
 import { useAppDispatch } from "@/redux/hooks";
 import { openModal } from "@/redux/features/modal/modalSlice";
@@ -11,13 +11,18 @@ import N_DataGrid from "@/components/dataGrid/DataGrid";
 import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
 import { useGetSchedulesQuery } from "@/redux/api/schedulesApi";
 import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
+import { useState } from "react";
+import N_Pagination from "@/components/pagination/Pagination";
 
 // import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
 
 const doctorSchedulePage = () => {
     const dispatch = useAppDispatch();
 
-    const { data,isFetching } = useGetDoctorSchedulesQuery({});
+    const [query, setQuery] = useState<Record<string, any>>({});
+
+    const { data, isFetching } = useGetDoctorSchedulesQuery(query);
+    const meta = data?.meta;
 
     const doctorSchedules = data?.data?.map((schedule) => {
         return {
@@ -28,8 +33,6 @@ const doctorSchedulePage = () => {
             endTime: timeFormatter(schedule?.endDate),
         };
     });
-
-
 
     const columns: GridColDef[] = [
         { field: "startDate", headerName: "Date", flex: 1 },
@@ -64,6 +67,13 @@ const doctorSchedulePage = () => {
                 isLoading={isFetching}
                 notFoundFor="Schedule"
                 hideFooter={false}
+                slots={{
+                    footer: () => {
+                        return (
+                            <N_Pagination setQuery={setQuery} meta={meta} />
+                        );
+                    },
+                }}
             />
         </Box>
     );

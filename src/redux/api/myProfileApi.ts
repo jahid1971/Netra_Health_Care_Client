@@ -1,6 +1,7 @@
 import { IResponseRedux } from "@/types/common";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
+import { updateApiBuilder } from "@/utils/apiBuilders";
 
 export const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
@@ -10,12 +11,16 @@ export const userApi = baseApi.injectEndpoints({
                 method: "GET",
             }),
             providesTags: [tagTypes.user],
-            
+
             transformResponse: (response: any) => {
-                return  response?.data ;
+                return response?.data;
             },
+        }),
+
+        updateMyProfile: updateApiBuilder(build, "/user/update-my-profile", [tagTypes.user], {
+            contentType: "multipart/form-data",
         }),
     }),
 });
 
-export const { useGetMyProfileQuery } = userApi;
+export const { useGetMyProfileQuery, useUpdateMyProfileMutation } = userApi;

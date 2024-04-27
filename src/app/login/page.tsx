@@ -32,7 +32,7 @@ const LogInPage = () => {
                 const res = await userLogIn(data);
                 if (res?.data?.accessToken) {
                     storeUserInfo(res?.data?.accessToken);
-                    router.push("/dashboard");
+                    // router.push("/dashboard");
                 } else setError(res?.message);
                 return res;
             },

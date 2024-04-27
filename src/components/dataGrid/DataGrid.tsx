@@ -8,9 +8,10 @@ type TDataGridProps = {
     hideFooter?: boolean;
     autoHeight?: boolean;
     notFoundFor?: string;
+    slots?: any;
 };
 
-const N_DataGrid = ({ rows, columns, isLoading, hideFooter, autoHeight, notFoundFor }: TDataGridProps) => {
+const N_DataGrid = ({ rows, columns, isLoading, hideFooter, autoHeight, notFoundFor,slots }: TDataGridProps) => {
     
     const CustomNoRowsOverlay = () => {
         return (
@@ -35,7 +36,7 @@ const N_DataGrid = ({ rows, columns, isLoading, hideFooter, autoHeight, notFound
                     },
                 }}
                 slots={{
-                    noRowsOverlay: CustomNoRowsOverlay,
+                    noRowsOverlay: CustomNoRowsOverlay, ...slots
                 }}
             />
         </Box>

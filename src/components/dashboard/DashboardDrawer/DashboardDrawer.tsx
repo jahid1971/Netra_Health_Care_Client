@@ -22,7 +22,7 @@ import { Avatar, Badge, Stack } from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import AccountMenu from "../AccountMenu/AccountMenu";
-import { useGetMyProfileQuery } from "@/redux/api/myProfile";
+import { useGetMyProfileQuery } from "@/redux/api/myProfileApi"; 
 
 
 // let drawerWidth = 250;

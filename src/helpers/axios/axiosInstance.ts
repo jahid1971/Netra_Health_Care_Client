@@ -1,5 +1,6 @@
 import { authKey } from "@/constants/authKey";
 import { baseUrl } from "@/constants/commmon";
+import setAccessToken from "@/services/actions/setAccessToken";
 
 import { TResponeSuccess } from "@/types/common";
 import { getFromLocalStorage } from "@/utils/localStorage";
@@ -36,32 +37,32 @@ instance.interceptors.response.use(
         };
         return responseObject;
     },
-    // async function (error) {
-    //     const originalRequest = error.config;
-    //     // ._retry is to prevent infinite loop
-    //     if (error?.response?.status === 500 && !originalRequest._retry) {
-    //         originalRequest._retry = true;
-    //         try {
-    //             const response = await getNewAccessToken();
-    //             const accessToken = response?.data?.data?.accessToken;
-    //             if (accessToken) {
-    //                 originalRequest.headers["Authorization"] = accessToken;
-    //                 localStorage.setItem(authKey, accessToken);
-    //                 //  setAccessToken(accessToken);
-    //                 return instance(originalRequest);
-    //             } else {
-    //                 localStorage.removeItem(authKey);
-    //                 // window.location.href = "/";  //route doesnt work here bas its not react component
-    //             }
-    //         } catch (refreshError) {
-    //             console.log(refreshError, "Token refresh failed");
-    //             localStorage.removeItem(authKey);
-    //             // window.location.href = "/";
-    //             return Promise.reject(refreshError);
-    //         }
-    //     }
-    //     return Promise.reject(error);
-    // }
+    async function (error) {
+        const originalRequest = error.config;
+        // ._retry is to prevent infinite loop
+        if (error?.response?.status === 500 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            try {
+                const response = await getNewAccessToken();
+                const accessToken = response?.data?.data?.accessToken;
+                if (accessToken) {
+                    originalRequest.headers["Authorization"] = accessToken;
+                    localStorage.setItem(authKey, accessToken);
+                     setAccessToken(accessToken);
+                    return instance(originalRequest);
+                } else {
+                    localStorage.removeItem(authKey);
+                    // window.location.href = "/";  //route doesnt work here bas its not react component
+                }
+            } catch (refreshError) {
+                console.log(refreshError, "Token refresh failed");
+                localStorage.removeItem(authKey);
+                // window.location.href = "/";
+                return Promise.reject(refreshError);
+            }
+        }
+        return Promise.reject(error);
+    }
 );
 
 const getNewAccessToken = async () => {

@@ -37,7 +37,7 @@ const CreateDoctor = ({ open, setOpen }: TOpenState) => {
     };
     return (
         <N_Modal fullScreen title="Create  New Doctor" modalId="createDoctor">
-            <DoctorForm handleSubmit={handleSubmit} actionTitle="Create" />
+            <DoctorForm handleSubmit={handleSubmit} submitTitle="Create" />
         </N_Modal>
     );
 };
