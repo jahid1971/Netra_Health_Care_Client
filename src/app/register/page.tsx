@@ -2,11 +2,15 @@
 import assets from "@/assets";
 import N_Form from "@/components/forms/N_Form";
 import N_Input from "@/components/forms/N_Input";
+import SubmitButton from "@/components/ui/SubmitButton";
+import { authKey, refreshKey } from "@/constants/authKey";
 
-import { storeUserInfo } from "@/services/actions/auth.services";
+import { deleteCookies } from "@/services/actions/cookies";
+
 import { registerPatient } from "@/services/actions/registerPatient";
 import { userLogIn } from "@/services/actions/userLogin";
 import tryCatch from "@/utils/tryCatch";
+import { registerPatientSchema } from "@/utils/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Container, Stack, TextField, Typography } from "@mui/material";
 import { red } from "@mui/material/colors";
@@ -15,18 +19,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
-
-export const registerPatientSchema = z.object({
-    patient: z.object({
-        name: z.string().min(1, "Name is required"),
-        email: z.string().email("Please enter a valid email address!"),
-        // contactNumber: z.string().regex(/^\d{11}$/, "Please provide a valid phone number!"),
-        contactNumber: z.string().min(1, "Contact number is required"),
-        address: z.string().min(1, "Address is required"),
-    }),
-    password: z.string().min(4, "Password must be at least 4 characters"),
-});
 
 const RegisterPage = () => {
     const router = useRouter();
@@ -46,18 +38,22 @@ const RegisterPage = () => {
                         email: data.patient.email,
                         password: data.password,
                     });
+
                     if (logInRespone?.data?.accessToken) {
-                        storeUserInfo(logInRespone?.data?.accessToken);
-                        router.push("/");
+                        router.push("/dashboard");
+                    } else {
+                        setError(logInRespone?.message);
+                        deleteCookies([authKey, refreshKey]);
                     }
+
                     return logInRespone;
                 } else {
                     setError(registerResponse?.message);
                     return registerResponse;
                 }
             },
-            "Patient registered successfully",
-            "Registering patient"
+            "Registering patient",
+            "Patient registered successfully"
         );
     };
 
@@ -94,9 +90,10 @@ const RegisterPage = () => {
                         </Stack>
                     </Stack>
 
-                    <Button type="submit" sx={{ my: 2 }} fullWidth>
+                    {/* <Button type="submit" sx={{ my: 2 }} fullWidth>
                         Register
-                    </Button>
+                    </Button> */}
+                    <SubmitButton sx={{ my: 2 }} label="Register" />
                 </N_Form>
 
                 <Typography variant="body2" fontWeight={300}>

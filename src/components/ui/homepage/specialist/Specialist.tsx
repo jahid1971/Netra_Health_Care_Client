@@ -1,4 +1,4 @@
-"use client"
+
 import { TSpecialty } from "@/types/Specialities";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";

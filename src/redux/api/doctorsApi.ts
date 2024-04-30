@@ -18,10 +18,11 @@ const doctorsApi = baseApi.injectEndpoints({
 
         getSingleDoctor: singleQueryApiBuilder(build, "/doctor", [tagTypes.doctor]),
 
-        deleteDoctor: build.mutation({
-            query: deleteApiBuilder("/doctor/soft"),
-            invalidatesTags: [tagTypes.doctor],
-        }),
+        // deleteDoctor: build.mutation({
+        //     query: deleteApiBuilder("/doctor/soft"),
+        //     invalidatesTags: [tagTypes.doctor],
+        // }),
+        deleteDoctor: deleteApiBuilder(build, "/doctor/soft", [tagTypes.doctor]),
     }),
 });
 

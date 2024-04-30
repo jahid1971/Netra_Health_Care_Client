@@ -13,16 +13,12 @@ const specialitiesApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: [tagTypes.specialities],
         }),
+  
 
-        getAllSpecialities: build.query({
-            query: queryApiBuilder("/specialties"),
-            providesTags: [tagTypes.specialities],
-        }),
+        getAllSpecialities: queryApiBuilder(build, "/specialties", [tagTypes.specialities]),
 
-        deleteSpeciality: build.mutation({
-            query: deleteApiBuilder("/specialties"),
-            invalidatesTags: [tagTypes.specialities],
-        }),
+    
+        deleteSpeciality: deleteApiBuilder(build, "/specialties", [tagTypes.specialities]),
     }),
 });
 

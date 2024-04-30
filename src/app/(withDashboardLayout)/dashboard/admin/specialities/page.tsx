@@ -7,21 +7,25 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { tryCatch } from "@/utils/tryCatch";
+import { useAppDispatch } from "@/redux/hooks";
+import { openModal } from "@/redux/slices/modalSlice";
 
 const SpecialitiesPage = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+    const dispatch = useAppDispatch()
     const [params, setParams] = useState({ page: 1, limit: 10 });
 
     const { data: allSpecailities, isLoading } = useGetAllSpecialitiesQuery(undefined);
     const [deleteSpeciality] = useDeleteSpecialityMutation();
 
-    const handleDelete = (id:string) => {
+    const handleDelete = (id: string) => {
         tryCatch(
             async () => await deleteSpeciality(id),
             "Deleting Speciality",
             "Speciality Deleted Successfully"
         );
     };
+    
     const columnDef: GridColDef[] = [
         { field: "title", headerName: "Title", width: 400 },
         {
@@ -30,7 +34,7 @@ const SpecialitiesPage = () => {
             flex: 1,
             renderCell: ({ row }) => {
                 return (
-                    <Box display="flex"  alignItems="center" height="100%">
+                    <Box display="flex" alignItems="center" height="100%">
                         {row.icon && <Image src={row.icon} width={30} height={30} alt="icon" />}
                     </Box>
                 );
@@ -55,13 +59,16 @@ const SpecialitiesPage = () => {
     return (
         <Box>
             <Stack direction={"row"} justifyContent={"space-between"}>
-                <Button onClick={() => setIsModalOpen(true)}>Create Speacility</Button>
-                <CreateSpecialities open={isModalOpen} setOpen={setIsModalOpen} />
+                {/* <Button onClick={() => setIsModalOpen(true)}>Create Speciality</Button> */}
+                <Button onClick={() => dispatch(openModal({ modalId: "createSpeciality" }))}>
+                    Create Speciality
+                </Button>
+                <CreateSpecialities  />
                 <TextField fullWidth={false} size="small" placeholder="Search Speciality" />
             </Stack>
             {!isLoading ? (
-                <Box  my={2}>
-                    <DataGrid  rows={allSpecailities?.data} columns={columnDef} hideFooter={true} />
+                <Box my={2}>
+                    <DataGrid rows={allSpecailities?.data} columns={columnDef} hideFooter={true} />
                 </Box>
             ) : (
                 <h1>Loading.....</h1>

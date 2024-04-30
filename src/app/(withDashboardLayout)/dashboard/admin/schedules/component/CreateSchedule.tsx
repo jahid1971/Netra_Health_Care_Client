@@ -3,7 +3,7 @@ import N_Form from "@/components/forms/N_Form";
 import N_TimePicker from "@/components/forms/N_TimePicker";
 import N_Modal from "@/components/modals/N_Modal";
 import { useCreateScheduleMutation } from "@/redux/api/schedulesApi";
-import { closeModal } from "@/redux/features/modal/modalSlice";
+import { closeModal } from "@/redux/slices/modalSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { TOpenState } from "@/types/common";
 import { tryCatch } from "@/utils/tryCatch";

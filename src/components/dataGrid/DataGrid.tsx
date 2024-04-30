@@ -1,5 +1,7 @@
+import { useDebounced } from "@/redux/hooks";
 import { Box, Stack, styled, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridSortModel } from "@mui/x-data-grid";
+import { useCallback, useEffect, useState } from "react";
 
 type TDataGridProps = {
     rows: any[];
@@ -9,10 +11,29 @@ type TDataGridProps = {
     autoHeight?: boolean;
     notFoundFor?: string;
     slots?: any;
+    searchTerm?: any;
+    setQuery: (queryUpdater: (prevQuery: any) => any) => void;
 };
 
-const N_DataGrid = ({ rows, columns, isLoading, hideFooter, autoHeight, notFoundFor,slots }: TDataGridProps) => {
-    
+const N_DataGrid = ({
+    rows,
+    columns,
+    isLoading,
+    hideFooter,
+    autoHeight,
+    notFoundFor,
+    slots,
+    searchTerm,
+    setQuery,
+}: TDataGridProps) => {
+    const debouncedSearchTerm = useDebounced({ searchQuery: searchTerm, delay: 500 });
+
+    useEffect(() => {
+        if (debouncedSearchTerm) {
+            setQuery((prevQuery) => ({ ...prevQuery, searchTerm: debouncedSearchTerm }));
+        }
+    }, [debouncedSearchTerm]);
+
     const CustomNoRowsOverlay = () => {
         return (
             <Stack height={"100%"} textAlign={"center"} justifyContent={"center"}>
@@ -21,10 +42,18 @@ const N_DataGrid = ({ rows, columns, isLoading, hideFooter, autoHeight, notFound
         );
     };
 
+
+    const handleSortModelChange = useCallback((sortModel: GridSortModel) => {
+        setQuery((prev: any) => ({ ...prev, sortBy: sortModel[0]?.field, sortOrder: sortModel[0]?.sort }));
+    }, []);
+
     return (
         <Box my={2}>
             <DataGrid
                 rows={rows}
+                sortingMode="server"
+                onSortModelChange={handleSortModelChange}
+                disableColumnFilter
                 columns={columns}
                 loading={isLoading}
                 hideFooter={hideFooter}
@@ -36,8 +65,11 @@ const N_DataGrid = ({ rows, columns, isLoading, hideFooter, autoHeight, notFound
                     },
                 }}
                 slots={{
-                    noRowsOverlay: CustomNoRowsOverlay, ...slots
+                    noRowsOverlay: CustomNoRowsOverlay,
+                    ...slots,
                 }}
+
+                
             />
         </Box>
     );

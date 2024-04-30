@@ -73,9 +73,21 @@ export const singleQueryApiBuilder = (build: any, url: string, tagTypes?: string
     });
 };
 
-export const deleteApiBuilder = (url: string) => {
-    return (id: string) => ({
-        url: `${url}/${id}`,
-        method: "DELETE",
+// export const deleteApiBuilder = (url: string) => {
+//     return (id: string) => ({
+//         url: `${url}/${id}`,
+//         method: "DELETE",
+//     });
+// };
+
+export const deleteApiBuilder = (build: any, url: string, tagTypes: string[]) => {
+    return build.mutation({
+        query: (id: string) => {
+            return {
+                url: `${url}/${id}`,
+                method: "DELETE",
+            };
+        },
+        invalidatesTags: tagTypes,
     });
-};
+}

@@ -1,3 +1,5 @@
+import { authKey } from "@/constants/authKey";
+
 export const setTolocalStorage = (key: string, token: string) => {
     if (!key || typeof window === "undefined") return "";
 
@@ -15,3 +17,8 @@ export const removeFromLocalStorage = (key: string) => {
 
     return localStorage.removeItem(key);
 };
+
+
+
+
+export const storeToken = (accessToken: string) => setTolocalStorage(authKey, accessToken);

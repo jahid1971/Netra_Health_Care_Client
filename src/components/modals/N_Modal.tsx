@@ -13,7 +13,7 @@ import { grey } from "@mui/material/colors";
 import { TransitionProps } from "@mui/material/transitions";
 import { Slide } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { closeModal, selectIsOpen, selectModalId } from "@/redux/features/modal/modalSlice";
+import { closeModal, selectIsOpen, selectModalId } from "@/redux/slices/modalSlice";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -44,7 +44,6 @@ export default function N_Modal({ title = "", modalId, children, fullScreen = fa
     const isOpen = useAppSelector(selectIsOpen);
     const currentModalId = useAppSelector(selectModalId);
     const dispatch = useAppDispatch();
-    console.log("currentModalId", currentModalId , "modalId", modalId, "isOpen", isOpen);
 
     const handleClose = () => dispatch(closeModal());
 

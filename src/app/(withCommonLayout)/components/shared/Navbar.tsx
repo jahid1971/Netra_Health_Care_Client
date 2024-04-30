@@ -2,14 +2,12 @@
 
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Link from "next/link";
-import { isLoggedIn } from "../../services/actions/auth.services";
 import { logOutUser } from "@/services/actions/logOutuser";
 import { useRouter } from "next/navigation";
 
-const Navbar = () => {
+const Navbar = ({ userInfo }) => {
     const router = useRouter();
-    const loggedIn = isLoggedIn();
-    const handleLogOut = () => logOutUser(router);
+    const handleLogOut = () => logOutUser();
 
     return (
         <Container>
@@ -30,13 +28,18 @@ const Navbar = () => {
                     <Typography>Medicine</Typography>
                     <Typography>Diagnostics</Typography>
                     <Typography>NGOs</Typography>
+                    {userInfo?.userId && (
+                        <Typography component={Link} href="/dashboard">
+                            Dashboard
+                        </Typography>
+                    )}
                 </Stack>
 
-                {loggedIn ? (
+                {userInfo?.userId ? (
                     <Button onClick={handleLogOut}>LOG OUT</Button>
                 ) : (
                     <Button component={Link} href="/login">
-                        LOGIN
+                        Log In
                     </Button>
                 )}
             </Stack>

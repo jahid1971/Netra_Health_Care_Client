@@ -6,7 +6,7 @@ import { IDoctor } from "@/types/Doctors";
 import { tryCatch } from "@/utils/tryCatch";
 import { useUpdateMyProfileMutation } from "@/redux/api/myProfileApi";
 import { useAppDispatch } from "@/redux/hooks";
-import { closeModal } from "@/redux/features/modal/modalSlice";
+import { closeModal } from "@/redux/slices/modalSlice";
 import { FieldValues } from "react-hook-form";
 
 const ProfileUpdate = ({ id }: { id: string }) => {

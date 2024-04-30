@@ -12,6 +12,7 @@ import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/navigation";
 import { logOutUser } from "@/services/actions/logOutuser";
+import { toast } from "sonner";
 
 const menuStyles = {
     paper: {
@@ -55,7 +56,8 @@ export default function AccountMenu() {
     };
     const handleLogout = () => {
         setAnchorEl(null);
-        logOutUser(router);
+        logOutUser();
+        router.push("/");
     };
 
     return (
@@ -94,8 +96,8 @@ export default function AccountMenu() {
                 onClose={handleClose}
                 onClick={handleClose}
                 slotProps={{
-                  ...menuStyles,
-               }}
+                    ...menuStyles,
+                }}
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
                 <MenuItem onClick={handleClose}>

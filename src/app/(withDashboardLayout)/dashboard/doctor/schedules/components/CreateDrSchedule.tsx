@@ -6,7 +6,7 @@ import N_Select from "@/components/forms/N_Select";
 import N_Modal from "@/components/modals/N_Modal";
 import { useCreateDoctorScheduleMutation } from "@/redux/api/doctorScheduleApi";
 import { useGetSchedulesQuery } from "@/redux/api/schedulesApi";
-import { closeModal } from "@/redux/features/modal/modalSlice";
+import { closeModal } from "@/redux/slices/modalSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { tryCatch } from "@/utils/tryCatch";
 import { Button, Stack, Typography } from "@mui/material";

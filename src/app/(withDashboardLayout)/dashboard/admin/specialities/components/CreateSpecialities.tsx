@@ -3,13 +3,17 @@ import N_Form from "@/components/forms/N_Form";
 import N_Input from "@/components/forms/N_Input";
 import N_Modal from "@/components/modals/N_Modal";
 import { useCreateSpecialityMutation } from "@/redux/api/specialitiesApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { closeModal } from "@/redux/slices/modalSlice";
 import { TOpenState } from "@/types/common";
 import { modifyPayload } from "@/utils/modifyPayload";
 import tryCatch from "@/utils/tryCatch";
 import { Button, Stack } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 
-const CreateSpecialities = ({ open, setOpen }: TOpenState) => {
+const CreateSpecialities = () => {
+    const dispatch = useAppDispatch();
+
     const [createSpeciality] = useCreateSpecialityMutation();
 
     const handleSubmit = async (values: FieldValues) => {
@@ -20,11 +24,11 @@ const CreateSpecialities = ({ open, setOpen }: TOpenState) => {
             async () => await createSpeciality(data),
             "Creating speciality",
             "Speciality created successfully",
-            () => setOpen?.(false)
+            () => dispatch(closeModal())
         );
     };
     return (
-        <N_Modal open={open} setOpen={setOpen} title="Create A New Specialty">
+        <N_Modal  modalId="createSpeciality" title="Create A New Specialty">
             <N_Form onSubmit={handleSubmit}>
                 <Stack direction={"row"} spacing={2}>
                     <N_Input name="title" label="Title" sx={{ width: "55%" }} />

@@ -6,14 +6,10 @@ const schedulesApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         createSchedule: createApiBuilder(build, "/schedule", [tagTypes.schedule]),
 
-        // getSchedules: build.query({
-        //     query: queryApiBuilder("/schedule"),
-        //     providesTags: [tagTypes.schedule],
-        // }),
         getSchedules: queryApiBuilder(build, "/schedule", [tagTypes.schedule]),
 
-       
+        deleteSchedule: deleteApiBuilder(build, "/schedule", [tagTypes.schedule]),
     }),
 });
 
-export const { useCreateScheduleMutation, useGetSchedulesQuery } = schedulesApi;
+export const { useCreateScheduleMutation, useGetSchedulesQuery, useDeleteScheduleMutation } = schedulesApi;

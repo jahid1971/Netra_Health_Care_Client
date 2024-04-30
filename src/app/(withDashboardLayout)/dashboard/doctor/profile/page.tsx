@@ -10,7 +10,7 @@ import AutoFileUploader from "@/components/forms/AutoFileUploader";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { tryCatch } from "@/utils/tryCatch";
 import { useDispatch } from "react-redux";
-import { openModal } from "@/redux/features/modal/modalSlice";
+import { openModal } from "@/redux/slices/modalSlice";
 import ProfileUpdate from "./components/ProfileUpdate";
 
 const ProfilePage = () => {

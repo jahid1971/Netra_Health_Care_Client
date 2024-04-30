@@ -1,4 +1,3 @@
-"use client";
 import { IDoctor } from "@/types/Doctors";
 import {
     Box,
@@ -15,12 +14,11 @@ import { grey } from "@mui/material/colors";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Image from "next/image";
 import assets from "@/assets";
+import Link from "next/link";
 
 const TopRatedDoctors = async () => {
     const res = await fetch("http://localhost:5000/api/v1/doctor?page=1&limit=3");
     const { data: doctors } = await res.json();
-
-    console.log(doctors, "doctors");
 
     return (
         <Box
@@ -83,7 +81,9 @@ const TopRatedDoctors = async () => {
                     ))}
                 </Grid>
                 <Box mt={"30px"} textAlign={"center"}>
-                    <Button variant="outlined">View All Doctors</Button>
+                    <Link href={"doctors"}>
+                        <Button variant="outlined">View All Doctors</Button>
+                    </Link>
                 </Box>
             </Container>
         </Box>

@@ -1,21 +1,17 @@
-import { IResponseRedux } from "@/types/common";
+
+import { RestartAlt } from "@mui/icons-material";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
+import { createApiBuilder } from "@/utils/apiBuilders";
 
 export const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        getSingleUser: build.query({
-            query: () => ({
-                url: "/user/me",
-                method: "GET",
-            }),
-            providesTags: [tagTypes.user],
-            
-            transformResponse: (response: any) => {
-                return  response?.data ;
-            },
-        }),
+        changePassword: createApiBuilder(build, "/auth/change-password", [tagTypes.user]),
+
+        forgotPassword: createApiBuilder(build, "/auth/forgot-password", [tagTypes.user]),
+
+        resetPassword: createApiBuilder(build, "/auth/reset-password", [tagTypes.user]),
     }),
 });
 
-export const { useGetSingleUserQuery } = userApi;
+export const { useChangePasswordMutation, useForgotPasswordMutation,useResetPasswordMutation } = userApi;

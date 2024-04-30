@@ -1,7 +1,7 @@
 import N_Modal from "@/components/modals/N_Modal";
 import DoctorForm from "./DoctorForm";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { closeModal, selectModalData } from "@/redux/features/modal/modalSlice";
+import { closeModal, selectModalData } from "@/redux/slices/modalSlice";
 import { FieldValues } from "react-hook-form";
 import { useEditDoctorMutation } from "@/redux/api/doctorsApi";
 import { tryCatch } from "@/utils/tryCatch";

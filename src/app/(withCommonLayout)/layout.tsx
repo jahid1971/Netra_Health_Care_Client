@@ -1,16 +1,18 @@
-"use client"
-import Footer from "@/components/shared/Footer";
-import Navbar from "@/components/shared/Navbar";
+import Footer from "@/app/(withCommonLayout)/components/shared/Footer";
+import Navbar from "@/app/(withCommonLayout)/components/shared/Navbar";
+import { getUserInfo } from "@/services/actions/auth.services";
+import { Box } from "@mui/material";
 import { ReactNode } from "react";
 
-const CommonLayout = ({children}:{children:ReactNode}) => {
-  return (
-    <div>
-        <Navbar />
-       <div className="min-h-screen"> {children}</div>
-        <Footer />
-    </div>
-  );
+const CommonLayout = ({ children }: { children: ReactNode }) => {
+    const userInfo = getUserInfo();
+    return (
+        <div>
+            <Navbar userInfo={userInfo} />
+            <Box> {children}</Box>
+            <Footer />
+        </div>
+    );
 };
 
 export default CommonLayout;

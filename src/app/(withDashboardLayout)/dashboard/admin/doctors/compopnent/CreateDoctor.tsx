@@ -14,7 +14,7 @@ import { Button, Grid, Stack } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 import DoctorForm from "./DoctorForm";
 import { useAppDispatch } from "@/redux/hooks";
-import { closeModal } from "@/redux/features/modal/modalSlice";
+import { closeModal } from "@/redux/slices/modalSlice";
 
 const CreateDoctor = ({ open, setOpen }: TOpenState) => {
     const [createDoctor] = useCreateDoctorMutation();
