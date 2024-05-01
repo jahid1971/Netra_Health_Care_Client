@@ -7,7 +7,7 @@ import { USER_ROLE } from "./constants/role";
 type Role = keyof typeof roleBasedPrivateRoutes;
 
 const AuthRoutes = ["/login", "/register"];
-const commonPrivateRoutes = ["/dashboard", "/dashboard/change-password", "/doctors"];
+const commonPrivateRoutes = ["/dashboard", "/dashboard/change-password", "/allDoctors"];
 const roleBasedPrivateRoutes = {
     PATIENT: [/^\/dashboard\/patient/],
     DOCTOR: [/^\/dashboard\/doctor/],
@@ -23,7 +23,8 @@ export function middleware(req: NextRequest) {
     if (!accessToken) {
         if (AuthRoutes.includes(pathname)) {
             return NextResponse.next();
-        } else {
+        } 
+        else {
             return NextResponse.redirect(new URL("/login", req.url));
         }
     }

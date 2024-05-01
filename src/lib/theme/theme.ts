@@ -1,6 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import type {} from '@mui/x-data-grid/themeAugmentation';
-
+import type {} from "@mui/x-data-grid/themeAugmentation";
 
 export const theme = createTheme({
     palette: {
@@ -16,12 +15,13 @@ export const theme = createTheme({
         MuiButton: {
             defaultProps: {
                 variant: "contained",
+                // size: "small",
             },
-            styleOverrides: {
-                root: {
-                    padding: "8px 24px",
-                },
-            },
+            // styleOverrides: {
+            //     root: {
+            //         padding: "8px 24px",
+            //     },
+            // },
         },
         MuiTextField: {
             defaultProps: {
@@ -35,14 +35,13 @@ export const theme = createTheme({
                 maxWidth: "lg",
             },
         },
-        MuiDataGrid:{
+        MuiDataGrid: {
             defaultProps: {
-               hideFooter: true,
-               autoHeight: true,
+                hideFooter: true,
+                autoHeight: true,
             },
-        }
+        },
     },
-
 
     typography: {
         body1: {

@@ -6,15 +6,22 @@ type SubmitButtonProps = {
     sx?: any;
     variant?: "contained" | "outlined" | "text";
     isLoading?: boolean;
+    fullWidth?: boolean;
 };
 
-const SubmitButton = ({ label, sx, variant = "contained", isLoading }: SubmitButtonProps) => {
+const SubmitButton = ({
+    label,
+    sx,
+    variant = "contained",
+    isLoading,
+    fullWidth = true,
+}: SubmitButtonProps) => {
     const { toasts } = useSonner();
 
     const loading = toasts.length && toasts[0].type === "loading" ? true : null;
 
     return (
-        <Button type="submit" fullWidth disabled={loading || isLoading} variant={variant} sx={sx}>
+        <Button type="submit" fullWidth={fullWidth} disabled={loading || isLoading} variant={variant} sx={sx}>
             {/* {loading || isLoading ? <CircularProgress size={24} color="secondary" /> : label} */}
             {label}
         </Button>

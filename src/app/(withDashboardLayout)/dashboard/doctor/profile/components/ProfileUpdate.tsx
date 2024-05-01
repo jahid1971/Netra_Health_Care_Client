@@ -34,6 +34,9 @@ const ProfileUpdate = ({ id }: { id: string }) => {
     const handleUpdate = (values: FieldValues) => {
         values.experience = Number(values.experience);
         values.apointmentFee = Number(values.apointmentFee);
+        values.specialties = values?.doctorSpecialties.map((item: any) => {
+            return { specialtiesId: item };
+        });
 
         const updateValues = Object.fromEntries(
             Object.entries(values).filter(([key]) => {
@@ -41,7 +44,7 @@ const ProfileUpdate = ({ id }: { id: string }) => {
             })
         );
         const payload = { id: id as string, data: updateValues };
-        console.log(payload);
+        console.log(payload, "payload");
 
         tryCatch(
             async () => await updateDoctorProfile(payload),

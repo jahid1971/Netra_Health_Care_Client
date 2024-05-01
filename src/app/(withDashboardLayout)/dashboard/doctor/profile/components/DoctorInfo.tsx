@@ -52,7 +52,7 @@ const DoctorInfo: React.FC<DoctorInfoProps> = ({ drProfile }) => {
             </Typography>
             <Grid container spacing={2}>
                 <ProfileField label ="Designation" value={drProfile?.designation} />
-                {/* <ProfileField label ="specialty" value={drProfile?.specialty?.title} /> */}
+                <ProfileField label ="specialty" value={drProfile?.specialty?.title} />
                 <ProfileField label="  Anointment Fee" value={drProfile?.apointmentFee} />
                 <ProfileField label="Qualification" value={drProfile?.qualification} />
                 <ProfileField label="Experience" value={`${drProfile?.experience} years`} />

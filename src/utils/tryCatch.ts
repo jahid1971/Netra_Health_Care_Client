@@ -4,7 +4,7 @@ type tryCatch = (
     action: () => Promise<any>,
     loadingMessage?: string,
     successMessage?: string,
-    successAction?: () => void | Promise<void>
+    successAction?: () => any
 ) => Promise<void>;
 
 export const tryCatch: tryCatch = async (action, loadingMessage, successMessage, successAction) => {

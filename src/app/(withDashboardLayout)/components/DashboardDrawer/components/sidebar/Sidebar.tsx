@@ -8,24 +8,26 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    Skeleton,
     Stack,
     Toolbar,
-    Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Link from "next/link";
 import Image from "next/image";
 import assets from "@/assets";
-import { useEffect, useState } from "react";
+
 import { drawerItems } from "./SidebarMenus";
-import { getUserInfo } from "@/services/actions/auth.services";
-import { TUserRole } from "@/types/common";
+
 import { usePathname } from "next/navigation";
 import { blue } from "@mui/material/colors";
 import { useAppSelector } from "@/redux/hooks";
 import { selectUser } from "@/redux/slices/authSlice";
+// import NetraLogo from "@/components/NetraLogo";
+import { sidebarSkeleton } from "@/components/ui/homepage/skeletons/sidebarSkeleton";
+import dynamic from "next/dynamic";
+
+const NetraLogo = dynamic(() => import("@/components/NetraLogo"),{ ssr: false })
 
 const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
     const pathname = usePathname();
@@ -55,13 +57,8 @@ const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
                     component={Link}
                     href="/">
                     <Image src={assets.svgs.logo} width={20} alt="logo" />
-                    <Typography variant="h6" fontWeight={600} fontSize={17}>
-                        NE
-                        <Box component="span" color="primary.main">
-                            TRA
-                        </Box>
-                        Health Care
-                    </Typography>
+
+                    <NetraLogo fontsize={17} />
                 </Stack>
 
                 <IconButton
@@ -82,30 +79,28 @@ const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
 
             {/* SideBar Items.......................SideBar Items */}
             <List>
-                {
-                    user?.role
-                        ? drawerItems(user?.role).map((item, index) => (
-                              <Link key={index} href={`/dashboard/${item.path}`}>
-                                  <ListItem
-                                      sx={{
-                                          ...(pathname === `/dashboard/${item.path}`
-                                              ? {
-                                                    borderRight: "3px solid #1586FD",
-                                                    "& svg": { color: "#1586FD" },
-                                                    backgroundColor: blue[50],
-                                                }
-                                              : {}),
-                                      }}
-                                      disablePadding>
-                                      <ListItemButton>
-                                          <ListItemIcon>{item?.icon && <item.icon />}</ListItemIcon>
-                                          <ListItemText primary={item?.title} />
-                                      </ListItemButton>
-                                  </ListItem>
-                              </Link>
-                          ))
-                        : sidebarSkeleton // Show skeleton loading when user role is not yet available
-                }
+                {user?.role
+                    ? drawerItems(user?.role).map((item, index) => (
+                          <Link key={index} href={`/dashboard/${item.path}`}>
+                              <ListItem
+                                  sx={{
+                                      ...(pathname === `/dashboard/${item.path}`
+                                          ? {
+                                                borderRight: "3px solid #1586FD",
+                                                "& svg": { color: "#1586FD" },
+                                                backgroundColor: blue[50],
+                                            }
+                                          : {}),
+                                  }}
+                                  disablePadding>
+                                  <ListItemButton>
+                                      <ListItemIcon>{item?.icon && <item.icon />}</ListItemIcon>
+                                      <ListItemText primary={item?.title} />
+                                  </ListItemButton>
+                              </ListItem>
+                          </Link>
+                      ))
+                    : sidebarSkeleton}
             </List>
             <Divider />
         </Box>
@@ -113,14 +108,3 @@ const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
 };
 
 export default Sidebar;
-
-const sidebarSkeleton = [...Array(8)].map((_, index) => (
-    <ListItem key={index} disablePadding>
-        <ListItemButton>
-            <ListItemIcon>
-                <Skeleton variant="rectangular" width={24} height={24} />
-            </ListItemIcon>
-            <ListItemText primary={<Skeleton variant="text" width={100} />} />
-        </ListItemButton>
-    </ListItem>
-));

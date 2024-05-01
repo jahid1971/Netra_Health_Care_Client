@@ -17,18 +17,19 @@ type TMultiselect = {
     disabled?: boolean;
     required?: boolean;
     size?: "small" | "medium";
+    defaultValue?: any[];
 };
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//     PaperProps: {
+//         style: {
+//             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//             width: 250,
+//         },
+//     },
+// };
 
 export default function N_MultiSelect({
     name,
@@ -37,9 +38,9 @@ export default function N_MultiSelect({
     disabled,
     required = true,
     methods,
-    size="small"
+    size = "small",
+    defaultValue = [],
 }: TMultiselect) {
-    
     const {
         control,
         formState: { errors },
@@ -50,15 +51,13 @@ export default function N_MultiSelect({
         return acc;
     }, {});
 
-
-
     return (
-        <FormControl sx={{ width: "100%" }}    size={size}>
+        <FormControl sx={{ width: "100%" }} size={size}>
             <InputLabel id={`${name}-label`}>{label}</InputLabel>
             <Controller
                 control={control}
                 name={name}
-                defaultValue={[]}
+                defaultValue={defaultValue}
                 rules={{ required: required ? `${label} is required` : false }}
                 render={({ field: { onChange, value } }) => (
                     <Select
@@ -71,15 +70,17 @@ export default function N_MultiSelect({
                         }}
                         input={<OutlinedInput id={name} label={label} />}
                         renderValue={(selected) => (
-                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                                {selected.map((value: any) => (
-                                    <Chip key={value} label={valueToLabelMap[value]} />
+                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.7 }}>
+                                {selected?.map((value: any) => (
+                                    
+                                    <Box key={value}> {valueToLabelMap?.[value]},</Box>
                                 ))}
                             </Box>
                         )}
                         disabled={disabled}
-                     
-                        MenuProps={MenuProps}>
+
+                        // MenuProps={MenuProps}
+                    >
                         {items?.map((item) => (
                             <MenuItem key={item.value} value={item.value}>
                                 <Checkbox checked={value.indexOf(item.value) > -1} />
