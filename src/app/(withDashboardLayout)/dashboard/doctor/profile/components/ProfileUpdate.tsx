@@ -34,6 +34,7 @@ const ProfileUpdate = ({ id }: { id: string }) => {
     const handleUpdate = (values: FieldValues) => {
         values.experience = Number(values.experience);
         values.apointmentFee = Number(values.apointmentFee);
+        
         values.specialties = values?.doctorSpecialties.map((item: any) => {
             return { specialtiesId: item };
         });

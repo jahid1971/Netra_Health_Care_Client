@@ -81,7 +81,7 @@ const TopRatedDoctors = async () => {
                     ))}
                 </Grid>
                 <Box mt={"30px"} textAlign={"center"}>
-                    <Link href={"allDoctors"}>
+                    <Link href={"doctors"}>
                         <Button variant="outlined">View All Doctors</Button>
                     </Link>
                 </Box>

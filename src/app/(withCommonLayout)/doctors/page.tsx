@@ -5,8 +5,10 @@ import { Doctor, IDoctor } from "@/types/Doctors";
 import { Box, Container } from "@mui/material";
 import { blue, grey } from "@mui/material/colors";
 
-const doctorPage = async () => {
-    const res = await fetch(`${baseUrl}/doctor`, { cache: "no-store" },);
+const doctorPage = async ({ searchParams }) => {
+    const res = await fetch(`${baseUrl}/doctor?specialties=${searchParams?.specialty}`, {
+        next: { revalidate: 10 },
+    });
     const { data: doctors } = await res.json();
 
     return (
