@@ -4,7 +4,7 @@ import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import Image from "next/image";
 
-const Specialist = async () => {
+const specialties = async () => {
     const res = await fetch("http://localhost:5000/api/v1/specialties", {
         next: { revalidate: 30 },
     });
@@ -57,4 +57,4 @@ const Specialist = async () => {
     );
 };
 
-export default Specialist;
+export default specialties;

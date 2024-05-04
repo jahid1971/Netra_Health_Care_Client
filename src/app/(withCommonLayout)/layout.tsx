@@ -8,7 +8,7 @@ import { ReactNode } from "react";
 const CommonLayout = ({ children }: { children: ReactNode }) => {
     const userInfo = getUserInfo();
     return (
-        <Box bgcolor={grey[100]}>
+        <Box >
             <Navbar userInfo={userInfo} />
             <Box> {children}</Box>
             <Footer />

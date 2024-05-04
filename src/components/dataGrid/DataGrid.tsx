@@ -1,3 +1,4 @@
+"use client";
 import { useDebounced } from "@/redux/hooks";
 import { Box, Stack, styled, Typography } from "@mui/material";
 import { DataGrid, GridSortModel } from "@mui/x-data-grid";
@@ -26,25 +27,39 @@ const N_DataGrid = ({
     searchTerm,
     setQuery,
 }: TDataGridProps) => {
-    const debouncedSearchTerm = useDebounced({ searchQuery: searchTerm, delay: 500 });
+    const debouncedSearchTerm = useDebounced({
+        searchQuery: searchTerm,
+        delay: 500,
+    });
 
     useEffect(() => {
         if (debouncedSearchTerm) {
-            setQuery((prevQuery) => ({ ...prevQuery, searchTerm: debouncedSearchTerm }));
+            setQuery((prevQuery) => ({
+                ...prevQuery,
+                searchTerm: debouncedSearchTerm,
+            }));
         }
     }, [debouncedSearchTerm]);
 
     const CustomNoRowsOverlay = () => {
         return (
-            <Stack height={"100%"} textAlign={"center"} justifyContent={"center"}>
-                <Typography>No {notFoundFor ? notFoundFor : "Data"} Found</Typography>
+            <Stack
+                height={"100%"}
+                textAlign={"center"}
+                justifyContent={"center"}>
+                <Typography>
+                    No {notFoundFor ? notFoundFor : "Data"} Found
+                </Typography>
             </Stack>
         );
     };
 
-
     const handleSortModelChange = useCallback((sortModel: GridSortModel) => {
-        setQuery((prev: any) => ({ ...prev, sortBy: sortModel[0]?.field, sortOrder: sortModel[0]?.sort }));
+        setQuery((prev: any) => ({
+            ...prev,
+            sortBy: sortModel[0]?.field,
+            sortOrder: sortModel[0]?.sort,
+        }));
     }, []);
 
     return (
@@ -68,8 +83,6 @@ const N_DataGrid = ({
                     noRowsOverlay: CustomNoRowsOverlay,
                     ...slots,
                 }}
-
-                
             />
         </Box>
     );

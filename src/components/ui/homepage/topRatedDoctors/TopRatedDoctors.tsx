@@ -18,7 +18,6 @@ import Link from "next/link";
 const TopRatedDoctors = async () => {
     const res = await fetch("http://localhost:5000/api/v1/doctor?page=1&limit=3");
     const { data: doctors } = await res.json();
-    console.log(doctors, "doctors ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
 
     return (
         <Box

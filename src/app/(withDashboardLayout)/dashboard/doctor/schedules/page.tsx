@@ -8,11 +8,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { GridColDef } from "@mui/x-data-grid";
 import N_DataGrid from "@/components/dataGrid/DataGrid";
-import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
+import { useDeleteDoctorScheduleMutation, useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
 import { useGetSchedulesQuery } from "@/redux/api/schedulesApi";
 import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
 import { useMemo, useState } from "react";
 import N_Pagination from "@/components/pagination/Pagination";
+import { tryCatch } from "@/utils/tryCatch";
 
 // import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
 
@@ -22,6 +23,18 @@ const doctorSchedulePage = () => {
     const [query, setQuery] = useState<Record<string, any>>({});
 
     const { data, isFetching } = useGetDoctorSchedulesQuery(query);
+
+    const [deleteDoctorSchedule] = useDeleteDoctorScheduleMutation();
+
+    const handleDelete = (id: string) => {
+        // console.log(id, " schedule iddddddddd");
+        tryCatch(
+            async () => await deleteDoctorSchedule(id),
+            "Deleting doctor Schedule",
+            " Doctor Schedule Deleted Successfully"
+        );
+    };
+
     const meta = data?.meta;
 
     console.log(data, "data");
@@ -29,11 +42,10 @@ const doctorSchedulePage = () => {
 
     const doctorSchedules = useMemo(() => {
         return data?.data?.map((schedule, index) => {
-
-             const serial = (meta?.page - 1) * meta?.limit + index + 1
-             console.log(serial,"sersil")
+            const serial = (meta?.page - 1) * meta?.limit + index + 1;
+            console.log(serial, "sersil");
             return {
-                sl:serial ,
+                sl: serial,
                 id: schedule?.scheduleId,
                 startDate: dateFaormatter(schedule?.startDate),
                 endDate: dateFaormatter(schedule?.endDate),
@@ -56,13 +68,14 @@ const doctorSchedulePage = () => {
             align: "center",
             renderCell: ({ row }) => {
                 return (
-                    <IconButton aria-label="delete">
+                    <IconButton onClick={() => handleDelete(row?.id)} aria-label="delete">
                         <DeleteIcon sx={{ color: "red" }} />
                     </IconButton>
                 );
             },
         },
     ];
+
     return (
         <Box>
             <Button
@@ -76,9 +89,8 @@ const doctorSchedulePage = () => {
                 columns={columns}
                 isLoading={isFetching}
                 notFoundFor="Schedule"
-                
             />
-             <N_Pagination setQuery={setQuery} meta={meta} />
+            <N_Pagination setQuery={setQuery} meta={meta} />
         </Box>
     );
 };

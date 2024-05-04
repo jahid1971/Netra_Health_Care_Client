@@ -4,7 +4,9 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 
-const DoctorCard = ({ doctor }: { doctor: Doctor }) => {
+const DoctorCard = async ({ doctor }: { doctor: Doctor }) => {
+  
+
     return (
         <Stack direction={{ xs: "column", md: "row" }} gap={{ md: 1 }} my={{ xs: 4, md: 0 }}>
             <Stack

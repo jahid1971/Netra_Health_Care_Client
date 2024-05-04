@@ -7,14 +7,19 @@ type tryCatch = (
     successAction?: () => any
 ) => Promise<void>;
 
-export const tryCatch: tryCatch = async (action, loadingMessage, successMessage, successAction) => {
-    const toastId = (loadingMessage ? toast.loading(`${loadingMessage}...`) : undefined) as
-        | string
-        | undefined;
+export const tryCatch: tryCatch = async (
+    action,
+    loadingMessage,
+    successMessage,
+    successAction
+) => {
+    const toastId = (
+        loadingMessage ? toast.loading(`${loadingMessage}...`) : undefined
+    ) as string | undefined;
 
     try {
         const res = await action();
-        
+
         console.log(res, "response in try block");
 
         if (res?.success || res?.data?.success || res?.data?.data?.success) {
@@ -27,14 +32,20 @@ export const tryCatch: tryCatch = async (action, loadingMessage, successMessage,
         ) {
             console.log(res, "error response in else if block of tryCatch");
 
-            toast.error(res?.message ?? res?.error?.data?.errorMessages[0]?.message, { id: toastId });
-        } else if (res?.success === false || res?.error) toast.error("Something went wrong", { id: toastId });
+            toast.error(
+                res?.message ?? res?.error?.data?.errorMessages[0]?.message,
+                { id: toastId }
+            );
+        } else if (res?.success === false || res?.error)
+            toast.error("Something went wrong", { id: toastId });
 
         return res;
     } catch (err: any) {
         console.log(err?.message, "error in catch block");
 
-        toast.error("Something went wrong ", { id: toastId });
+        err.name === "AppError"
+            ? toast.error(err.message, { id: toastId })
+            : toast.error("Something went wrong ", { id: toastId });
     }
 };
 export default tryCatch;
