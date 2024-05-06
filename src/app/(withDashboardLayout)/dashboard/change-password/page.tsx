@@ -40,9 +40,7 @@ const ChangePassword = () => {
             "Changing password",
             "Password changed successfully",
             () => {
-                logOutUser({ toastFalse: true });
-
-                router.refresh();
+                logOutUser(router, { toastFalse: true });
             }
         );
     };
@@ -56,7 +54,12 @@ const ChangePassword = () => {
                 // spacing: 2,
                 mt: 2,
             }}>
-            <Box boxShadow={1} maxWidth={600} width={"100%"} textAlign={"center"} p={{ xs: 2, lg: 5 }}>
+            <Box
+                boxShadow={1}
+                maxWidth={600}
+                width={"100%"}
+                textAlign={"center"}
+                p={{ xs: 2, lg: 5 }}>
                 <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
                     <Box sx={{ "& svg": { width: 100, height: 100 } }}>
                         <KeyIcon sx={{ color: "primary.main" }} />
@@ -67,14 +70,32 @@ const ChangePassword = () => {
                     </Typography>
                 </Stack>
 
-                <N_Form onSubmit={onSubmit} resolver={zodResolver(changePasswordSchema)} error={error}>
-                    <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 2, md: 2 }} mt={2}>
-                        <N_Input name="oldPassword" label="Old Password" type="password" />
-                        <N_Input name="newPassword" label="New Password" type="password" />
+                <N_Form
+                    onSubmit={onSubmit}
+                    resolver={zodResolver(changePasswordSchema)}
+                    error={error}>
+                    <Stack
+                        direction={{ xs: "column", md: "row" }}
+                        spacing={{ xs: 2, md: 2 }}
+                        mt={2}>
+                        <N_Input
+                            name="oldPassword"
+                            label="Old Password"
+                            type="password"
+                        />
+                        <N_Input
+                            name="newPassword"
+                            label="New Password"
+                            type="password"
+                        />
                     </Stack>
 
-                    <Link href={'/forgot-password'}>
-                        <Typography textAlign={"left"} variant="body2" mt={1} color={"primary"}>
+                    <Link href={"/forgot-password"}>
+                        <Typography
+                            textAlign={"left"}
+                            variant="body2"
+                            mt={1}
+                            color={"primary"}>
                             Forgot password?
                         </Typography>
                     </Link>

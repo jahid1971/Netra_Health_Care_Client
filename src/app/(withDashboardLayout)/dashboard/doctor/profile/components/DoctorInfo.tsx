@@ -1,12 +1,14 @@
 import { IDoctor } from "@/types/Doctors";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 
-
 interface DoctorInfoProps {
     drProfile?: IDoctor;
 }
 
-const ProfileField: React.FC<{ label: string; value: string | number | undefined }> = ({ label, value }) => (
+const ProfileField: React.FC<{
+    label: string;
+    value: string | number | undefined;
+}> = ({ label, value }) => (
     <Grid item xs={12} md={6}>
         <Box
             sx={{
@@ -16,7 +18,10 @@ const ProfileField: React.FC<{ label: string; value: string | number | undefined
                 px: 2,
                 borderRadius: 1,
             }}>
-            <Typography color="textSecondary" variant="caption" sx={{ fontWeight: "bold" }}>
+            <Typography
+                color="textSecondary"
+                variant="caption"
+                sx={{ fontWeight: "bold" }}>
                 {label}
             </Typography>
             <Typography variant="body1" sx={{ mt: 0.5 }}>
@@ -44,24 +49,51 @@ const DoctorInfo: React.FC<DoctorInfoProps> = ({ drProfile }) => {
                 <ProfileField label="Role" value={drProfile?.role} />
                 <ProfileField label="Name" value={drProfile?.name} />
                 <ProfileField label="Email" value={drProfile?.email} />
-                <ProfileField label="Contact Number" value={drProfile?.contactNumber} />
+                <ProfileField
+                    label="Contact Number"
+                    value={drProfile?.contactNumber}
+                />
             </Grid>
 
             <Typography variant="h5" color="primary.main" mb={1} mt={2}>
                 Professional Information
             </Typography>
             <Grid container spacing={2}>
-                <ProfileField label ="Designation" value={drProfile?.designation} />
-                <ProfileField label ="specialty" value={drProfile?.specialty?.title} />
-                <ProfileField label="  Anointment Fee" value={drProfile?.apointmentFee} />
-                <ProfileField label="Qualification" value={drProfile?.qualification} />
-                <ProfileField label="Experience" value={`${drProfile?.experience} years`} />
-                <ProfileField label="Current Working Place" value={drProfile?.currentWorkingPlace} />
+                <ProfileField
+                    label="Designation"
+                    value={drProfile?.designation}
+                />
+                <ProfileField
+                    label="specialty"
+                    value={drProfile?.doctorSpecialties?.map(
+                        (specialty) => specialty?.specialties?.title+", "
+                    )}
+                />
+                <ProfileField
+                    label="  Appointment Fee"
+                    value={drProfile?.apointmentFee}
+                />
+                <ProfileField
+                    label="Qualification"
+                    value={drProfile?.qualification}
+                />
+                <ProfileField
+                    label="Experience"
+                    value={`${drProfile?.experience} years`}
+                />
+                <ProfileField
+                    label="Current Working Place"
+                    value={drProfile?.currentWorkingPlace}
+                />
                 <ProfileField label="Joined" value={joinedAt} />
-                <ProfileField label="Current Status" value={drProfile?.status} />
-                <ProfileField label="Average Rating" value={drProfile?.averageRating} />
-
-          
+                <ProfileField
+                    label="Current Status"
+                    value={drProfile?.status}
+                />
+                <ProfileField
+                    label="Average Rating"
+                    value={drProfile?.averageRating}
+                />
             </Grid>
         </>
     );

@@ -14,18 +14,20 @@ const CreateSchedule = () => {
     const dispatch = useAppDispatch();
 
     const [createSchedule] = useCreateScheduleMutation();
-    const handleSubmit = (values:FieldValues) => {
+    const handleSubmit = (values: FieldValues) => {
+        console.log(values, "values");
         tryCatch(
             async () => {
                 const res = await createSchedule(values);
                 if (res?.data?.data?.length < 1) throw new Error("Failed to create schedule");
                 return res;
             },
-            "Create Schedule",
+            "Creating Schedule",
             "Schedule created successfully",
             () => dispatch(closeModal())
         );
-  
+    
+
     };
 
     return (
@@ -36,7 +38,7 @@ const CreateSchedule = () => {
                         <N_DatePicker name="startDate" label="Start Date" />
                     </Grid>
                     <Grid item xs={12}>
-                        <N_DatePicker name="endDate" label="Start Date" />
+                        <N_DatePicker name="endDate" label="End Date" />
                     </Grid>
                     <Grid item xs={6}>
                         <N_TimePicker name="startTime" label="Start Time" />

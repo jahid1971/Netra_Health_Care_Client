@@ -21,6 +21,7 @@ const N_Input = ({
     fullWidth = true,
     sx,
     required,
+    placeholder,
 }: TInputProps) => {
     const { control } = useFormContext();
     return (
@@ -37,7 +38,7 @@ const N_Input = ({
                     variant="outlined"
                     size={size}
                     fullWidth={fullWidth}
-                    placeholder={label}
+                    placeholder={placeholder || label}
                     required={required}
                     error={!!error?.message}
                     helperText={error?.message}

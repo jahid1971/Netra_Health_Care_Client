@@ -90,7 +90,6 @@ import { Button, Grid, Stack } from "@mui/material";
 
 // export default DoctorForm;
 
-
 const DoctorForm = ({
     handleSubmit,
     submitTitle,
@@ -105,10 +104,11 @@ const DoctorForm = ({
         label: item.title,
         value: item.id,
     }));
- 
+
+    console.log(specialitiesData, "specialitiesData");
+
     const defaultValueCopy = { ...defaultValue };
 
- 
     defaultValueCopy.doctorSpecialties = defaultValue?.doctorSpecialties?.map(
         (item: any) => item.specialtiesId
     );
@@ -126,7 +126,11 @@ const DoctorForm = ({
                 </Grid>
                 {passwordField && (
                     <Grid item xs={12} md={4}>
-                        <N_Input name="password" type="password" label="Password" />
+                        <N_Input
+                            name="password"
+                            type="password"
+                            label="Password"
+                        />
                     </Grid>
                 )}
                 <Grid item xs={12} md={4}>
@@ -136,22 +140,37 @@ const DoctorForm = ({
                     <N_Input name="address" label="Address" />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <N_Input name="registrationNumber" label="Registration Number" />
+                    <N_Input
+                        name="registrationNumber"
+                        label="Registration Number"
+                    />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <N_Input name="experience" type="number" label="Experience" />
+                    <N_Input
+                        name="experience"
+                        type="number"
+                        label="Experience"
+                        placeholder="experience in year  Ex: 5"
+                    />
                 </Grid>
                 <Grid item xs={12} md={4}>
                     <N_Select items={Gender} name="gender" label="Gender" />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <N_Input name="apointmentFee" type="number" label="ApointmentFee" />
+                    <N_Input
+                        name="apointmentFee"
+                        type="number"
+                        label="ApointmentFee"
+                    />
                 </Grid>
                 <Grid item xs={12} md={4}>
                     <N_Input name="qualification" label="Qualification" />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <N_Input name="currentWorkingPlace" label="Current Working Place" />
+                    <N_Input
+                        name="currentWorkingPlace"
+                        label="Current Working Place"
+                    />
                 </Grid>
                 <Grid item xs={12} md={4}>
                     <N_Input name="designation" label="Designation" />
@@ -162,7 +181,9 @@ const DoctorForm = ({
                         items={specialitiesData}
                         name="doctorSpecialties"
                         label="Specialities"
-                        disabled={!allSpecialities || allSpecialities?.length === 0}
+                        disabled={
+                            !allSpecialities || allSpecialities?.length === 0
+                        }
                     />
                 </Grid>
             </Grid>

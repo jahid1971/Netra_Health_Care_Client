@@ -7,7 +7,10 @@ import CreateSchedule from "./component/CreateSchedule";
 import { GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import N_DataGrid from "@/components/dataGrid/DataGrid";
-import { useDeleteScheduleMutation, useGetSchedulesQuery } from "@/redux/api/schedulesApi";
+import {
+    useDeleteScheduleMutation,
+    useGetSchedulesQuery,
+} from "@/redux/api/schedulesApi";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { ISchedule } from "@/types/schedules";
@@ -18,7 +21,10 @@ const SchedulePage = () => {
     const [allSchedules, setAllSchedule] = useState<any>([]);
     const dispatch = useAppDispatch();
 
-    const [query, setQuery] = useState<Record<string, any>>({ sortBy: "startDate", sortOrder: "asc" });
+    const [query, setQuery] = useState<Record<string, any>>({
+        sortBy: "startDate",
+        sortOrder: "asc",
+    });
 
     const { data: schedules, isFetching } = useGetSchedulesQuery(query);
 
@@ -29,21 +35,29 @@ const SchedulePage = () => {
     // console.log(meta,)
 
     const handleDelete = (id: string) => {
-        tryCatch(async () => await deleteSchedule(id), "Deleting Schedule", "Schedule Deleted Successfully");
+        tryCatch(
+            async () => await deleteSchedule(id),
+            "Deleting Schedule",
+            "Schedule Deleted Successfully"
+        );
     };
+    console.log(schedules?.data, "schedules");
 
     useEffect(() => {
-        const schedulesData = schedules?.data?.map((schedule: ISchedule, index: number) => ({
-            // sl: index + 1,
-            sl: (query.page - 1) * query.limit + index + 1 + ".",
-            id: schedule?.id,
-            startDate: schedule?.startDate,
-            endDate: schedule?.endDate,
-            startTime: schedule?.startDate,
-            endTime: schedule?.endDate,
-        }));
+        const schedulesData = schedules?.data?.map(
+            (schedule: ISchedule, index: number) => ({
+                // sl: index + 1,
+                sl: (query.page - 1) * query.limit + index + 1 + ".",
+                id: schedule?.id,
+                scheduleDate: schedule?.startDateTime,
+                startTime: schedule?.startDateTime,
+                endTime: schedule?.endDateTime,
+            })
+        );
         setAllSchedule(schedulesData);
     }, [schedules]);
+
+    console.log(allSchedules, "allSchedules");
 
     const columns: GridColDef[] = [
         {
@@ -54,7 +68,7 @@ const SchedulePage = () => {
             align: "center",
         },
         {
-            field: "startDate",
+            field: "scheduleDate",
             headerName: "Date",
             flex: 1,
             type: "date",
@@ -82,7 +96,9 @@ const SchedulePage = () => {
             align: "center",
             renderCell: ({ row }) => {
                 return (
-                    <IconButton onClick={() => handleDelete(row.id)} aria-label="delete">
+                    <IconButton
+                        onClick={() => handleDelete(row.id)}
+                        aria-label="delete">
                         <DeleteIcon sx={{ color: "red" }} />
                     </IconButton>
                 );
@@ -92,7 +108,11 @@ const SchedulePage = () => {
 
     return (
         <Box>
-            <Button size="small" onClick={() => dispatch(openModal({ modalId: "createSchedule" }))}>
+            <Button
+                size="small"
+                onClick={() =>
+                    dispatch(openModal({ modalId: "createSchedule" }))
+                }>
                 Create Schedule
             </Button>
             <CreateSchedule />

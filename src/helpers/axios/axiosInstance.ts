@@ -2,8 +2,6 @@ import { authKey, refreshKey } from "@/constants/authKey";
 import { baseUrl } from "@/constants/commmon";
 import { deleteCookies, setTokenToCookies } from "@/services/actions/cookies";
 
-
-
 import axios, { AxiosResponse } from "axios";
 
 const instance = axios.create();
@@ -36,12 +34,13 @@ instance.interceptors.response.use(
         };
         return responseObject;
     },
-    async function (error) {
 
+    async function (error) {
+        console.log(error, "error in axios instance response");
         const originalRequest = error.config;
         //  ._retry is to prevent infinite loop
-        if (error?.response?.status === 500 && !originalRequest._retry) {
-            console.log("refresh req sent");
+        if (error?.response?.status === 401 && !originalRequest._retry) {
+            console.log("refresh req sentttttttttttttttttttttttttttt");
             originalRequest._retry = true;
             try {
                 const response = await getNewAccessToken();
@@ -49,9 +48,22 @@ instance.interceptors.response.use(
                 if (accessToken) {
                     originalRequest.headers["Authorization"] = accessToken;
 
-                    setTokenToCookies(authKey, accessToken);
-                    
-                    return instance(originalRequest);
+                    await setTokenToCookies(authKey, accessToken);
+
+                    console.log("original request reSent in axios instance");
+
+                    const res = await instance(originalRequest);
+
+                    const resObject: any = {
+                        data: res?.data,
+                        meta: res?.data?.meta,
+                    };
+
+                    console.log(
+                        resObject,
+                        "resobject after original request reSent in axios instance"
+                    );
+                    return resObject;
                 } else {
                     deleteCookies([authKey, refreshKey]);
                 }
@@ -63,6 +75,12 @@ instance.interceptors.response.use(
                 return Promise.reject(refreshError);
             }
         }
+
+        console.log(
+            error,
+            "Warning: outside 401 handling, returning original error."
+        );
+
         return Promise.reject(error);
     }
 );

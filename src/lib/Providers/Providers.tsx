@@ -9,11 +9,11 @@ import { usePathname } from "next/navigation";
 import { refreshTokenGen } from "@/services/actions/cookies";
 
 const Providers = ({ children }: { children: ReactNode }) => {
-    const location = usePathname();
+    // const location = usePathname();
 
-    useEffect(() => {
-        refreshTokenGen();
-    }, [location]);
+    // useEffect(() => {
+    //     refreshTokenGen();
+    // }, [location]);
 
     return (
         <Provider store={store}>

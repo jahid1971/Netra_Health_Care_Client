@@ -16,7 +16,7 @@ export const Navbar = ({ userInfo }) => {
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
 
-    const handleLogOut = () => logOutUser();
+    const handleLogOut = () => logOutUser(router);
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);

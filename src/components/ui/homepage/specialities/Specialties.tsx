@@ -49,7 +49,7 @@ const specialties = async () => {
                     ))}
                 </Stack>
 
-                <Button variant="outlined" sx={{ my: 4 }}>
+                <Button variant="outlined" sx={{ mt: 4 }}>
                     View all
                 </Button>
             </Box>

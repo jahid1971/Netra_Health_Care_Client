@@ -17,20 +17,43 @@ const DoctorScheduleSlots = ({ doctorId }) => {
     const [scheduleId, setScheduleID] = useState("");
     const router = useRouter();
 
-    const { data } = useGetDoctorSchedulesQuery({ doctorId: doctorId });
+    const testDay = dayjs().toISOString();
+console.log(testDay, "testDay");
 
-    const doctorSchedules: ISchedule[] = (data as any)?.data;
+    const startOfToday = dayjs().startOf("day").toISOString();
 
-    const todaySlots = doctorSchedules?.filter((slot) => {
-        return dayjs(slot?.schedule?.startDate).isSame(dayjs(), "day");
-    });
+    const endOfToday = dayjs().endOf("day").toISOString();
+    const todayQuery = {
+        doctorId,
+        startDate:dayjs().toISOString() ,
+        
+    };
 
-    const tomorrowSlots = doctorSchedules?.filter((slot) => {
-        return dayjs(slot?.schedule?.startDate).isSame(
-            dayjs().add(1, "day"),
-            "day"
-        );
-    });
+    console.log(todayQuery, "todayQueryyyyyyyy");
+
+    // Fetch today slots
+    const { data: todaySlots } = useGetDoctorSchedulesQuery(todayQuery);
+
+    // Get tomorrow's date
+    const tomorrow = dayjs().add(1, "day").toISOString();
+    const tomorrowQuery = { doctorId, startDate: tomorrow, endDate: tomorrow };
+
+    // const { data: tomorrowSlots } = useGetDoctorSchedulesQuery(tomorrowQuery);
+
+    // const doctorSchedules: ISchedule[] = (data as any)?.data;
+
+    // const todaySlots = doctorSchedules?.filter((slot) => {
+    //     return dayjs(slot?.schedule?.startDate).isSame(dayjs(), "day");
+    // });
+
+    console.log(todaySlots, "todaySlots");
+
+    // const tomorrowSlots = doctorSchedules?.filter((slot) => {
+    //     return dayjs(slot?.schedule?.startDate).isSame(
+    //         dayjs().add(1, "day"),
+    //         "day"
+    //     );
+    // });
 
     const handleBookAppointment = async () => {
         tryCatch(async () => {
@@ -75,11 +98,11 @@ const DoctorScheduleSlots = ({ doctorId }) => {
                 Tomrrow: {dayjs().add(1, "day").format("MMMM D, YYYY, dddd")}
             </Typography>
 
-            <ScheduleButtons
+            {/* <ScheduleButtons
                 setScheduleID={setScheduleID}
                 scheduleId={scheduleId}
                 doctorSchedules={tomorrowSlots}
-            />
+            /> */}
 
             <SubmitButton
                 onClick={handleBookAppointment}

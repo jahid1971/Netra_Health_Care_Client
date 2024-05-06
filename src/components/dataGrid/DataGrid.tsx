@@ -13,7 +13,7 @@ type TDataGridProps = {
     notFoundFor?: string;
     slots?: any;
     searchTerm?: any;
-    setQuery: (queryUpdater: (prevQuery: any) => any) => void;
+    setQuery?: (queryUpdater: (prevQuery: any) => any) => void;
 };
 
 const N_DataGrid = ({

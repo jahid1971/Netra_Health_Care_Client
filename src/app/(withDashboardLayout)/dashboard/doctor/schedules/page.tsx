@@ -8,7 +8,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { GridColDef } from "@mui/x-data-grid";
 import N_DataGrid from "@/components/dataGrid/DataGrid";
-import { useDeleteDoctorScheduleMutation, useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
+import {
+    useDeleteDoctorScheduleMutation,
+    useGetDoctorSchedulesQuery,
+} from "@/redux/api/doctorScheduleApi";
 import { useGetSchedulesQuery } from "@/redux/api/schedulesApi";
 import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
 import { useMemo, useState } from "react";
@@ -41,16 +44,15 @@ const doctorSchedulePage = () => {
     console.log(meta, "meta");
 
     const doctorSchedules = useMemo(() => {
-        return data?.data?.map((schedule, index) => {
+        return data?.data?.map((item, index) => {
             const serial = (meta?.page - 1) * meta?.limit + index + 1;
-            console.log(serial, "sersil");
             return {
                 sl: serial,
-                id: schedule?.scheduleId,
-                startDate: dateFaormatter(schedule?.startDate),
-                endDate: dateFaormatter(schedule?.endDate),
-                startTime: timeFormatter(schedule?.startDate),
-                endTime: timeFormatter(schedule?.endDate),
+                id: index,
+                startDate: dateFaormatter(item?.schedule?.startDate),
+                endDate: dateFaormatter(item?.schedule?.endDate),
+                startTime: timeFormatter(item?.schedule?.startDate),
+                endTime: timeFormatter(item?.schedule?.endDate),
             };
         });
     }, [data]);
@@ -68,7 +70,9 @@ const doctorSchedulePage = () => {
             align: "center",
             renderCell: ({ row }) => {
                 return (
-                    <IconButton onClick={() => handleDelete(row?.id)} aria-label="delete">
+                    <IconButton
+                        onClick={() => handleDelete(row?.id)}
+                        aria-label="delete">
                         <DeleteIcon sx={{ color: "red" }} />
                     </IconButton>
                 );
@@ -79,12 +83,15 @@ const doctorSchedulePage = () => {
     return (
         <Box>
             <Button
-                onClick={() => dispatch(openModal({ modalId: "createDrSchedule" }))}
+                onClick={() =>
+                    dispatch(openModal({ modalId: "createDrSchedule" }))
+                }
                 endIcon={<AddIcon />}>
                 Create Doctor Schedule
             </Button>
             <CreateDrSchedule />
             <N_DataGrid
+                setQuery={setQuery}
                 rows={doctorSchedules}
                 columns={columns}
                 isLoading={isFetching}
