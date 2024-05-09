@@ -13,7 +13,7 @@ import {
 } from "@/redux/api/schedulesApi";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { ISchedule } from "@/types/schedules";
+import { ISchedule, TSchedule } from "@/types/schedules";
 import N_Pagination from "@/components/pagination/Pagination";
 import { tryCatch } from "@/utils/tryCatch";
 
@@ -22,17 +22,19 @@ const SchedulePage = () => {
     const dispatch = useAppDispatch();
 
     const [query, setQuery] = useState<Record<string, any>>({
-        sortBy: "startDate",
+        sortBy: "startDateTime",
         sortOrder: "asc",
     });
 
-    const { data: schedules, isFetching } = useGetSchedulesQuery(query);
+    const { data, isFetching } = useGetSchedulesQuery(query);
 
     const [deleteSchedule] = useDeleteScheduleMutation();
 
-    const meta = schedules?.meta;
+    const schedules = data?.data
 
-    // console.log(meta,)
+    const meta = data?.meta;
+
+ 
 
     const handleDelete = (id: string) => {
         tryCatch(
@@ -41,12 +43,11 @@ const SchedulePage = () => {
             "Schedule Deleted Successfully"
         );
     };
-    console.log(schedules?.data, "schedules");
+
 
     useEffect(() => {
-        const schedulesData = schedules?.data?.map(
-            (schedule: ISchedule, index: number) => ({
-                // sl: index + 1,
+        const schedulesData = schedules?.map(
+            (schedule: TSchedule, index: number) => ({
                 sl: (query.page - 1) * query.limit + index + 1 + ".",
                 id: schedule?.id,
                 scheduleDate: schedule?.startDateTime,

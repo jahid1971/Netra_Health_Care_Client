@@ -1,4 +1,4 @@
-import { IResponseRedux } from "@/types/common";
+
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 import { updateApiBuilder } from "@/utils/apiBuilders";

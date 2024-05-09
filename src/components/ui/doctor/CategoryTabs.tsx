@@ -13,10 +13,11 @@ export default function CategoryTabs({specialty}: {specialty: string}) {
 
     const router = useRouter();
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
         router.push(`/doctors?specialty=${newValue}`);
     };
+    console.log(specialties?.data, "specialties");
     
     
     return (

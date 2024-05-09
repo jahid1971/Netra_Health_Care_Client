@@ -17,11 +17,11 @@ const ScheduleButtons = ({
     return doctorSchedules?.length > 0 ? (
         <Stack direction={"row"} gap={2} flexWrap="wrap">
             {doctorSchedules?.map((slot: ISchedule) => {
-                const startTime = dayjs(slot?.schedule?.startDate).format(
+                const startDateTime = dayjs(slot?.schedule?.startDateTime).format(
                     "hh:mm A"
                 );
 
-                const endTime = dayjs(slot?.schedule?.endDate).format(
+                const endDateTime = dayjs(slot?.schedule?.endDateTime).format(
                     "hh:mm A"
                 );
 
@@ -34,7 +34,7 @@ const ScheduleButtons = ({
                         variant={
                             scheduleId === slotId ? "contained" : "outlined"
                         }>
-                        {`${startTime} - ${endTime}`}
+                        {`${startDateTime} - ${endDateTime}`}
                     </Button>
                 );
             })}

@@ -30,10 +30,15 @@ const EditDoctor = () => {
         data.experience = Number(data.experience);
         data.apointmentFee = Number(data.apointmentFee);
 
-        const payload = { id: doctorInfo?.id as string, data: data };
+        let { doctorSpecialties, ...updateData } = data;
+        console.log(doctorSpecialties, "doctorSpecialties");
+        updateData.specialties = doctorSpecialties?.map((item: any) => item);
+
+        updateData = { id: doctorInfo?.id as string, data: updateData };
+
 
         tryCatch(
-            async () => await editDoctor(payload),
+            async () => await editDoctor(updateData),
             "Updating Doctor",
             "Doctor Updated Successfully",
             () => dispatch(closeModal())

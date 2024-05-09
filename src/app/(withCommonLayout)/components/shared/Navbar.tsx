@@ -45,7 +45,7 @@ export const Navbar = ({ userInfo }) => {
         <NavLink href="/medicine">Medicine</NavLink>,
         <NavLink href="/diagnostics">Diagnostics</NavLink>,
         <NavLink href="/ngos">NGOs</NavLink>,
-        userInfo?.userId && <NavLink href="/doctors">Doctors</NavLink>,
+        <NavLink href="/doctors">Doctors</NavLink>,
         userInfo?.userId && <NavLink href="/dashboard">Dashboard</NavLink>,
     ];
 

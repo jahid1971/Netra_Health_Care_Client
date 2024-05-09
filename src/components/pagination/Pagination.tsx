@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 
 interface PaginationProps {
     setQuery: (queryUpdater: (prevQuery: any) => any) => void;
-    meta: IMeta;
+    meta: IMeta | undefined;
 }
 
 const N_Pagination = ({ setQuery, meta }: PaginationProps) => {

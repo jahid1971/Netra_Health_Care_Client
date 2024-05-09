@@ -1,16 +1,14 @@
 "use server";
 
 import { baseUrl } from "@/constants/commmon";
+import { TAppointment } from "@/types/Appointment";
 import { fetchWithAuth } from "@/utils/fetchWithAuth";
-// import { fetchWithAuth } from "./cookies";
 
-export const createAppointment = async (data) => {
+export const createAppointment = async (data: Partial<TAppointment>) => {
     const res = await fetchWithAuth(`${baseUrl}/appointment`, {
         method: "POST",
         data: data,
     });
-
-
 
     return res;
 };

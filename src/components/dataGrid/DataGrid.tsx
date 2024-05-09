@@ -13,6 +13,7 @@ type TDataGridProps = {
     notFoundFor?: string;
     slots?: any;
     searchTerm?: any;
+    sorting?: boolean;
     setQuery?: (queryUpdater: (prevQuery: any) => any) => void;
 };
 
@@ -25,6 +26,7 @@ const N_DataGrid = ({
     notFoundFor,
     slots,
     searchTerm,
+    sorting = true,
     setQuery,
 }: TDataGridProps) => {
     const debouncedSearchTerm = useDebounced({
@@ -46,7 +48,8 @@ const N_DataGrid = ({
             <Stack
                 height={"100%"}
                 textAlign={"center"}
-                justifyContent={"center"}>
+                justifyContent={"center"}
+            >
                 <Typography>
                     No {notFoundFor ? notFoundFor : "Data"} Found
                 </Typography>
@@ -57,6 +60,7 @@ const N_DataGrid = ({
     const handleSortModelChange = useCallback((sortModel: GridSortModel) => {
         setQuery((prev: any) => ({
             ...prev,
+            page: 0,
             sortBy: sortModel[0]?.field,
             sortOrder: sortModel[0]?.sort,
         }));
@@ -66,6 +70,7 @@ const N_DataGrid = ({
         <Box my={2}>
             <DataGrid
                 rows={rows}
+                disableColumnSorting={ sorting ? false : true }
                 sortingMode="server"
                 onSortModelChange={handleSortModelChange}
                 disableColumnFilter

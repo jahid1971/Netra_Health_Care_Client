@@ -17,6 +17,7 @@ import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
 import { useMemo, useState } from "react";
 import N_Pagination from "@/components/pagination/Pagination";
 import { tryCatch } from "@/utils/tryCatch";
+import { ISchedule } from "@/types/schedules";
 
 // import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
 
@@ -40,22 +41,19 @@ const doctorSchedulePage = () => {
 
     const meta = data?.meta;
 
-    console.log(data, "data");
-    console.log(meta, "meta");
-
-    const doctorSchedules = useMemo(() => {
-        return data?.data?.map((item, index) => {
-            const serial = (meta?.page - 1) * meta?.limit + index + 1;
-            return {
-                sl: serial,
-                id: index,
-                startDate: dateFaormatter(item?.schedule?.startDate),
-                endDate: dateFaormatter(item?.schedule?.endDate),
-                startTime: timeFormatter(item?.schedule?.startDate),
-                endTime: timeFormatter(item?.schedule?.endDate),
-            };
-        });
-    }, [data]);
+    const doctorSchedules =
+        useMemo(() => {
+            return data?.data?.map((item: ISchedule, index) => {
+                return {
+                    sl: (query.page - 1) * query.limit + index + 1 + ".",
+                    id: index,
+                    startDate: dateFaormatter(item?.schedule?.startDateTime),
+                    endDate: dateFaormatter(item?.schedule?.endDateTime),
+                    startTime: timeFormatter(item?.schedule?.startDateTime),
+                    endTime: timeFormatter(item?.schedule?.endDateTime),
+                };
+            });
+        }, [data]) || [];
 
     const columns: GridColDef[] = [
         { field: "sl", headerName: "SL", flex: 1 },

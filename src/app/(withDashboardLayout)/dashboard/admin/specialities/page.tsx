@@ -68,7 +68,7 @@ const SpecialitiesPage = () => {
             </Stack>
             {!isLoading ? (
                 <Box my={2}>
-                    <DataGrid rows={allSpecailities?.data} columns={columnDef} hideFooter={true} />
+                    <DataGrid rows={allSpecailities} columns={columnDef} hideFooter={true} />
                 </Box>
             ) : (
                 <h1>Loading.....</h1>

@@ -6,8 +6,13 @@ import { USER_ROLE } from "./constants/role";
 
 type Role = keyof typeof roleBasedPrivateRoutes;
 
-const AuthRoutes = ["/login", "/register"];
-const commonPrivateRoutes = ["/dashboard", "/dashboard/change-password", "/doctors"];
+const withoutTokenRoutes = ["/login", "/register", "/doctors"];
+
+const commonPrivateRoutes = [
+    "/dashboard",
+    "/dashboard/change-password",
+    "/doctors",
+];
 const roleBasedPrivateRoutes = {
     PATIENT: [/^\/dashboard\/patient/],
     DOCTOR: [/^\/dashboard\/doctor/],
@@ -21,11 +26,15 @@ export function middleware(req: NextRequest) {
     const accessToken = cookies().get("accessToken")?.value;
 
     if (!accessToken) {
-        if (AuthRoutes.includes(pathname)) {
+        if (withoutTokenRoutes.includes(pathname)) {
             return NextResponse.next();
-        } 
-        else {
-            return NextResponse.redirect(new URL("/login", req.url));
+        } else {
+            const loginUrl = new URL("/login", req.url);
+            
+            loginUrl.searchParams.set("redirect", pathname); // Capture intended route
+
+            return NextResponse.redirect(loginUrl);
+            // return NextResponse.redirect(new URL("/login", req.url));
         }
     }
 
@@ -50,5 +59,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/login", "/register", "/dashboard/:page*", "/doctors/:page*"],
+    matcher: ["/login", "/register", "/dashboard/:page*", "/doctors/:path*"],
 };

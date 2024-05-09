@@ -4,7 +4,7 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { tryCatch } from "@/utils/tryCatch";
 import ScheduleButtons from "./ScheduleButtons";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
 import { createAppointment } from "@/services/actions/appointment";
 import { ISchedule } from "@/types/schedules";
@@ -13,47 +13,37 @@ import { useRouter } from "next/navigation";
 import SubmitButton from "@/components/ui/SubmitButton";
 import AppError from "@/utils/AppError";
 
-const DoctorScheduleSlots = ({ doctorId }) => {
+import ScheduleButtonsSkeleton from "./ScheduleButtonsSkeleton";
+
+const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
     const [scheduleId, setScheduleID] = useState("");
     const router = useRouter();
 
-    const testDay = dayjs().toISOString();
-console.log(testDay, "testDay");
+    const todayQuery = useMemo(
+        () => ({
+            doctorId,
+            startDate: dayjs().startOf("day").toISOString(), // Current date
+            endDate: dayjs().endOf("day").toISOString(),
+        }),
+        [doctorId]
+    );
 
-    const startOfToday = dayjs().startOf("day").toISOString();
+    const { data: todaySlots, isLoading: isTodayLoading } =
+        useGetDoctorSchedulesQuery(todayQuery);
 
-    const endOfToday = dayjs().endOf("day").toISOString();
-    const todayQuery = {
-        doctorId,
-        startDate:dayjs().toISOString() ,
-        
-    };
+    const tomorrowQuery = useMemo(
+        () => ({
+            doctorId,
+            startDate: dayjs().add(1, "day").startOf("day").toISOString(), // Tomorrow's date
+            endDate: dayjs().add(1, "day").endOf("day").toISOString(),
+        }),
+        [doctorId]
+    );
 
-    console.log(todayQuery, "todayQueryyyyyyyy");
+    const { data: tomorrowSlots, isLoading: isTomorrowLoading } =
+        useGetDoctorSchedulesQuery(tomorrowQuery);
 
-    // Fetch today slots
-    const { data: todaySlots } = useGetDoctorSchedulesQuery(todayQuery);
-
-    // Get tomorrow's date
-    const tomorrow = dayjs().add(1, "day").toISOString();
-    const tomorrowQuery = { doctorId, startDate: tomorrow, endDate: tomorrow };
-
-    // const { data: tomorrowSlots } = useGetDoctorSchedulesQuery(tomorrowQuery);
-
-    // const doctorSchedules: ISchedule[] = (data as any)?.data;
-
-    // const todaySlots = doctorSchedules?.filter((slot) => {
-    //     return dayjs(slot?.schedule?.startDate).isSame(dayjs(), "day");
-    // });
-
-    console.log(todaySlots, "todaySlots");
-
-    // const tomorrowSlots = doctorSchedules?.filter((slot) => {
-    //     return dayjs(slot?.schedule?.startDate).isSame(
-    //         dayjs().add(1, "day"),
-    //         "day"
-    //     );
-    // });
+    console.log(todaySlots, "todaySlots", tomorrowSlots, "tomorrowSlots");
 
     const handleBookAppointment = async () => {
         tryCatch(async () => {
@@ -65,12 +55,12 @@ console.log(testDay, "testDay");
 
                 if (id) {
                     const response = await initialPayment(id);
-                    console.log(response, "response");
+                    console.log(response, "response of paymanet url");
 
                     if (response?.data?.paymentUrl) {
                         router.push(response?.data?.paymentUrl);
-                    }
-                }
+                    } else response;
+                } else return res;
             } else
                 throw new AppError("Select a schedule to book an appointment");
         }, "Processing your appointment");
@@ -86,11 +76,15 @@ console.log(testDay, "testDay");
                 Today: {dayjs().format("MMMM D, YYYY, dddd")}
             </Typography>
 
-            <ScheduleButtons
-                setScheduleID={setScheduleID}
-                scheduleId={scheduleId}
-                doctorSchedules={todaySlots}
-            />
+            {isTodayLoading ? (
+                <ScheduleButtonsSkeleton />
+            ) : (
+                <ScheduleButtons
+                    setScheduleID={setScheduleID}
+                    scheduleId={scheduleId}
+                    doctorSchedules={todaySlots?.data ?? []}
+                />
+            )}
 
             <DashedLine />
 
@@ -98,11 +92,15 @@ console.log(testDay, "testDay");
                 Tomrrow: {dayjs().add(1, "day").format("MMMM D, YYYY, dddd")}
             </Typography>
 
-            {/* <ScheduleButtons
-                setScheduleID={setScheduleID}
-                scheduleId={scheduleId}
-                doctorSchedules={tomorrowSlots}
-            /> */}
+            {isTomorrowLoading ? (
+                <ScheduleButtonsSkeleton />
+            ) : (
+                <ScheduleButtons
+                    setScheduleID={setScheduleID}
+                    scheduleId={scheduleId}
+                    doctorSchedules={tomorrowSlots?.data ?? []}
+                />
+            )}
 
             <SubmitButton
                 onClick={handleBookAppointment}

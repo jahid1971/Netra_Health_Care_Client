@@ -12,7 +12,7 @@ import { tryCatch } from "@/utils/tryCatch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack, Typography } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
@@ -26,6 +26,8 @@ export const logInvalidationSchema = z.object({
 const LogInForm = () => {
     const [error, setError] = useState("");
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirectPath = searchParams.get("redirect");
 
     const onSubmit = async (data: FieldValues) => {
         tryCatch(
@@ -34,7 +36,10 @@ const LogInForm = () => {
 
                 if (res?.data?.accessToken) {
                     console.log(res?.data?.accessToken, "res in log in");
-                    router.push("/dashboard");
+
+                    redirectPath
+                        ? router.push(redirectPath)
+                        : router.push("/dashboard");
                 } else {
                     setError(res?.message);
                     deleteCookies([authKey, refreshKey]);
@@ -46,14 +51,24 @@ const LogInForm = () => {
         );
     };
     return (
-        <N_Form onSubmit={onSubmit} resolver={zodResolver(logInvalidationSchema)} error={error}>
-            <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 2, md: 2 }} mt={2}>
+        <N_Form
+            onSubmit={onSubmit}
+            resolver={zodResolver(logInvalidationSchema)}
+            error={error}>
+            <Stack
+                direction={{ xs: "column", md: "row" }}
+                spacing={{ xs: 2, md: 2 }}
+                mt={2}>
                 <N_Input name="email" label="Email" type="email" />
                 <N_Input name="password" label="Password" type="password" />
             </Stack>
 
             <Link href="/forgot-password">
-                <Typography textAlign={"right"} variant="body2" mt={1} color="primary">
+                <Typography
+                    textAlign={"right"}
+                    variant="body2"
+                    mt={1}
+                    color="primary">
                     Forgot password?
                 </Typography>
             </Link>

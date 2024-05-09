@@ -7,7 +7,7 @@ import { grey } from "@mui/material/colors";
 import Image from "next/image";
 import DoctorScheduleSlots from "../components/DoctorScheduleSlots";
 
-const DocotorProfilePage = async ({ params }) => {
+const DocotorProfilePage = async ({ params }:any) => {
     const res = await fetch(`${baseUrl}/doctor/${params.id}`).then((res) => res.json());
     const doctor: Doctor = res.data;
 
@@ -19,7 +19,7 @@ const DocotorProfilePage = async ({ params }) => {
                         <Typography variant="h4" fontWeight={700} textAlign="center">
                             Doctor&apos;s Profile Details
                         </Typography>
-                        <Typography
+                        {/* <Typography
                             textAlign="center"
                             mt={2}
                             sx={{
@@ -32,7 +32,7 @@ const DocotorProfilePage = async ({ params }) => {
                             high-quality care. Proficient in diagnosis, treatment, and
                             advocating for comprehensive well-being. Prioritizing
                             patient-centered approaches for optimal health outcomes.
-                        </Typography>
+                        </Typography> */}
                     </Box>
 
                     <DashedLine />

@@ -98,7 +98,7 @@ const DoctorForm = ({
     isLoading,
 }: any) => {
     const { data } = useGetAllSpecialitiesQuery(undefined);
-    const allSpecialities = (data as any)?.data;
+    const allSpecialities = data as any
 
     const specialitiesData = allSpecialities?.map((item: any) => ({
         label: item.title,
@@ -113,7 +113,7 @@ const DoctorForm = ({
         (item: any) => item.specialtiesId
     );
 
-    console.log(defaultValueCopy, "defaultValueeeeeeeeeeeeeeeeeeeeeeeeee");
+    
 
     return (
         <N_Form onSubmit={handleSubmit} defaultValues={defaultValueCopy}>

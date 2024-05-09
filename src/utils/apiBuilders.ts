@@ -1,12 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { TResponse } from "@/types/common";
+import { EndpointBuilder } from "@reduxjs/toolkit/query";
+
+type IBuildApi = EndpointBuilder<any, any, any>;
+
 export type TUpdateArgs = {
     id: string;
     data: any;
 };
 
 // api builder for create,
-export const createApiBuilder = (build: any, url: string, tagTypes: string[]) => {
+export const createApiBuilder = (
+    build: any,
+    url: string,
+    tagTypes: string[]
+) => {
     return build.mutation({
         query: (args: any) => {
             console.log("args in createApiBuilder", args);
@@ -41,8 +50,12 @@ export const updateApiBuilder = (
     });
 };
 
-export const queryApiBuilder = (build: any, url: string, tagTypes?: string[]) => {
-    return build.query({
+export const queryApiBuilder = <T>(
+    build: IBuildApi,
+    url: string,
+    tagTypes?: string[]
+) => {
+    return build.query<TResponse<T>, Record<string, any> | undefined>({
         query: (args?: Record<string, any>) => {
             return {
                 url: url,
@@ -61,7 +74,11 @@ export const queryApiBuilder = (build: any, url: string, tagTypes?: string[]) =>
     });
 };
 
-export const singleQueryApiBuilder = (build: any, url: string, tagTypes?: string[]) => {
+export const singleQueryApiBuilder = (
+    build: any,
+    url: string,
+    tagTypes?: string[]
+) => {
     return build.query({
         query: (id: string) => {
             return {
@@ -73,14 +90,11 @@ export const singleQueryApiBuilder = (build: any, url: string, tagTypes?: string
     });
 };
 
-// export const deleteApiBuilder = (url: string) => {
-//     return (id: string) => ({
-//         url: `${url}/${id}`,
-//         method: "DELETE",
-//     });
-// };
-
-export const deleteApiBuilder = (build: any, url: string, tagTypes: string[]) => {
+export const deleteApiBuilder = (
+    build: any,
+    url: string,
+    tagTypes: string[]
+) => {
     return build.mutation({
         query: (id: string) => {
             return {
@@ -90,4 +104,4 @@ export const deleteApiBuilder = (build: any, url: string, tagTypes: string[]) =>
         },
         invalidatesTags: tagTypes,
     });
-}
+};

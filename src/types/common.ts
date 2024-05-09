@@ -1,5 +1,6 @@
 import { USER_ROLE } from "@/constants/role";
-import { BaseQueryApi } from "@reduxjs/toolkit/query";
+import { BaseQueryApi, BaseQueryFn } from "@reduxjs/toolkit/query";
+import { TypedUseQueryHookResult, TypedUseQueryStateResult } from "@reduxjs/toolkit/query/react";
 
 export interface IMeta {
     page: number;
@@ -17,12 +18,11 @@ export interface IDrawerItem {
     child?: IDrawerItem[];
 }
 
-export type TResponeSuccess = {
-    success?: boolean;
-    data: any;
-    meta: IMeta;
-    
-};
+// export type TResponeSuccess = {
+//     success?: boolean;
+//     data: any;
+//     meta: IMeta;
+// };
 
 export type TOpenState = {
     open?: boolean;
@@ -41,11 +41,27 @@ export type IGenericErrorMessage = {
     message: string;
 };
 
-export type IResponse<T> = {
-    data?: T;
+export type TResponse<T> = {
+    statuscode?: number;
+    data: T;
     error?: any;
     meta?: IMeta;
-    success: boolean;
-    message: string;
+    success?: boolean;
+    message?: string;
 };
-export type IResponseRedux<T> = IResponse<T> & BaseQueryApi;
+
+// export type TResponseRedux<T> = TResponse<T> & TypedUseQueryHookResult<T, BaseQueryApi, any>
+
+// export type TResponseRedux<T, QueryArg = any> = TypedUseQueryStateResult<
+//     TResponse<T>,
+//     QueryArg,     
+//     BaseQueryFn   
+// >;
+
+// export type TAxiosResponse<T> = {
+//     success: boolean;
+//     data: T | null;
+//     meta: any | null;
+//     message: string;
+//     status: number;
+// };

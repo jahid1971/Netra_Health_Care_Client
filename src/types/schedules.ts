@@ -1,14 +1,21 @@
-export type ISchedule = {
-    [x: string]: any;
-    id?: string;
-    scheduleId?: string;
-    startDate: string;
-    endDate: string;
+import { IDoctor } from "./Doctors";
+
+export type TSchedule = {
+    createdAt: string;
+    endDateTime: string;
+    id: string;
+    startDateTime: string;
+    updatedAt: string;
 };
 
-export type IScheduleFrom = {
-    startDate: Date;
-    endDate: Date;
-    startTime: string;
-    endTime: string;
+export type ISchedule = {
+    // [x: string]: any;
+    appointmentId?: string;
+    doctor: IDoctor;
+    doctorId: string;
+    isBooked: boolean;
+    id?: string;
+    schedule: TSchedule;
+    scheduleId?: string;
+    updatedAt: string;
 };

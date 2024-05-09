@@ -64,7 +64,7 @@ const CreateDrSchedule = () => {
     const hasNoSchedulesError = schedules?.data?.length === 0;
 
     const schedulesData = schedules?.data?.map((schedule: Record<string, any>) => ({
-        label: `${formatedTime(schedule.startDate)} - ${formatedTime(schedule.endDate)}`,
+        label: `${formatedTime(schedule.startDateTime)} - ${formatedTime(schedule.endDateTime)}`,
         value: schedule.id,
     }));
 

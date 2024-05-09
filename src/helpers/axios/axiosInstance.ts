@@ -1,6 +1,7 @@
 import { authKey, refreshKey } from "@/constants/authKey";
 import { baseUrl } from "@/constants/commmon";
 import { deleteCookies, setTokenToCookies } from "@/services/actions/cookies";
+import { IMeta, TResponse } from "@/types/common";
 
 import axios, { AxiosResponse } from "axios";
 
@@ -8,6 +9,8 @@ const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";
 instance.defaults.headers["Accept"] = "application/json";
 instance.defaults.timeout = 60000;
+
+type TAxiosResponse<T> = AxiosResponse<T> & TResponse<T>;
 
 instance.interceptors.request.use(
     function (config) {
@@ -25,14 +28,16 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-    function (response): AxiosResponse<any, any> {
+    function (response): TAxiosResponse<any> {
         console.log(response?.data, "response in axios instance");
 
-        const responseObject: any = {
-            data: response?.data,
-            meta: response?.data?.meta,
-        };
-        return responseObject;
+        return response
+
+        // return {
+        //     ...response,
+        //     ...response?.data,
+        //     meta: response?.data?.meta,
+        // } as TAxiosResponse<any>;
     },
 
     async function (error) {
@@ -41,36 +46,45 @@ instance.interceptors.response.use(
         //  ._retry is to prevent infinite loop
         if (error?.response?.status === 401 && !originalRequest._retry) {
             console.log("refresh req sentttttttttttttttttttttttttttt");
+
             originalRequest._retry = true;
             try {
                 const response = await getNewAccessToken();
                 const accessToken = response?.data?.data?.accessToken;
+                console.log(accessToken, "accessToken after refresh..................................");
                 if (accessToken) {
                     originalRequest.headers["Authorization"] = accessToken;
 
                     await setTokenToCookies(authKey, accessToken);
 
-                    console.log("original request reSent in axios instance");
+                    try {
+                        const res = await instance(originalRequest);
 
-                    const res = await instance(originalRequest);
+                        const resObject = {
+                            data: res?.data,
+                            meta: res?.data?.meta,
+                        };
 
-                    const resObject: any = {
-                        data: res?.data,
-                        meta: res?.data?.meta,
-                    };
+                        console.log(resObject, "resObject after retrying");
 
-                    console.log(
-                        resObject,
-                        "resobject after original request reSent in axios instance"
-                    );
-                    return resObject;
+                        return resObject;
+                    } catch (retryError) {
+                        console.log(
+                            "Error during retrying the original request",
+                            retryError
+                        );
+                        return Promise.reject(retryError);
+                    }
                 } else {
                     deleteCookies([authKey, refreshKey]);
                 }
             } catch (refreshError) {
-                console.log(refreshError, "Token refresh failed");
+                console.log(
+                    refreshError,
+                    "Token refresh failed in axios main catch block"
+                );
 
-                deleteCookies([authKey, refreshKey]);
+                // deleteCookies([authKey, refreshKey]);
 
                 return Promise.reject(refreshError);
             }

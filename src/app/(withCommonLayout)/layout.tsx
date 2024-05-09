@@ -8,9 +8,9 @@ import { ReactNode } from "react";
 const CommonLayout = ({ children }: { children: ReactNode }) => {
     const userInfo = getUserInfo();
     return (
-        <Box >
+        <Box>
             <Navbar userInfo={userInfo} />
-            <Box> {children}</Box>
+            <Box minHeight={"100vh"}> {children}</Box>
             <Footer />
         </Box>
     );

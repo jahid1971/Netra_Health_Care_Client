@@ -68,6 +68,7 @@ const doctorPage = async ({
         specialty?: string;
     };
 }) => {
+    
     const specialties = !searchParams?.specialty
         ? await fetch(`${baseUrl}/specialties`, {
               next: { revalidate: 60 },

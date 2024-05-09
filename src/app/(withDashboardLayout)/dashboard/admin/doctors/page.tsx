@@ -79,7 +79,7 @@ const DoctorsPage = () => {
             </Stack>
 
             <N_DataGrid
-                rows={doctors?.data}
+                rows={doctors}
                 columns={columnDef}
                 isLoading={isFetching}
                 notFoundFor="Doctor"
