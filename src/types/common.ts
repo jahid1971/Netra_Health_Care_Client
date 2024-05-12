@@ -1,12 +1,35 @@
 import { USER_ROLE } from "@/constants/role";
 import { BaseQueryApi, BaseQueryFn } from "@reduxjs/toolkit/query";
-import { TypedUseQueryHookResult, TypedUseQueryStateResult } from "@reduxjs/toolkit/query/react";
+import {
+    TypedUseQueryHookResult,
+    TypedUseQueryStateResult,
+} from "@reduxjs/toolkit/query/react";
 
 export interface IMeta {
     page: number;
     limit: number;
     total: number;
 }
+
+export type TDashboardData = {
+    appointmentCount: number;
+    patientCount: number;
+    doctorCount: number;
+    paymentCount: number;
+    totalRevenue: {
+        _sum: {
+            amount: number;
+        };
+    };
+    barChartData: {
+        month: string; 
+        count: number;
+    }[];
+    pieChartData: {
+        status: string;
+        count: number;
+    }[];
+};
 
 export type TUserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
@@ -54,8 +77,8 @@ export type TResponse<T> = {
 
 // export type TResponseRedux<T, QueryArg = any> = TypedUseQueryStateResult<
 //     TResponse<T>,
-//     QueryArg,     
-//     BaseQueryFn   
+//     QueryArg,
+//     BaseQueryFn
 // >;
 
 // export type TAxiosResponse<T> = {

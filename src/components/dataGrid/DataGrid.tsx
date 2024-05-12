@@ -67,10 +67,10 @@ const N_DataGrid = ({
     }, []);
 
     return (
-        <Box my={2}>
+        <Box my={2} sx={{ backgroundColor: "white" }}>
             <DataGrid
                 rows={rows}
-                disableColumnSorting={ sorting ? false : true }
+                disableColumnSorting={sorting ? false : true}
                 sortingMode="server"
                 onSortModelChange={handleSortModelChange}
                 disableColumnFilter

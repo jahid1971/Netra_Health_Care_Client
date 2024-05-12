@@ -1,8 +1,8 @@
-
 import { TSpecialty } from "@/types/Specialities";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import Image from "next/image";
+import Link from "next/link";
 
 const specialties = async () => {
     const res = await fetch("http://localhost:5000/api/v1/specialties", {
@@ -21,7 +21,13 @@ const specialties = async () => {
                         Experienced Doctors Across All Specialties
                     </Typography>
                 </Box>
-                <Stack direction={"row"} gap={4} alignItems={"center"} justifyContent="space-between" mt={2}>
+                <Stack
+                    direction={"row"}
+                    gap={4}
+                    alignItems={"center"}
+                    justifyContent="space-between"
+                    mt={2}
+                >
                     {specialities.slice(0, 6).map((speciality: TSpecialty) => (
                         <Box
                             key={speciality.id}
@@ -39,8 +45,16 @@ const specialties = async () => {
                                     height: "50px",
                                     mx: "auto",
                                 },
-                            }}>
-                            <Image src={speciality?.icon || ""} width={100} height={100} alt="speciality" />
+                            }}
+                            component={Link}
+                            href={`doctors?specialty=${speciality.title}`}
+                        >
+                            <Image
+                                src={speciality?.icon || ""}
+                                width={100}
+                                height={100}
+                                alt="speciality"
+                            />
 
                             <Typography textAlign={"center"} mt={1}>
                                 {speciality?.title}

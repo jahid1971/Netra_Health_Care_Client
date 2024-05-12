@@ -1,9 +1,18 @@
-import { Avatar, Badge, Box, IconButton, Stack, Toolbar, Typography } from "@mui/material";
+import {
+    Avatar,
+    Badge,
+    Box,
+    IconButton,
+    Stack,
+    Toolbar,
+    Typography,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { useGetMyProfileQuery } from "@/redux/api/myProfileApi";
-import AccountMenu from "./components/AccountMenu/AccountMenu";
+import AccountMenu from "./AccountMenu/AccountMenu";
+import { grey } from "@mui/material/colors";
 
 const N_AppBar = ({ handleDrawerToggle }) => {
     const { data: profileData, isLoading } = useGetMyProfileQuery(undefined);
@@ -18,7 +27,8 @@ const N_AppBar = ({ handleDrawerToggle }) => {
                     aria-label="open drawer"
                     edge="start"
                     onClick={handleDrawerToggle}
-                    sx={{ mr: 2, display: { sm: "none" } }}>
+                    sx={{ mr: 2, display: { sm: "none" } }}
+                >
                     <MenuIcon />
                 </IconButton>
                 <Box
@@ -27,26 +37,36 @@ const N_AppBar = ({ handleDrawerToggle }) => {
                         alignItems: "center",
                         justifyContent: { xs: "end", md: "space-between" },
                         width: "100%",
-                    }}>
+                    }}
+                >
                     <Box display={{ xs: "none", md: "block" }}>
                         <Typography
                             variant="body2"
                             noWrap
                             component="div"
-                            sx={{ color: "rgba(11, 17, 52, 0.6)" }}>
+                            sx={{ color: "rgba(11, 17, 52, 0.6)" }}
+                        >
                             Hi, {isLoading ? "Loading..." : profileData?.name}
                         </Typography>
-                        <Typography variant="h6" noWrap component="div" sx={{ color: "primary.main" }}>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ color: "primary.main" }}
+                        >
                             Welcome to NETRA Health Care!
                         </Typography>
                     </Box>
                     <Stack direction="row" gap={3}>
                         <Badge badgeContent={0} color="primary">
-                            <IconButton sx={{ background: "#ffffff" }}>
+                            <IconButton sx={{ backgroundColor: grey[100] }}>
                                 <NotificationsNoneIcon color="action" />
                             </IconButton>
                         </Badge>
-                        <Avatar alt={profileData?.name} src={profileData?.profilePhoto} />
+                        <Avatar
+                            alt={profileData?.name}
+                            src={profileData?.profilePhoto}
+                        />
                         <AccountMenu />
                     </Stack>
                 </Box>

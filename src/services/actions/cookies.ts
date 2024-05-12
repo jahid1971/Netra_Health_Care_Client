@@ -86,67 +86,67 @@ export async function refreshTokenGen() {
     }
 }
 
-export async function fetchWithAuth(url, options = {}) {
-    const cookieStore = cookies();
-    const accessToken = cookieStore.get(authKey)?.value;
+// export async function fetchWithAuth(url, options = {}) {
+//     const cookieStore = cookies();
+//     const accessToken = cookieStore.get(authKey)?.value;
 
-    //     let res = await fetch(url, {
-    //         ...options,
-    //         headers: {
-    //             ...options.headers,
-    //             options.method==="POST" ||"PUT"||"PATCH" && "Content-Type": "application/json",
-    //             Authorization: accessToken,
-    //         },
-    //         options.data && body: JSON.stringify(options.data),
-    //     });
+//     //     let res = await fetch(url, {
+//     //         ...options,
+//     //         headers: {
+//     //             ...options.headers,
+//     //             options.method==="POST" ||"PUT"||"PATCH" && "Content-Type": "application/json",
+//     //             Authorization: accessToken,
+//     //         },
+//     //         options.data && body: JSON.stringify(options.data),
+//     //     });
 
-    const fetchOptions = {
-        ...options,
-        headers: {
-            ...options.headers,
-            Authorization: accessToken,
-        },
-    };
+//     const fetchOptions = {
+//         ...options,
+//         headers: {
+//             ...options.headers,
+//             Authorization: accessToken,
+//         },
+//     };
 
-    if (["POST", "PUT", "PATCH"].includes(options?.method)) {
-        fetchOptions.headers["Content-Type"] = "application/json";
-    }
+//     if (["POST", "PUT", "PATCH"].includes(options?.method)) {
+//         fetchOptions.headers["Content-Type"] = "application/json";
+//     }
 
-    if (options?.data) {
-        fetchOptions.body = JSON.stringify(options.data);
-    }
+//     if (options?.data) {
+//         fetchOptions.body = JSON.stringify(options.data);
+//     }
 
-    const res = await fetch(url, fetchOptions);
+//     const res = await fetch(url, fetchOptions);
 
-    // if (res.status === 401) {
-    //     // Send request to refresh the accessToken
-    //     const refreshRes = await fetch(`${baseUrl}/auth/refresh-token`, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         credentials: "include", // Thhis will send the refresh token in the cookie
-    //     });
+//     // if (res.status === 401) {
+//     //     // Send request to refresh the accessToken
+//     //     const refreshRes = await fetch(`${baseUrl}/auth/refresh-token`, {
+//     //         method: "POST",
+//     //         headers: {
+//     //             "Content-Type": "application/json",
+//     //         },
+//     //         credentials: "include", // Thhis will send the refresh token in the cookie
+//     //     });
 
-    //     if (refreshRes.ok) {
-    //         const { accessToken: newAccessToken } = await refreshRes.json();
+//     //     if (refreshRes.ok) {
+//     //         const { accessToken: newAccessToken } = await refreshRes.json();
 
-    //         setTokenToCookies(authKey, newAccessToken);
+//     //         setTokenToCookies(authKey, newAccessToken);
 
-    //         // Retry the original request with the new accessToken
-    //         res = await fetch(url, {
-    //             ...options,
-    //             headers: {
-    //                 ...options.headers,
-    //                 Authorization: newAccessToken,
-    //             },
-    //         });
-    //     } else {
-    //         deleteCookies([authKey, refreshKey]);
-    //         throw new Error("Failed to refresh token");
-    //     }
-    // }
+//     //         // Retry the original request with the new accessToken
+//     //         res = await fetch(url, {
+//     //             ...options,
+//     //             headers: {
+//     //                 ...options.headers,
+//     //                 Authorization: newAccessToken,
+//     //             },
+//     //         });
+//     //     } else {
+//     //         deleteCookies([authKey, refreshKey]);
+//     //         throw new Error("Failed to refresh token");
+//     //     }
+//     // }
 
-    const data = await res?.json();
-    return data;
-}
+//     const data = await res?.json();
+//     return data;
+// }

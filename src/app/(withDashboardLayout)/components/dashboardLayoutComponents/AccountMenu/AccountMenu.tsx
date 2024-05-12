@@ -13,6 +13,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/navigation";
 import { logOutUser } from "@/services/actions/logOutuser";
 import { toast } from "sonner";
+import { grey } from "@mui/material/colors";
 
 const menuStyles = {
     paper: {
@@ -80,7 +81,7 @@ export default function AccountMenu() {
                         aria-expanded={open ? "true" : undefined}
                         //   size='small'
                         sx={{
-                            background: "#ffffff",
+                            backgroundColor: grey[100],
                             "& svg": {
                                 color: "primary.main",
                             },

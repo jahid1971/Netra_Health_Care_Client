@@ -1,0 +1,1 @@
+export const backGround = "F4F7FE"
