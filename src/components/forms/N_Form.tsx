@@ -1,6 +1,11 @@
 import { Typography } from "@mui/material";
 import { red } from "@mui/material/colors";
-import { FieldValues, FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import {
+    FieldValues,
+    FormProvider,
+    SubmitHandler,
+    useForm,
+} from "react-hook-form";
 
 type TFormConfig = {
     resolver?: any;
@@ -13,7 +18,13 @@ type TFormProps = {
     error?: string;
 } & TFormConfig;
 
-const N_Form = ({ children, onSubmit, resolver, defaultValues, error }: TFormProps) => {
+const N_Form = ({
+    children,
+    onSubmit,
+    resolver,
+    defaultValues,
+    error,
+}: TFormProps) => {
     const formConfig: TFormConfig = {};
 
     if (resolver) {
@@ -26,8 +37,6 @@ const N_Form = ({ children, onSubmit, resolver, defaultValues, error }: TFormPro
 
     const methods = useForm(formConfig);
 
-
-
     const { handleSubmit } = methods;
 
     const submit: SubmitHandler<FieldValues> = (data) => {
@@ -37,7 +46,15 @@ const N_Form = ({ children, onSubmit, resolver, defaultValues, error }: TFormPro
     return (
         <FormProvider {...methods}>
             {error && (
-                <Typography py={1} my={2} sx={{ backgroundColor: red[50],border:1,borderColor:"red"}}>
+                <Typography
+                    py={1}
+                    my={2}
+                    sx={{
+                        backgroundColor: red[50],
+                        border: 1,
+                        borderColor: "red",
+                    }}
+                >
                     {error}
                 </Typography>
             )}

@@ -28,12 +28,12 @@ export const tryCatch: tryCatch = async (
             if (successAction) await successAction();
         } else if (
             (res?.success === false || res?.error) &&
-            (res?.message || res?.error?.data?.errorMessages)
+            (res?.message || res?.error?.data?.message)
         ) {
             console.log(res, "error response in else if block of tryCatch");
 
             toast.error(
-                res?.message ?? res?.error?.data?.errorMessages[0]?.message,
+                res?.message ?? res?.error?.data?.message,
                 { id: toastId }
             );
         } else if (res?.success === false || res?.error)

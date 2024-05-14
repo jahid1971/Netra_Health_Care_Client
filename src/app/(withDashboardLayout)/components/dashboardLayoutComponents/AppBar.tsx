@@ -11,13 +11,28 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { useGetMyProfileQuery } from "@/redux/api/myProfileApi";
-import AccountMenu from "./AccountMenu/AccountMenu";
+import AccountMenu from "./AppBarComponents/AccountMenu";
 import { grey } from "@mui/material/colors";
+import { useAppSelector } from "@/redux/hooks";
+import { selectIsLoading, selectUser } from "@/redux/slices/authSlice";
+import Notification from "./AppBarComponents/Notification";
 
-const N_AppBar = ({ handleDrawerToggle }) => {
-    const { data: profileData, isLoading } = useGetMyProfileQuery(undefined);
-
+const AppBar = ({ handleDrawerToggle }) => {
+    const profileData = useAppSelector(selectUser);
+    const isLoading = useAppSelector(selectIsLoading);
     console.log(profileData, "my profile");
+
+    let greeting;
+
+    const hours = new Date().getHours();
+
+    if (hours < 12) {
+        greeting = "Good Morning";
+    } else if (hours < 18) {
+        greeting = "Good Afternoon";
+    } else {
+        greeting = "Good Evening";
+    }
 
     return (
         <Box>
@@ -41,31 +56,23 @@ const N_AppBar = ({ handleDrawerToggle }) => {
                 >
                     <Box display={{ xs: "none", md: "block" }}>
                         <Typography
-                            variant="body2"
-                            noWrap
-                            component="div"
-                            sx={{ color: "rgba(11, 17, 52, 0.6)" }}
-                        >
-                            Hi, {isLoading ? "Loading..." : profileData?.name}
-                        </Typography>
-                        <Typography
                             variant="h6"
                             noWrap
                             component="div"
                             sx={{ color: "primary.main" }}
                         >
-                            Welcome to NETRA Health Care!
+                            {greeting}, {profileData?.name}
                         </Typography>
                     </Box>
                     <Stack direction="row" gap={3}>
-                        <Badge badgeContent={0} color="primary">
-                            <IconButton sx={{ backgroundColor: grey[100] }}>
-                                <NotificationsNoneIcon color="action" />
-                            </IconButton>
-                        </Badge>
+                        <Notification />
                         <Avatar
                             alt={profileData?.name}
                             src={profileData?.profilePhoto}
+                            sx={{
+                                width: 35,
+                                height: 35,
+                            }}
                         />
                         <AccountMenu />
                     </Stack>
@@ -75,4 +82,4 @@ const N_AppBar = ({ handleDrawerToggle }) => {
     );
 };
 
-export default N_AppBar;
+export default AppBar;

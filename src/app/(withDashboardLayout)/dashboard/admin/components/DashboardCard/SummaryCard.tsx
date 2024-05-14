@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 
-import { blue } from "@mui/material/colors";
+import { blue, grey } from "@mui/material/colors";
 import React from "react";
 
 type TDashboardCard = {
@@ -9,7 +9,7 @@ type TDashboardCard = {
     count: number;
 };
 const SummaryCard = ({ icon, title, count }: TDashboardCard) => {
-    // console.log(count,"count....................................");
+   
     return (
         <Stack
             direction={"row"}
@@ -19,6 +19,7 @@ const SummaryCard = ({ icon, title, count }: TDashboardCard) => {
             p={2}
             gap={2}
             borderRadius={2}
+            boxShadow={1}
         >
             <Box
                 sx={{
@@ -42,10 +43,12 @@ const SummaryCard = ({ icon, title, count }: TDashboardCard) => {
             </Box>
 
             <Stack>
-                <Typography fontSize={20} fontWeight={600}>
+                <Typography color={grey[700]} fontSize={18} fontWeight={600}>
                     {count}
                 </Typography>
-                <Typography>Total {title}</Typography>
+                <Typography variant="body2" color={grey[600]}>
+                    Total {title}
+                </Typography>
             </Stack>
         </Stack>
     );

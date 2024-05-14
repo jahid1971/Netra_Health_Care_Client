@@ -16,13 +16,9 @@ export type TDashboardData = {
     patientCount: number;
     doctorCount: number;
     paymentCount: number;
-    totalRevenue: {
-        _sum: {
-            amount: number;
-        };
-    };
+    totalRevenue: number;
     barChartData: {
-        month: string; 
+        month: string;
         count: number;
     }[];
     pieChartData: {
@@ -73,18 +69,11 @@ export type TResponse<T> = {
     message?: string;
 };
 
-// export type TResponseRedux<T> = TResponse<T> & TypedUseQueryHookResult<T, BaseQueryApi, any>
-
-// export type TResponseRedux<T, QueryArg = any> = TypedUseQueryStateResult<
-//     TResponse<T>,
-//     QueryArg,
-//     BaseQueryFn
-// >;
-
-// export type TAxiosResponse<T> = {
-//     success: boolean;
-//     data: T | null;
-//     meta: any | null;
-//     message: string;
-//     status: number;
-// };
+export type TQuery<T = {}> = {
+    searchTerm?: string;
+    sortBy?: string;
+    sortOrder?: string;
+    page?: number;
+    limit?: number;
+    [key: string]: any;
+} & Partial<T>;

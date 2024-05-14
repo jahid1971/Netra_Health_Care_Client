@@ -5,90 +5,17 @@ import N_Select from "@/components/forms/N_Select";
 import SubmitButton from "@/components/ui/SubmitButton";
 import { Gender } from "@/constants/commmon";
 import { useGetAllSpecialitiesQuery } from "@/redux/api/specialitiesApi";
-import { Button, Grid, Stack } from "@mui/material";
-
-// const DoctorForm = ({
-//     handleSubmit,
-//     submitTitle,
-//     defaultValue,
-//     passwordField = true,
-//     isLoading,
-// }: any) => {
-//     const { data } = useGetAllSpecialitiesQuery(undefined);
-//     const allSpecialities = (data as any)?.data;
-
-//     const specialitiesData = allSpecialities?.map((item: any) => ({
-//         label: item.title,
-//         value: item.id,
-//     }));
-
-//     defaultValue.doctorSpecialties = defaultValue?.doctorSpecialties?.map((item: any) => item.specialtiesId);
-
-//     console.log(defaultValue, "defaultValueeeeeeeeeeeeeeeeeeeeeeeeee");
-
-//     return (
-//         <N_Form onSubmit={handleSubmit} defaultValues={defaultValue}>
-//             <Grid container spacing={2}>
-//                 <Grid item xs={12} md={4}>
-//                     <N_Input name="name" label="Name" />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <N_Input name="email" label="Email" />
-//                 </Grid>
-//                 {passwordField && (
-//                     <Grid item xs={12} md={4}>
-//                         <N_Input name="password" type="password" label="Password" />
-//                     </Grid>
-//                 )}
-//                 <Grid item xs={12} md={4}>
-//                     <N_Input name="contactNumber" label="Contract Number" />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <N_Input name="address" label="Address" />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <N_Input name="registrationNumber" label="Registration Number" />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <N_Input name="experience" type="number" label="Experience" />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <N_Select items={Gender} name="gender" label="Gender" />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <N_Input name="apointmentFee" type="number" label="ApointmentFee" />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <N_Input name="qualification" label="Qualification" />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <N_Input name="currentWorkingPlace" label="Current Working Place" />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <N_Input name="designation" label="Designation" />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <N_MultiSelect
-//                         required={false}
-//                         items={specialitiesData}
-//                         name="doctorSpecialties"
-//                         label="Specialities"
-//                         disabled={!allSpecialities || allSpecialities?.length === 0}
-//                     />
-//                 </Grid>
-//             </Grid>
-
-//             <Stack direction="row" justifyContent="flex-end" mt={2}>
-//                 {/* <Button disabled={isLoading} type="submit">
-//                     {submitTitle}
-//                 </Button> */}
-//                 <SubmitButton label={submitTitle} fullWidth={false}></SubmitButton>
-//             </Stack>
-//         </N_Form>
-//     );
-// };
-
-// export default DoctorForm;
+import { Box, Button, Grid, Stack } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import CreateSpecialities from "../../specialities/components/CreateSpecialities";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+    openChildModal,
+    openModal,
+    selectChildModalId,
+    selectChildModalOpen,
+} from "@/redux/slices/modalSlice";
+import { ISpecialties } from "@/types/Doctors";
 
 const DoctorForm = ({
     handleSubmit,
@@ -97,101 +24,139 @@ const DoctorForm = ({
     passwordField = true,
     isLoading,
 }: any) => {
+    const dispatch = useAppDispatch();
+    const childModalOpen = useAppSelector(selectChildModalOpen);
+
     const { data } = useGetAllSpecialitiesQuery(undefined);
-    const allSpecialities = data as any
+    const allSpecialities = data?.data;
+
 
     const specialitiesData = allSpecialities?.map((item: any) => ({
         label: item.title,
         value: item.id,
     }));
 
-    console.log(specialitiesData, "specialitiesData");
+  
+
 
     const defaultValueCopy = { ...defaultValue };
 
-    defaultValueCopy.doctorSpecialties = defaultValue?.doctorSpecialties?.map(
-        (item: any) => item.specialtiesId
+    defaultValueCopy.specialties = defaultValue?.specialties?.map(
+        (item: ISpecialties) => item.id
     );
 
-    
-
     return (
-        <N_Form onSubmit={handleSubmit} defaultValues={defaultValueCopy}>
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={4}>
-                    <N_Input name="name" label="Name" />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <N_Input name="email" label="Email" />
-                </Grid>
-                {passwordField && (
+        <Box>
+            <N_Form onSubmit={handleSubmit} defaultValues={defaultValueCopy}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={4}>
+                        <N_Input name="name" label="Name" />
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                        <N_Input name="email" label="Email" />
+                    </Grid>
+
+                    {passwordField && (
+                        <Grid item xs={12} md={4}>
+                            <N_Input
+                                name="password"
+                                type="password"
+                                label="Password"
+                            />
+                        </Grid>
+                    )}
+
+                    <Grid item xs={12} md={4}>
+                        <N_Input name="contactNumber" label="Contract Number" />
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                        <N_Input name="address" label="Address" />
+                    </Grid>
+
                     <Grid item xs={12} md={4}>
                         <N_Input
-                            name="password"
-                            type="password"
-                            label="Password"
+                            name="registrationNumber"
+                            label="Registration Number"
                         />
                     </Grid>
-                )}
-                <Grid item xs={12} md={4}>
-                    <N_Input name="contactNumber" label="Contract Number" />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <N_Input name="address" label="Address" />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <N_Input
-                        name="registrationNumber"
-                        label="Registration Number"
-                    />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <N_Input
-                        name="experience"
-                        type="number"
-                        label="Experience"
-                        placeholder="experience in year  Ex: 5"
-                    />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <N_Select items={Gender} name="gender" label="Gender" />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <N_Input
-                        name="apointmentFee"
-                        type="number"
-                        label="ApointmentFee"
-                    />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <N_Input name="qualification" label="Qualification" />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <N_Input
-                        name="currentWorkingPlace"
-                        label="Current Working Place"
-                    />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <N_Input name="designation" label="Designation" />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <N_MultiSelect
-                        required={false}
-                        items={specialitiesData}
-                        name="doctorSpecialties"
-                        label="Specialities"
-                        disabled={
-                            !allSpecialities || allSpecialities?.length === 0
-                        }
-                    />
-                </Grid>
-            </Grid>
 
-            <Stack direction="row" justifyContent="flex-end" mt={2}>
-                <SubmitButton label={submitTitle} fullWidth={false} />
-            </Stack>
-        </N_Form>
+                    <Grid item xs={12} md={4}>
+                        <N_Input
+                            name="experience"
+                            type="number"
+                            label="Minimum Experience"
+                            placeholder="experience in year  Ex: 5"
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                        <N_Select items={Gender} name="gender" label="Gender" />
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                        <N_Input
+                            name="apointmentFee"
+                            type="number"
+                            label="ApointmentFee"
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                        <N_Input name="qualification" label="Qualification" />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <N_Input
+                            name="currentWorkingPlace"
+                            label="Current Working Place"
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                        <N_Input name="designation" label="Designation" />
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                        <Stack direction={"row"}>
+                            <N_MultiSelect
+                                required={false}
+                                items={specialitiesData}
+                                name="specialties"
+                                label="Specialities"
+                                disabled={
+                                    !allSpecialities ||
+                                    allSpecialities?.length === 0
+                                }
+                            />          
+                            <Button
+                                onClick={() =>
+                                 
+                                    dispatch(
+                                        openChildModal({
+                                            modalId: "createSpeciality",
+                                        })
+                                    )
+                                }
+                                variant="outlined"
+                                sx={{
+                                    borderRadius: "0 8px 8px 0",
+                                    borderLeft: "0",
+                                }}
+                                color="secondary"
+                            >
+                                <AddIcon />
+                            </Button>
+                        </Stack>
+                    </Grid>
+                </Grid>
+
+                <Stack direction="row" justifyContent="flex-end" mt={2}>
+                    <SubmitButton label={submitTitle} fullWidth={false} />
+                </Stack>
+            </N_Form>
+            <CreateSpecialities asChildModal = {true} />
+        </Box>
     );
 };
 

@@ -1,5 +1,5 @@
 import { Box, Drawer } from "@mui/material";
-import Sidebar from "./sidebar/Sidebar";
+import Sidebar from "./Sidebar";
 
 const DashboardDrawer = ({
     drawerWidth,

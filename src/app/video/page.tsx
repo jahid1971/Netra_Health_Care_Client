@@ -1,15 +1,19 @@
-
-import VideoCall from '@/components/ui/videoCall/videoCall';
-import React from 'react';
+import VideoCall from "@/components/ui/videoCall/videoCall";
+import { Container } from "@mui/material";
+import React from "react";
 
 const VideoCalling = ({
-   searchParams,
+    searchParams,
 }: {
-   searchParams: { videoCallingId: string };
+    searchParams: { videoCallingId: string };
 }) => {
-   const videoCallingId = searchParams.videoCallingId;
+    const videoCallingId = searchParams.videoCallingId;
 
-   return <VideoCall videoCallingId={videoCallingId} />;
+    return (
+        <Container sx={{ height: "100vh" }}>
+            <VideoCall videoCallingId={videoCallingId} />
+        </Container>
+    );
 };
 
 export default VideoCalling;

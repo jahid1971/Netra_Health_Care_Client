@@ -19,3 +19,11 @@ export type ISchedule = {
     scheduleId?: string;
     updatedAt: string;
 };
+
+export type TDoctorSchedule= {
+    doctorId: string;
+    scheduleId: string;
+    appointmentId: string;
+    isBooked: boolean;
+    schedule: TSchedule;
+}

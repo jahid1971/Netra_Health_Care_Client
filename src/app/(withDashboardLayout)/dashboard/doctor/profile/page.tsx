@@ -1,6 +1,9 @@
 "use client";
 
-import { useGetMyProfileQuery, useUpdateMyProfileMutation } from "@/redux/api/myProfileApi";
+import {
+    useGetMyProfileQuery,
+    useUpdateMyProfileMutation,
+} from "@/redux/api/myProfileApi";
 import { IDoctor } from "@/types/Doctors";
 import { Box, Button, Grid, Stack } from "@mui/material";
 import Image from "next/image";
@@ -14,8 +17,12 @@ import { openModal } from "@/redux/slices/modalSlice";
 import ProfileUpdate from "./components/ProfileUpdate";
 
 const ProfilePage = () => {
-    const { data } = useGetMyProfileQuery({}) as { data?: IDoctor };
+    const { data } = useGetMyProfileQuery(undefined);
+
     const [updateMyProfile, { isLoading }] = useUpdateMyProfileMutation();
+
+    const doctorData = data?.data;
+
 
     const handleUpload = (file: File) => {
         const formData = new FormData();
@@ -30,7 +37,12 @@ const ProfilePage = () => {
         <Box>
             <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
                 <Box width={{ sx: "100%", md: "30%" }}>
-                    <Image src={data?.profilePhoto ?? ""} width={400} height={300} alt="doctor" />
+                    <Image
+                        src={doctorData?.profilePhoto ?? ""}
+                        width={400}
+                        height={300}
+                        alt="doctor"
+                    />
                     <Stack my={2} width={{ xs: 400, md: "100%" }} spacing={1}>
                         <AutoFileUploader
                             name="file"
@@ -41,17 +53,23 @@ const ProfilePage = () => {
                             isLoading={isLoading}
                         />
                         <Button
-                            onClick={() => dispatch(openModal({ modalId: "updateDoctorProfile" }))}
+                            onClick={() =>
+                                dispatch(
+                                    openModal({
+                                        modalId: "updateDoctorProfile",
+                                    })
+                                )
+                            }
                             fullWidth
                             endIcon={<ModeEditIcon />}
-                            >
+                        >
                             Update Profile
                         </Button>
-                        <ProfileUpdate id={data?.id} />
+                        <ProfileUpdate doctorData={doctorData as IDoctor} />
                     </Stack>
                 </Box>
                 <Box width={{ sx: "100%", md: "70%" }}>
-                    <DoctorInfo drProfile={data} />
+                    <DoctorInfo drProfile={doctorData as IDoctor} />
                 </Box>
             </Stack>
         </Box>

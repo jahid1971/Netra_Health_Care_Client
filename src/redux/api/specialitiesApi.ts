@@ -11,7 +11,7 @@ const specialitiesApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         createSpeciality: build.mutation({
             query: (data: any) => ({
-                url: "/specialties",
+                url: "/specialty",
                 method: "POST",
                 contentType: "multipart/form-data",
                 data,
@@ -21,11 +21,11 @@ const specialitiesApi = baseApi.injectEndpoints({
 
         getAllSpecialities: queryApiBuilder<ISpecialties[]>(
             build,
-            "/specialties",
+            "/specialty",
             [tagTypes.specialities]
         ),
 
-        deleteSpeciality: deleteApiBuilder(build, "/specialties", [
+        deleteSpeciality: deleteApiBuilder(build, "/specialty", [
             tagTypes.specialities,
         ]),
     }),

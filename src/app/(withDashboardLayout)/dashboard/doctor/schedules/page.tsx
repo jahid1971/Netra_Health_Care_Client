@@ -10,28 +10,27 @@ import { GridColDef } from "@mui/x-data-grid";
 import N_DataGrid from "@/components/dataGrid/DataGrid";
 import {
     useDeleteDoctorScheduleMutation,
-    useGetDoctorSchedulesQuery,
+    useGetMySchedulesQuery,
 } from "@/redux/api/doctorScheduleApi";
 import { useGetSchedulesQuery } from "@/redux/api/schedulesApi";
 import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
 import { useMemo, useState } from "react";
 import N_Pagination from "@/components/pagination/Pagination";
 import { tryCatch } from "@/utils/tryCatch";
-import { ISchedule } from "@/types/schedules";
-
-// import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
+import { ISchedule, TDoctorSchedule } from "@/types/schedules";
+import tableSerial from "@/utils/tableSerial";
+import ConfirmationModal from "@/components/modals/ConfirmationModal";
 
 const doctorSchedulePage = () => {
     const dispatch = useAppDispatch();
 
     const [query, setQuery] = useState<Record<string, any>>({});
 
-    const { data, isFetching } = useGetDoctorSchedulesQuery(query);
+    const { data, isLoading } = useGetMySchedulesQuery(query);
 
     const [deleteDoctorSchedule] = useDeleteDoctorScheduleMutation();
 
     const handleDelete = (id: string) => {
-        // console.log(id, " schedule iddddddddd");
         tryCatch(
             async () => await deleteDoctorSchedule(id),
             "Deleting doctor Schedule",
@@ -43,20 +42,26 @@ const doctorSchedulePage = () => {
 
     const doctorSchedules =
         useMemo(() => {
-            return data?.data?.map((item: ISchedule, index) => {
+            return data?.data?.map((item: TDoctorSchedule, index) => {
                 return {
-                    sl: (query.page - 1) * query.limit + index + 1 + ".",
-                    id: index,
+                    sl: tableSerial(query, index),
+                    id: item?.scheduleId,
                     startDate: dateFaormatter(item?.schedule?.startDateTime),
-                    endDate: dateFaormatter(item?.schedule?.endDateTime),
+                    // endDate: dateFaormatter(item?.schedule?.endDateTime),
                     startTime: timeFormatter(item?.schedule?.startDateTime),
                     endTime: timeFormatter(item?.schedule?.endDateTime),
                 };
             });
-        }, [data]) || [];
+        }, [data, query]) || [];
 
     const columns: GridColDef[] = [
-        { field: "sl", headerName: "SL", flex: 1 },
+        {
+            field: "sl",
+            headerName: "SL",
+            headerAlign: "center",
+            width: 130,
+            align: "center",
+        },
         { field: "startDate", headerName: "Date", flex: 1 },
         { field: "startTime", headerName: "Start Time", flex: 1 },
         { field: "endTime", headerName: "End Time", flex: 1 },
@@ -69,8 +74,17 @@ const doctorSchedulePage = () => {
             renderCell: ({ row }) => {
                 return (
                     <IconButton
-                        onClick={() => handleDelete(row?.id)}
-                        aria-label="delete">
+                        onClick={() =>
+                            dispatch(
+                                openModal({
+                                    modalId: "confirm",
+                                    modalData: () =>
+                                        handleDelete(row.id as string),
+                                })
+                            )
+                        }
+                        aria-label="delete"
+                    >
                         <DeleteIcon sx={{ color: "red" }} />
                     </IconButton>
                 );
@@ -84,18 +98,22 @@ const doctorSchedulePage = () => {
                 onClick={() =>
                     dispatch(openModal({ modalId: "createDrSchedule" }))
                 }
-                endIcon={<AddIcon />}>
+                endIcon={<AddIcon />}
+            >
                 Create Doctor Schedule
             </Button>
-            <CreateDrSchedule />
+
             <N_DataGrid
                 setQuery={setQuery}
                 rows={doctorSchedules}
                 columns={columns}
-                isLoading={isFetching}
+                isLoading={isLoading}
                 notFoundFor="Schedule"
+                meta={meta}
             />
-            <N_Pagination setQuery={setQuery} meta={meta} />
+
+            {!isLoading && <CreateDrSchedule />}
+            <ConfirmationModal title="Do you want to delete this?" />
         </Box>
     );
 };

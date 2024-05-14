@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import { ISchedule, TSchedule } from "@/types/schedules";
 import N_Pagination from "@/components/pagination/Pagination";
 import { tryCatch } from "@/utils/tryCatch";
+import ConfirmationModal from "@/components/modals/ConfirmationModal";
 
 const SchedulePage = () => {
     const [allSchedules, setAllSchedule] = useState<any>([]);
@@ -30,11 +31,9 @@ const SchedulePage = () => {
 
     const [deleteSchedule] = useDeleteScheduleMutation();
 
-    const schedules = data?.data
+    const schedules = data?.data;
 
     const meta = data?.meta;
-
- 
 
     const handleDelete = (id: string) => {
         tryCatch(
@@ -43,7 +42,6 @@ const SchedulePage = () => {
             "Schedule Deleted Successfully"
         );
     };
-
 
     useEffect(() => {
         const schedulesData = schedules?.map(
@@ -98,8 +96,16 @@ const SchedulePage = () => {
             renderCell: ({ row }) => {
                 return (
                     <IconButton
-                        onClick={() => handleDelete(row.id)}
-                        aria-label="delete">
+                        onClick={() =>
+                            dispatch(
+                                openModal({
+                                    modalId: "confirm",
+                                    modalData: () => handleDelete(row.id),
+                                })
+                            )
+                        }
+                        aria-label="delete"
+                    >
                         <DeleteIcon sx={{ color: "red" }} />
                     </IconButton>
                 );
@@ -113,18 +119,22 @@ const SchedulePage = () => {
                 size="small"
                 onClick={() =>
                     dispatch(openModal({ modalId: "createSchedule" }))
-                }>
+                }
+            >
                 Create Schedule
             </Button>
+
             <CreateSchedule />
+            <ConfirmationModal title="Do you want to Delete this ?" />
+            
             <N_DataGrid
                 rows={allSchedules}
                 columns={columns}
                 isLoading={isFetching}
                 notFoundFor="Schedule"
                 setQuery={setQuery}
+                meta={meta}
             />
-            <N_Pagination setQuery={setQuery} meta={meta} />
         </Box>
     );
 };

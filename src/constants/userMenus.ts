@@ -14,8 +14,10 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { IDrawerItem, TUserRole } from "@/types/common";
 
-export const sidebarMenus = (role: TUserRole): IDrawerItem[] => {
+export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
     const roleMenus: IDrawerItem[] = [];
+
+    const role = userRole.toLowerCase();
 
     const defaultMenus = [
         {
@@ -30,7 +32,122 @@ export const sidebarMenus = (role: TUserRole): IDrawerItem[] => {
         },
     ];
 
-    switch (role) {
+
+    const superAdminMenus = [
+        {
+            title: "Dashboard",
+            path: `${role}`,
+            icon: DashboardIcon,
+        },
+        {
+            title: "Manage Users",
+            path: `${role}/manage-users`,
+            icon: GroupIcon,
+        },
+        {
+            title: "Specialties",
+            path: `${role}/specialities`,
+            icon: TryIcon,
+        },
+        {
+            title: "Doctors",
+            path: `${role}/doctors`,
+            icon: MedicalInformationIcon,
+        },
+        {
+            title: "Schedules",
+            path: `${role}/schedules`,
+            icon: CalendarMonthIcon,
+        },
+        {
+            title: "Appointments",
+            path: `${role}/appointments`,
+            icon: BookOnlineIcon,
+        },
+        {
+            title: "Reviews",
+            path: `${role}/reviews`,
+            icon: ReviewsIcon,
+        },
+    ];
+
+
+     const adminMenus = [
+        {
+            title: "Dashboard",
+            path: `${role}`,
+            icon: DashboardIcon,
+        },
+        {
+            title: "Specialties",
+            path: `${role}/specialities`,
+            icon: TryIcon,
+        },
+        {
+            title: "Doctors",
+            path: `${role}/doctors`,
+            icon: MedicalInformationIcon,
+        },
+        {
+            title: "Schedules",
+            path: `${role}/schedules`,
+            icon: CalendarMonthIcon,
+        },
+        {
+            title: "Appointments",
+            path: `${role}/appointments`,
+            icon: BookOnlineIcon,
+        },
+        {
+            title: "Reviews",
+            path: `${role}/reviews`,
+            icon: ReviewsIcon,
+        },
+    ];
+
+     const doctorMenus = [
+        {
+            title: "Dashboard",
+            path: `${role}`,
+            icon: DashboardIcon,
+        },
+        {
+            title: "Schedules",
+            path: `${role}/schedules`,
+            icon: CalendarMonthIcon,
+        },
+        {
+            title: "Appointments",
+            path: `${role}/appointment`,
+            icon: BookOnlineIcon,
+        },
+    ];
+
+    const patientMenus = [
+        {
+            title: "Doctors",
+            path: `${role}/doctors`,
+            icon: MedicalInformationIcon,
+        },
+        {
+            title: "Appointments",
+            path: `${role}/appointments`,
+            icon: BookOnlineIcon,
+        },
+        {
+            title: "Prescriptions",
+            path: `${role}/prescriptions`,
+            icon: ReceiptLongIcon,
+        },
+        {
+            title: "Payment History",
+            path: `${role}/payment-history`,
+            icon: AttachMoneyIcon,
+        },
+    ];
+    
+
+    switch (userRole) {
         case USER_ROLE.SUPER_ADMIN:
             roleMenus.push(...superAdminMenus, ...defaultMenus);
             break;
@@ -54,84 +171,12 @@ export const sidebarMenus = (role: TUserRole): IDrawerItem[] => {
     return roleMenus;
 };
 
-export const superAdminMenus = [
-    {
-        title: "Dashboard",
-        path: `${USER_ROLE.SUPER_ADMIN}`,
-        icon: DashboardIcon,
-    },
-    {
-        title: "Manage Users",
-        path: `${USER_ROLE.SUPER_ADMIN}/manage-users`,
-        icon: GroupIcon,
-    },
-];
 
-export const adminMenus = [
-    {
-        title: "Dashboard",
-        path: `${USER_ROLE.ADMIN}`,
-        icon: DashboardIcon,
-    },
-    {
-        title: "Specialties",
-        path: `${USER_ROLE.ADMIN}/specialities`,
-        icon: TryIcon,
-    },
-    {
-        title: "Doctors",
-        path: `${USER_ROLE.ADMIN}/doctors`,
-        icon: MedicalInformationIcon,
-    },
-    {
-        title: "Schedules",
-        path: `${USER_ROLE.ADMIN}/schedules`,
-        icon: CalendarMonthIcon,
-    },
-    {
-        title: "Appointments",
-        path: `${USER_ROLE.ADMIN}/appointments`,
-        icon: BookOnlineIcon,
-    },
-    {
-        title: "Reviews",
-        path: `${USER_ROLE.ADMIN}/reviews`,
-        icon: ReviewsIcon,
-    },
-];
 
-export const doctorMenus = [
-    {
-        title: "Dashboard",
-        path: `${USER_ROLE.DOCTOR}`,
-        icon: DashboardIcon,
-    },
-    {
-        title: "Schedules",
-        path: `${USER_ROLE.DOCTOR}/schedules`,
-        icon: CalendarMonthIcon,
-    },
-    {
-        title: "Appointments",
-        path: `${USER_ROLE.DOCTOR}/appointment`,
-        icon: BookOnlineIcon,
-    },
-];
 
-export const patientMenus = [
-    {
-        title: "Appointments",
-        path: `${USER_ROLE.PATIENT}/appointments`,
-        icon: BookOnlineIcon,
-    },
-    {
-        title: "Prescriptions",
-        path: `${USER_ROLE.PATIENT}/prescriptions`,
-        icon: ReceiptLongIcon,
-    },
-    {
-        title: "Payment History",
-        path: `${USER_ROLE.PATIENT}/payment-history`,
-        icon: AttachMoneyIcon,
-    },
-];
+
+
+
+
+
+

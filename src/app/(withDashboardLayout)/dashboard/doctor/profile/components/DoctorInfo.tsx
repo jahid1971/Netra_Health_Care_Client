@@ -13,15 +13,18 @@ const ProfileField: React.FC<{
         <Box
             sx={{
                 width: "100%",
-                backgroundColor: "#f4f7fe",
+                backgroundColor: "white",
                 py: 1,
                 px: 2,
                 borderRadius: 1,
-            }}>
+                // boxShadow: 2,
+            }}
+        >
             <Typography
                 color="textSecondary"
                 variant="caption"
-                sx={{ fontWeight: "bold" }}>
+                sx={{ fontWeight: "bold" }}
+            >
                 {label}
             </Typography>
             <Typography variant="body1" sx={{ mt: 0.5 }}>
@@ -46,7 +49,6 @@ const DoctorInfo: React.FC<DoctorInfoProps> = ({ drProfile }) => {
                 Personal Information
             </Typography>
             <Grid container spacing={2}>
-                <ProfileField label="Role" value={drProfile?.role} />
                 <ProfileField label="Name" value={drProfile?.name} />
                 <ProfileField label="Email" value={drProfile?.email} />
                 <ProfileField
@@ -65,9 +67,9 @@ const DoctorInfo: React.FC<DoctorInfoProps> = ({ drProfile }) => {
                 />
                 <ProfileField
                     label="specialty"
-                    value={drProfile?.doctorSpecialties?.map(
-                        (specialty) => specialty?.specialties?.title+", "
-                    )}
+                    value={drProfile?.specialties
+                        ?.map((specialty) => specialty?.title)
+                        .join(", ")}
                 />
                 <ProfileField
                     label="  Appointment Fee"
@@ -79,21 +81,19 @@ const DoctorInfo: React.FC<DoctorInfoProps> = ({ drProfile }) => {
                 />
                 <ProfileField
                     label="Experience"
-                    value={`${drProfile?.experience} years`}
+                    value={`${drProfile?.experience}+ years`}
                 />
                 <ProfileField
                     label="Current Working Place"
                     value={drProfile?.currentWorkingPlace}
                 />
                 <ProfileField label="Joined" value={joinedAt} />
-                <ProfileField
-                    label="Current Status"
-                    value={drProfile?.status}
-                />
-                <ProfileField
-                    label="Average Rating"
-                    value={drProfile?.averageRating}
-                />
+                {drProfile?.averageRating && (
+                    <ProfileField
+                        label="Average Rating"
+                        value={drProfile?.averageRating}
+                    />
+                )}
             </Grid>
         </>
     );

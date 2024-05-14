@@ -3,11 +3,6 @@ import { authKey } from "@/constants/authKey";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
-
-
-
-
-
 export const getUserInfo = () => {
     const accessToken = cookies().get(authKey)?.value;
 
@@ -16,13 +11,7 @@ export const getUserInfo = () => {
         decodedToken = jwtDecode(accessToken);
         return {
             ...decodedToken,
-            role: (decodedToken as any)?.role?.toLowerCase(),
+            role: (decodedToken as any)
         };
     } else return "";
 };
-
-
-
-
-
-

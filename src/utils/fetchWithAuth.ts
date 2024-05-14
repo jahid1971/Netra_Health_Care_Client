@@ -2,6 +2,7 @@ import { authKey, refreshKey } from "@/constants/authKey";
 import { baseUrl } from "@/constants/commmon";
 import { handleUnAuthenticated } from "@/services/actions/cookies";
 import { refreshAccessToken } from "@/services/actions/refreshAccessToken";
+import Error from "next/error";
 import { cookies } from "next/headers";
 
 export async function fetchWithAuth(urlEndpoint, options = {}) {
@@ -10,9 +11,10 @@ export async function fetchWithAuth(urlEndpoint, options = {}) {
 
     const fetchOptions = {
         ...options,
+        credentials: "include",
         headers: {
             ...options?.headers,
-            Authorization: accessToken,
+            authorization: accessToken,
         },
     };
 
@@ -24,25 +26,38 @@ export async function fetchWithAuth(urlEndpoint, options = {}) {
         fetchOptions.body = JSON.stringify(options.data);
     }
 
-    let res = await fetch(`${baseUrl}${urlEndpoint}`, fetchOptions);
+    try {
+        let res = await fetch(`${baseUrl}${urlEndpoint}`, fetchOptions);
 
-    const statusCode = res.status;
+        const statusCode = res.status;
 
-    if (statusCode === 401) {
-        const newAccessToken = await refreshAccessToken();
+        if (statusCode === 401) {
+            const newAccessToken = await refreshAccessToken();
 
-        if (newAccessToken) {
-            fetchOptions.headers.Authorization = newAccessToken;
+            console.log(
+                newAccessToken,
+                "newAccessToken_______________________________________"
+            );
 
-            res = await fetch(`${baseUrl}${urlEndpoint}`, fetchOptions);
-        } else {
-            handleUnAuthenticated();
-            return;
+            if (newAccessToken) {
+                fetchOptions.headers.Authorization = newAccessToken;
+
+                res = await fetch(`${baseUrl}${urlEndpoint}`, fetchOptions);
+            } else {
+                handleUnAuthenticated();
+                return;
+            }
         }
+
+        const data = await res.json();
+        data.statusCode = statusCode;
+
+        return data;
+    } catch (err: any) {
+        console.log(err, "error in fetchWithAuth carech block");
+        return {
+            error: err,
+            message: err?.message || "Fetch error in fetchWithAuth",
+        };
     }
-
-    const data = await res.json();
-    data.statusCode = statusCode;
-
-    return data;
 }

@@ -7,22 +7,28 @@ import {
 } from "@/utils/apiBuilders";
 import { baseApi } from "./baseApi";
 import { tagTypes } from "../tagTypes";
+import { IDoctor } from "@/types/Doctors";
 
 const doctorsApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        createDoctor: createApiBuilder(build, "/user/create-doctor", [tagTypes.doctor]),
+        createDoctor: createApiBuilder(build, "/user/create-doctor", [
+            tagTypes.doctor,
+        ]),
 
-        getDoctors: queryApiBuilder(build, "/doctor", [tagTypes.doctor]),
+        getDoctors: queryApiBuilder<IDoctor[]>(build, "/doctor", [tagTypes.doctor]),
 
-        editDoctor: updateApiBuilder(build, "/doctor", [tagTypes.doctor,tagTypes.user]),
+        editDoctor: updateApiBuilder(build, "/doctor", [
+            tagTypes.doctor,
+            tagTypes.user,
+        ]),
 
-        getSingleDoctor: singleQueryApiBuilder(build, "/doctor", [tagTypes.doctor]),
+        getSingleDoctor: singleQueryApiBuilder<IDoctor>(build, "/doctor", [
+            tagTypes.doctor,
+        ]),
 
-        // deleteDoctor: build.mutation({
-        //     query: deleteApiBuilder("/doctor/soft"),
-        //     invalidatesTags: [tagTypes.doctor],
-        // }),
-        deleteDoctor: deleteApiBuilder(build, "/doctor/soft", [tagTypes.doctor]),
+        deleteDoctor: deleteApiBuilder(build, "/doctor/soft", [
+            tagTypes.doctor,
+        ]),
     }),
 });
 

@@ -12,32 +12,26 @@ instance.defaults.timeout = 60000;
 
 type TAxiosResponse<T> = AxiosResponse<T> & TResponse<T>;
 
-instance.interceptors.request.use(
-    function (config) {
-        const accessToken = getCookie(authKey);
+// instance.interceptors.request.use(
+//     function (config) {
+//         const accessToken = getCookie(authKey);
 
-        if (accessToken) {
-            config.headers.Authorization = accessToken;
-        }
-        return config;
-    },
-    function (error) {
-        console.log(error, "error in axios instance request");
-        return Promise.reject(error);
-    }
-);
+//         if (accessToken) {
+//             config.headers.Authorization = accessToken;
+//         }
+//         return config;
+//     },
+//     function (error) {
+//         console.log(error, "error in axios instance request");
+//         return Promise.reject(error);
+//     }
+// );
 
 instance.interceptors.response.use(
     function (response): TAxiosResponse<any> {
         console.log(response?.data, "response in axios instance");
 
-        return response
-
-        // return {
-        //     ...response,
-        //     ...response?.data,
-        //     meta: response?.data?.meta,
-        // } as TAxiosResponse<any>;
+        return response;
     },
 
     async function (error) {
@@ -50,12 +44,16 @@ instance.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 const response = await getNewAccessToken();
-                const accessToken = response?.data?.data?.accessToken;
-                console.log(accessToken, "accessToken after refresh..................................");
-                if (accessToken) {
-                    originalRequest.headers["Authorization"] = accessToken;
+                // const accessToken = response?.data?.data?.accessToken;
+                console.log(
+                    response.data,
+                    "response.data after refresh.................................."
+                );
 
-                    await setTokenToCookies(authKey, accessToken);
+                if (response?.status === 200) {
+                    // originalRequest.headers["Authorization"] = accessToken;
+
+                    // await setTokenToCookies(authKey, accessToken);
 
                     try {
                         const res = await instance(originalRequest);
@@ -77,6 +75,7 @@ instance.interceptors.response.use(
                     }
                 } else {
                     deleteCookies([authKey, refreshKey]);
+                    // console.log("No access token in response after refresh");
                 }
             } catch (refreshError) {
                 console.log(
@@ -84,15 +83,13 @@ instance.interceptors.response.use(
                     "Token refresh failed in axios main catch block"
                 );
 
-                // deleteCookies([authKey, refreshKey]);
-
                 return Promise.reject(refreshError);
             }
         }
 
-        console.log(
+        console.warn(
             error,
-            "Warning: outside 401 handling, returning original error."
+            "Warning: outside 401 handling, returning original error !!!!!!"
         );
 
         return Promise.reject(error);
@@ -110,13 +107,13 @@ const getNewAccessToken = async () => {
     });
 };
 
-function getCookie(name: string) {
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.startsWith(name + "=")) {
-            return cookie.substring(name.length + 1);
-        }
-    }
-    return null;
-}
+// function getCookie(name: string) {
+//     const cookies = document.cookie.split(";");
+//     for (let i = 0; i < cookies.length; i++) {
+//         const cookie = cookies[i].trim();
+//         if (cookie.startsWith(name + "=")) {
+//             return cookie.substring(name.length + 1);
+//         }
+//     }
+//     return null;
+// }

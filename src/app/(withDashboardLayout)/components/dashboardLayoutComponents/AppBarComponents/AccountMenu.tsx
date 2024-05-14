@@ -14,6 +14,10 @@ import { useRouter } from "next/navigation";
 import { logOutUser } from "@/services/actions/logOutuser";
 import { toast } from "sonner";
 import { grey } from "@mui/material/colors";
+import { useAppDispatch } from "@/redux/hooks";
+
+import { baseApi } from "@/redux/api/baseApi";
+import { setUser } from "@/redux/slices/authSlice";
 
 const menuStyles = {
     paper: {
@@ -47,7 +51,9 @@ const menuStyles = {
 export default function AccountMenu() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const dispatch = useAppDispatch();
     const router = useRouter();
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -57,13 +63,19 @@ export default function AccountMenu() {
     };
     const handleLogout = () => {
         setAnchorEl(null);
-        logOutUser();
-        router.push("/");
+        logOutUser(router);
+        dispatch({ type: "RESET_APP" });
     };
 
     return (
         <React.Fragment>
-            <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    textAlign: "center",
+                }}
+            >
                 <Tooltip
                     title="Account settings"
                     componentsProps={{
@@ -73,7 +85,8 @@ export default function AccountMenu() {
                                 color: "primary.main", // Change text color if necessary
                             },
                         },
-                    }}>
+                    }}
+                >
                     <IconButton
                         onClick={handleClick}
                         aria-controls={open ? "account-menu" : undefined}
@@ -85,7 +98,8 @@ export default function AccountMenu() {
                             "& svg": {
                                 color: "primary.main",
                             },
-                        }}>
+                        }}
+                    >
                         <KeyboardArrowDownIcon />
                     </IconButton>
                 </Tooltip>
@@ -100,9 +114,15 @@ export default function AccountMenu() {
                     ...menuStyles,
                 }}
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
                 <MenuItem onClick={handleClose}>
-                    <Avatar sx={{ background: "transparent", color: "primary.main" }} />
+                    <Avatar
+                        sx={{
+                            background: "transparent",
+                            color: "primary.main",
+                        }}
+                    />
                     Profile
                 </MenuItem>
 

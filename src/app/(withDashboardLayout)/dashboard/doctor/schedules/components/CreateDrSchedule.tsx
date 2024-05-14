@@ -30,10 +30,9 @@ const CreateDrSchedule = () => {
             pickDate: dayjs(new Date().toDateString()),
         },
     });
-    const { handleSubmit, watch, reset, setError } = methods;
+    const { handleSubmit, watch, reset } = methods;
 
     const pickedDate = watch("pickDate");
-
 
     // if (pickedDate) {
     //     query.startDate = new Date(pickedDate).toISOString()
@@ -52,8 +51,9 @@ const CreateDrSchedule = () => {
             .toISOString();
     }
 
-    const { data: schedules } = useGetSchedulesQuery(query, { skip: !pickedDate });
-
+    const { data: schedules } = useGetSchedulesQuery(query, {
+        // skip: !pickedDate,
+    });
 
     // if (schedules?.data?.length === 0) {
     //     setError("pickDate", {
@@ -63,10 +63,14 @@ const CreateDrSchedule = () => {
     // }
     const hasNoSchedulesError = schedules?.data?.length === 0;
 
-    const schedulesData = schedules?.data?.map((schedule: Record<string, any>) => ({
-        label: `${formatedTime(schedule.startDateTime)} - ${formatedTime(schedule.endDateTime)}`,
-        value: schedule.id,
-    }));
+    const schedulesData = schedules?.data?.map(
+        (schedule: Record<string, any>) => ({
+            label: `${formatedTime(schedule.startDateTime)} - ${formatedTime(
+                schedule.endDateTime
+            )}`,
+            value: schedule.id,
+        })
+    );
 
     const [createDrSchedule] = useCreateDoctorScheduleMutation();
 
@@ -88,7 +92,11 @@ const CreateDrSchedule = () => {
         <N_Modal title="Create Doctor Schedule" modalId="createDrSchedule">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Stack gap={2} width={400}>
-                    <N_DatePicker name="pickDate" label="Pick Date" methods={methods} />
+                    <N_DatePicker
+                        name="pickDate"
+                        label="Pick Date"
+                        methods={methods}
+                    />
                     <N_MultiSelect
                         items={schedulesData}
                         name="availableSchedule"
@@ -98,7 +106,9 @@ const CreateDrSchedule = () => {
                     />
                     {hasNoSchedulesError && (
                         <Typography color="error">
-                         No schedule available for {dayjs(pickedDate).format("MMMM D, YYYY")}
+                            No schedule available for{" "}
+                            {dayjs(pickedDate).format("MMMM D, YYYY")} <br />
+                            Please Contact Admin
                         </Typography>
                     )}
                     <Button type="submit">Create</Button>

@@ -67,19 +67,20 @@ export const queryApiBuilder = <T>(
 
         // transformResponse: (response: any) => {
         //     return {
-        //         data: response?.data
+        //         data: response?.data?.data ?? response?.data,
+        //         meta: response?.data?.meta,
         //     }
 
         // }
     });
 };
 
-export const singleQueryApiBuilder = (
-    build: any,
+export const singleQueryApiBuilder = <T>(
+    build: IBuildApi,
     url: string,
     tagTypes?: string[]
 ) => {
-    return build.query({
+    return build.query<TResponse<T>, string>({
         query: (id: string) => {
             return {
                 url: `${url}/${id}`,

@@ -10,7 +10,13 @@ const appointmentApi = baseApi.injectEndpoints({
             "/appointment/my-appointments",
             [tagTypes.appointment]
         ),
+
+        getDocotorAppointments: queryApiBuilder<TAppointment[]>(
+            build,
+            "/appointment/doctor-appointments",
+            [tagTypes.appointment]
+        ),
     }),
 });
 
-export const { useGetMyAppointmentQuery } = appointmentApi;
+export const { useGetMyAppointmentQuery,useGetDocotorAppointmentsQuery } = appointmentApi;

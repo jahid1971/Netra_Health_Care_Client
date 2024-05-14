@@ -1,4 +1,3 @@
-import { TResponseRedux } from "./../../types/common";
 import {
     createApiBuilder,
     deleteApiBuilder,
@@ -6,18 +5,24 @@ import {
 } from "@/utils/apiBuilders";
 import { baseApi } from "./baseApi";
 import { tagTypes } from "../tagTypes";
-import { ISchedule } from "@/types/schedules";
+import { ISchedule, TDoctorSchedule } from "@/types/schedules";
 
 const doctorScheduleApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         createDoctorSchedule: createApiBuilder(build, "/doctor-schedule", [
             tagTypes.doctorSchedule,
-            // tagTypes.schedule,
+            tagTypes.schedule,
         ]),
 
-        getDoctorSchedules: queryApiBuilder<ISchedule[]>(
+        getDoctorSchedules: queryApiBuilder<TDoctorSchedule[]>(
             build,
             "/doctor-schedule",
+            [tagTypes.doctorSchedule]
+        ),
+
+        getMySchedules: queryApiBuilder<TDoctorSchedule[]>(
+            build,
+            "/doctor-schedule/my-schedules",
             [tagTypes.doctorSchedule]
         ),
 
@@ -29,5 +34,6 @@ const doctorScheduleApi = baseApi.injectEndpoints({
 export const {
     useCreateDoctorScheduleMutation,
     useGetDoctorSchedulesQuery,
+    useGetMySchedulesQuery,
     useDeleteDoctorScheduleMutation,
 } = doctorScheduleApi;

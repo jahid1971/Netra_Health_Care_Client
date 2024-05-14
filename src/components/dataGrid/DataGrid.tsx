@@ -3,6 +3,9 @@ import { useDebounced } from "@/redux/hooks";
 import { Box, Stack, styled, Typography } from "@mui/material";
 import { DataGrid, GridSortModel } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
+import N_Pagination from "../pagination/Pagination";
+import { theme } from "@/lib/theme/theme";
+import { blue } from "@mui/material/colors";
 
 type TDataGridProps = {
     rows: any[];
@@ -15,6 +18,7 @@ type TDataGridProps = {
     searchTerm?: any;
     sorting?: boolean;
     setQuery?: (queryUpdater: (prevQuery: any) => any) => void;
+    meta?: any
 };
 
 const N_DataGrid = ({
@@ -28,6 +32,10 @@ const N_DataGrid = ({
     searchTerm,
     sorting = true,
     setQuery,
+    meta,
+
+    headerClassName = "default-header",
+    headerStyle = {},
 }: TDataGridProps) => {
     const debouncedSearchTerm = useDebounced({
         searchQuery: searchTerm,
@@ -42,6 +50,20 @@ const N_DataGrid = ({
             }));
         }
     }, [debouncedSearchTerm]);
+
+    useEffect(() => {
+        if (rows?.length < 1 && meta?.page > 1) {
+            setQuery((prevQuery) => ({
+                ...prevQuery,
+                page: meta?.page - 1,
+            }));
+        }
+    }, [rows?.length]);
+
+    const styledColumns = columns.map((col) => ({
+        ...col,
+        headerClassName: headerClassName,
+    }));
 
     const CustomNoRowsOverlay = () => {
         return (
@@ -67,28 +89,39 @@ const N_DataGrid = ({
     }, []);
 
     return (
-        <Box my={2} sx={{ backgroundColor: "white" }}>
-            <DataGrid
-                rows={rows}
-                disableColumnSorting={sorting ? false : true}
-                sortingMode="server"
-                onSortModelChange={handleSortModelChange}
-                disableColumnFilter
-                columns={columns}
-                loading={isLoading}
-                hideFooter={hideFooter}
-                autoHeight={autoHeight}
-                slotProps={{
-                    loadingOverlay: {
-                        variant: "linear-progress",
-                        noRowsVariant: "skeleton",
-                    },
-                }}
-                slots={{
-                    noRowsOverlay: CustomNoRowsOverlay,
-                    ...slots,
-                }}
-            />
+        <Box my={2}>
+            <Box sx={{ backgroundColor: "white", mb: 2 }}>
+                <DataGrid
+                    rows={rows}
+                    disableColumnSorting={sorting ? false : true}
+                    sortingMode="server"
+                    onSortModelChange={handleSortModelChange}
+                    disableColumnFilter
+                    columns={styledColumns}
+                    loading={isLoading}
+                    hideFooter={hideFooter}
+                    autoHeight={autoHeight}
+                    slotProps={{
+                        loadingOverlay: {
+                            variant: "linear-progress",
+                            noRowsVariant: "skeleton",
+                        },
+                    }}
+                    slots={{
+                        noRowsOverlay: CustomNoRowsOverlay,
+                        ...slots,
+                    }}
+                    sx={{
+                        "& .default-header": {
+                            border: "none",
+                            backgroundColor: blue[50],
+                            backdropFilter: "blur(10px)", 
+                        },
+                    }}
+                />
+            </Box>
+
+            {meta && <N_Pagination setQuery={setQuery} meta={meta} />}
         </Box>
     );
 };

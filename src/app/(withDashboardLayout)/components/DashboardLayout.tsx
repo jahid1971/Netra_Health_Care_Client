@@ -4,21 +4,25 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 
-
-
 import Toolbar from "@mui/material/Toolbar";
 
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "@/redux/hooks";
-import { setUser } from "@/redux/slices/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setIsLoadingFalse, setUser } from "@/redux/slices/authSlice";
 
 import DashboardDrawer from "./dashboardLayoutComponents/DashboardDrawer";
-import N_AppBar from "./dashboardLayoutComponents/N_AppBar";
+import TopBar from "./dashboardLayoutComponents/AppBar";
 import { grey } from "@mui/material/colors";
+import { useGetMyProfileQuery } from "@/redux/api/myProfileApi";
+import {
+    selectNotification,
+    setNotification,
+} from "@/redux/slices/notificationSlice";
+import { Link } from "@mui/material";
+// import Link from "next/link";
 
 export default function DashboardLayout({
     children,
-    userInfo,
 }: {
     children: React.ReactNode;
 }) {
@@ -27,10 +31,22 @@ export default function DashboardLayout({
     const [drawerWidth, setDrawerWidth] = useState(250);
     const dispatch = useAppDispatch();
 
+    const { data } = useGetMyProfileQuery(undefined);
+
     useEffect(() => {
-        dispatch(setUser(userInfo));
-        console.log(userInfo, "useInfo in drawer");
-    }, []);
+        dispatch(setUser(data?.data));
+        if (data?.data) dispatch(setIsLoadingFalse());
+        if (data?.data?.needPasswordChange) {
+            dispatch(
+                setNotification({
+                    text: `Please change your Password .To secure your account you must change the given password`,
+                    active: true,
+                    link: "/dashboard/change-password",
+                    linkLabel: "Change Password",
+                })
+            )
+        }
+    }, [data?.data]);
 
     const handleDrawerClose = () => {
         setIsClosing(true);
@@ -62,7 +78,7 @@ export default function DashboardLayout({
                     boxShadow: "none",
                 }}
             >
-                <N_AppBar handleDrawerToggle={handleDrawerToggle} />
+                <TopBar handleDrawerToggle={handleDrawerToggle} />
             </AppBar>
 
             <DashboardDrawer
@@ -80,7 +96,7 @@ export default function DashboardLayout({
                     flexGrow: 1,
                     p: 3,
                     width: { sm: `calc(100% - ${drawerWidth}px)` },
-                    backgroundColor:'#F4F7FE',
+                    backgroundColor: "#F4F7FE",
                     // backgroundColor:grey[100],
                     minHeight: "100vh",
                 }}

@@ -11,13 +11,18 @@ import { useGetMyAppointmentQuery } from "@/redux/api/appointmentApi";
 import N_Chips from "@/components/ui/N_Chips";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import Link from "next/link";
+import tableSerial from "@/utils/tableSerial";
 
 const PatientAppoinmtntPage = () => {
     const [query, setQuery] = useState<Record<string, any>>({});
 
     const { data, isFetching } = useGetMyAppointmentQuery(query);
 
-    const appointmentsData = data?.data;
+    const appointments = data?.data;
+    const appointmentsData = appointments?.map((appointment, index) => ({
+        ...appointment,
+        sl: tableSerial(query, index),
+    }));
 
     console.log(appointmentsData, "appointmentdataaa");
 
@@ -25,24 +30,32 @@ const PatientAppoinmtntPage = () => {
 
     const columns: GridColDef[] = [
         {
+            field: "sl",
+            headerName: "SL",
+            width: 120,
+            headerAlign: "center",
+            align: "center",
+        },
+        {
             field: "name",
             headerName: "Doctor Name",
             flex: 1,
-            headerAlign: "center",
-            align: "center",
-            renderCell: ({ row }) => row.doctor.name,
+
+            renderCell: ({ row }) => row?.doctor?.name,
         },
         {
             field: "appointmentDate",
             headerName: "Appointment Date",
             flex: 1,
-            renderCell: ({ row }) => dateFaormatter(row.schedule.startDateTime),
+            renderCell: ({ row }) =>
+                dateFaormatter(row?.schedule.startDateTime),
         },
         {
             field: "appointmentTime",
-            headerName: "Appointment Date",
+            headerName: "Appointment Time",
             flex: 1,
-            renderCell: ({ row }) => timeFormatter(row.schedule.startDateTime),
+            width:200,
+            renderCell: ({ row }) => timeFormatter(row?.schedule.startDateTime),
         },
         {
             field: "paymentStatus",
@@ -50,10 +63,10 @@ const PatientAppoinmtntPage = () => {
             flex: 1,
             maxWidth: 150,
             renderCell: ({ row }) => {
-                return row.paymentStatus === "PAID" ? (
-                    <N_Chips label={row.paymentStatus} type="success" />
+                return row?.paymentStatus === "PAID" ? (
+                    <N_Chips label={row?.paymentStatus} type="success" />
                 ) : (
-                    <N_Chips label={row.paymentStatus} type="error" />
+                    <N_Chips label={row?.paymentStatus} type="error" />
                 );
             },
         },
@@ -68,12 +81,12 @@ const PatientAppoinmtntPage = () => {
                     <IconButton
                         component={Link}
                         href={`/video?videoCallingId=${row?.videoCallingId}`}
-                        disabled={row.paymentStatus === "UNPAID"}
+                        disabled={row?.paymentStatus === "UNPAID"}
                     >
                         <VideocamIcon
                             sx={{
                                 color:
-                                    row.paymentStatus === "PAID"
+                                    row?.paymentStatus === "PAID"
                                         ? "primary.main"
                                         : "",
                             }}

@@ -8,31 +8,38 @@ import AirlineSeatReclineExtraOutlinedIcon from "@mui/icons-material/AirlineSeat
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 
 const SummaryCards = ({ metaData }: { metaData: TDashboardData }) => {
+    const summayCardData = [
+        {
+            title: "Doctors",
+            count: metaData?.doctorCount,
+            icon: <PersonAddAlt1OutlinedIcon />,
+        },
+        {
+            title: "Patients",
+            count: metaData?.patientCount,
+            icon: <AirlineSeatReclineExtraOutlinedIcon />,
+        },
+        {
+            title: "Appoinment",
+            count: metaData?.appointmentCount,
+            icon: <AssignmentOutlinedIcon />,
+        },
+        {
+            title: "Revenue",
+            count: metaData?.totalRevenue,
+            icon: <MonetizationOnOutlinedIcon />,
+        },
+    ];
     return (
         <Stack direction={"row"} gap={2} justifyContent={"space-between"}>
-            <SummaryCard
-                title={"Doctors"}
-                count={metaData?.doctorCount}
-                icon={<PersonAddAlt1OutlinedIcon />}
-            />
-            <SummaryCard
-                title={"Patients"}
-                count={metaData.patientCount}
-                icon={<AirlineSeatReclineExtraOutlinedIcon />}
-            />
-            <SummaryCard
-                title={"Appoinment"}
-                count={metaData.appointmentCount}
-                icon={<AssignmentOutlinedIcon />}
-            />
-            <SummaryCard
-                title={"Revenue"}
-                count={metaData?.totalRevenue?._sum?.amount}
-                icon={<MonetizationOnOutlinedIcon />}
-            />
-            {/* <DashboardCard />
-    <DashboardCard />
-    <DashboardCard /> */}
+            {summayCardData.map((item, index) => (
+                <SummaryCard
+                    key={index}
+                    title={item.title}
+                    count={item.count}
+                    icon={item.icon}
+                />
+            ))}
         </Stack>
     );
 };

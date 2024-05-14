@@ -16,16 +16,17 @@ export const deleteCookies = async (keys: string[]) => {
 export async function setTokenToCookies(
     key: string,
     token: string,
-    httpOnly: boolean = false
+    option: { httpOnly: boolean } = { httpOnly: false }
 ) {
     const options: {
         httpOnly?: boolean;
         secure?: boolean;
         //   sameSite?: 'strict' | 'lax' | 'none';
-        path: string;
+        path?: string;
     } = {};
 
-    if (httpOnly) {
+    
+    if (option.httpOnly) {
         options.httpOnly = true;
         options.secure = process.env.NODE_ENV === "production";
         options.path = "/";
@@ -34,9 +35,9 @@ export async function setTokenToCookies(
     cookies().set(key, token, options);
 }
 
-export async function getCookies  (key: string)  {
+export async function getCookies(key: string) {
     return cookies().get(key)?.value;
-};
+}
 
 export async function handleUnAuthenticated() {
     deleteCookies([authKey, refreshKey]);

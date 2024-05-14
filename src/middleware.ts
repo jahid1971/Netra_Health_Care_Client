@@ -30,7 +30,7 @@ export function middleware(req: NextRequest) {
             return NextResponse.next();
         } else {
             const loginUrl = new URL("/login", req.url);
-            
+
             loginUrl.searchParams.set("redirect", pathname); // Capture intended route
 
             return NextResponse.redirect(loginUrl);
@@ -38,8 +38,15 @@ export function middleware(req: NextRequest) {
         }
     }
 
+    if (accessToken && (pathname === "/login" || pathname === "/register")) {
+        return NextResponse.redirect(new URL("/", req.url));
+    }
+
     if (accessToken && commonPrivateRoutes.includes(pathname)) {
         return NextResponse.next();
+    }
+    if (accessToken && pathname === "/") {
+        return NextResponse.redirect(new URL("/dashboard", req.url));
     }
 
     let role = null;
@@ -59,5 +66,12 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/login", "/register", "/dashboard/:page*", "/doctors/:path*"],
+    matcher: [
+        "/login",
+        "/register",
+        "/dashboard/:page*",
+        "/doctors/:path*",
+        "/video/:path*",
+        "/",
+    ],
 };
