@@ -6,7 +6,7 @@ import { EndpointBuilder } from "@reduxjs/toolkit/query";
 type IBuildApi = EndpointBuilder<any, any, any>;
 
 export type TUpdateArgs = {
-    id: string;
+    id?: string;
     data: any;
 };
 
@@ -14,7 +14,7 @@ export type TUpdateArgs = {
 export const createApiBuilder = (
     build: any,
     url: string,
-    tagTypes: string[]
+    tagTypes?: string[]
 ) => {
     return build.mutation({
         query: (args: any) => {
@@ -30,14 +30,13 @@ export const createApiBuilder = (
 };
 
 export const updateApiBuilder = (
-    build: any,
+    build: IBuildApi,
     url: string,
     tagTypes: string[],
     options: { method?: string; contentType?: string } = {}
 ) => {
-    return build.mutation({
-        query: (args: TUpdateArgs) => {
-            console.log("options in updateApiBuilder", options);
+    return build.mutation<any, TUpdateArgs>({
+        query: (args) => {
             console.log("args in updateApiBuilderrrrr", args);
             return {
                 url: `${url}${args.id ? `/${args.id}` : ""}`,
@@ -80,10 +79,10 @@ export const singleQueryApiBuilder = <T>(
     url: string,
     tagTypes?: string[]
 ) => {
-    return build.query<TResponse<T>, string>({
-        query: (id: string) => {
+    return build.query<TResponse<T>, { id?: string }>({
+        query: (args) => {
             return {
-                url: `${url}/${id}`,
+                url: `${url}/${args?.id}`,
                 method: "GET",
             };
         },

@@ -5,13 +5,14 @@ export const theme = createTheme({
     palette: {
         primary: {
             main: "#1586FD",
-            
         },
         secondary: {
             // main: "#666f73",
             main: "#F4F7FE",
         },
-
+        text: {
+            primary: "#333333",
+        },
     },
 
     components: {
@@ -20,11 +21,15 @@ export const theme = createTheme({
                 variant: "contained",
                 // size: "small",
             },
-            // styleOverrides: {
-            //     root: {
-            //         padding: "8px 24px",
-            //     },
-            // },
+            styleOverrides: {
+                outlined: {
+                    border: "1px solid",
+                    "&:hover": {
+                        backgroundColor: "#1586FD",
+                        color: "#fff",
+                    },
+                },
+            },
         },
         MuiTextField: {
             defaultProps: {
@@ -36,9 +41,7 @@ export const theme = createTheme({
         MuiContainer: {
             defaultProps: {
                 maxWidth: "lg",
-                
             },
-            
         },
         MuiDataGrid: {
             defaultProps: {
@@ -53,7 +56,6 @@ export const theme = createTheme({
             color: "#0B1134CC",
         },
     },
-    
 });
 
 theme.shadows[1] = "0px 5px 22px lightgray";

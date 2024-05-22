@@ -13,6 +13,7 @@ interface IDatePicker {
     fullWidth?: boolean;
     sx?: SxProps;
     methods?: any;
+    disablePast?: boolean;
 }
 
 const N_DatePicker = ({
@@ -23,28 +24,38 @@ const N_DatePicker = ({
     fullWidth = true,
     sx,
     methods,
+    disablePast = true,
 }: IDatePicker) => {
     const {
         control,
         formState: { errors },
+        getValues,
     } = methods ?? useFormContext();
+
+    const defaultValue = getValues(name) || dayjs(); //getValues(name) is for update previous date
+
+    const formattedDefaultValue = dayjs(new Date(defaultValue).toDateString());
 
     return (
         <>
             <Controller
                 name={name}
                 control={control}
-                defaultValue={dayjs(new Date().toDateString())}
-                render={({ field: { onChange, value, ...field },  }) => {
+                defaultValue={formattedDefaultValue}
+                render={({ field: { onChange, value, ...field } }) => {
                     return (
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
                                 label={label}
                                 timezone="system"
-                                disablePast
+                                disablePast={disablePast}
                                 {...field}
                                 onChange={(date) => onChange(date)}
-                                value={value || Date.now()}
+                                value={
+                                    value
+                                        ? dayjs(new Date(value).toDateString())
+                                        : formattedDefaultValue
+                                }
                                 slotProps={{
                                     textField: {
                                         required: required,

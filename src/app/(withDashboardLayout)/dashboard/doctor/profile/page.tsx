@@ -15,21 +15,29 @@ import { tryCatch } from "@/utils/tryCatch";
 import { useDispatch } from "react-redux";
 import { openModal } from "@/redux/slices/modalSlice";
 import ProfileUpdate from "./components/ProfileUpdate";
+import { useEditDoctorMutation } from "@/redux/api/doctorsApi";
+import { modifyPayload } from "@/utils/modifyPayload";
 
 const ProfilePage = () => {
     const { data } = useGetMyProfileQuery(undefined);
 
-    const [updateMyProfile, { isLoading }] = useUpdateMyProfileMutation();
+    // const [updateMyProfile, { isLoading }] = useUpdateMyProfileMutation();
+
+    const [updateDoctorProfile, { isLoading }] = useEditDoctorMutation();
 
     const doctorData = data?.data;
 
-
     const handleUpload = (file: File) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("data", JSON.stringify({}));
+        const modifiedData = modifyPayload({ file: file });
 
-        updateMyProfile({ data: formData });
+        try {
+            updateDoctorProfile({
+                data: modifiedData,
+                id: doctorData?.doctorId,
+            });
+        } catch (err) {
+            console.log(err, "err in upload file");
+        }
     };
 
     const dispatch = useDispatch();

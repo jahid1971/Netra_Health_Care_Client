@@ -7,7 +7,6 @@ import ScheduleButtons from "./ScheduleButtons";
 import { useMemo, useState } from "react";
 import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
 import { createAppointment } from "@/services/actions/appointment";
-import { ISchedule } from "@/types/schedules";
 import { initialPayment } from "@/services/actions/payment";
 import { useRouter } from "next/navigation";
 import SubmitButton from "@/components/ui/SubmitButton";
@@ -24,6 +23,8 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
             doctorId,
             startDate: dayjs().startOf("day").toISOString(), // Current date
             endDate: dayjs().endOf("day").toISOString(),
+            limit: 100, // as there is no pagination here
+            isBooked: false,
         }),
         [doctorId]
     );
@@ -36,6 +37,8 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
             doctorId,
             startDate: dayjs().add(1, "day").startOf("day").toISOString(), // Tomorrow's date
             endDate: dayjs().add(1, "day").endOf("day").toISOString(),
+            limit: 100,
+            isBooked: false,
         }),
         [doctorId]
     );
@@ -43,23 +46,15 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
     const { data: tomorrowSlots, isLoading: isTomorrowLoading } =
         useGetDoctorSchedulesQuery(tomorrowQuery);
 
-    console.log(todaySlots, "todaySlots", tomorrowSlots, "tomorrowSlots");
-
     const handleBookAppointment = async () => {
         tryCatch(async () => {
             if (doctorId && scheduleId) {
                 const res = await createAppointment({ doctorId, scheduleId });
 
-                const id = res?.data?.id;
-                console.log(res, "res");
+                const paymentUrl = res?.data?.paymentUrl;
 
-                if (id) {
-                    const response = await initialPayment(id);
-                    console.log(response, "response of paymanet url");
-
-                    if (response?.data?.paymentUrl) {
-                        router.push(response?.data?.paymentUrl);
-                    } else response;
+                if (paymentUrl) {
+                    router.push(paymentUrl);
                 } else return res;
             } else
                 throw new AppError("Select a schedule to book an appointment");
@@ -68,11 +63,11 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
 
     return (
         <Box mt={2}>
-            <Typography variant="h5" color={"primary.main"}>
+            <Typography variant="h5" color={"primary.main"} textAlign={"center"} mb={2}>
                 Availability
             </Typography>
 
-            <Typography variant="h6" fontSize={15} fontWeight={600} mb={1}>
+            <Typography variant="h6" fontSize={15} fontWeight={600} mb={1} textAlign={"center"}>
                 Today: {dayjs().format("MMMM D, YYYY, dddd")}
             </Typography>
 
@@ -88,7 +83,7 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
 
             <DashedLine />
 
-            <Typography variant="h6" fontSize={15} fontWeight={600} mb={1}>
+            <Typography variant="h6" fontSize={15} fontWeight={600} mb={1} textAlign={"center"}>
                 Tomrrow: {dayjs().add(1, "day").format("MMMM D, YYYY, dddd")}
             </Typography>
 

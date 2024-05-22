@@ -26,7 +26,7 @@ const PaymentStatusPage = ({ searchParams }: PropTypes) => {
             );
             title = "Payment Successful";
             break;
-        case "cancel":
+        case "cancelled":
             icon = <CancelIcon sx={{ fontSize: "90px", color: "#FF0000" }} />;
             title = "Payment Cancelled";
             break;

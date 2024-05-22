@@ -88,12 +88,11 @@ const DoctorInfo: React.FC<DoctorInfoProps> = ({ drProfile }) => {
                     value={drProfile?.currentWorkingPlace}
                 />
                 <ProfileField label="Joined" value={joinedAt} />
-                {drProfile?.averageRating && (
-                    <ProfileField
-                        label="Average Rating"
-                        value={drProfile?.averageRating}
-                    />
-                )}
+
+                <ProfileField
+                    label="Average Rating"
+                    value={drProfile?.averageRating}
+                />
             </Grid>
         </>
     );

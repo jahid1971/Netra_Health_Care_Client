@@ -16,6 +16,7 @@ type TFormProps = {
     children: React.ReactNode;
     onSubmit: SubmitHandler<FieldValues>;
     error?: string;
+    onlyDirtyFields?: boolean;
 } & TFormConfig;
 
 const N_Form = ({
@@ -24,6 +25,7 @@ const N_Form = ({
     resolver,
     defaultValues,
     error,
+    onlyDirtyFields
 }: TFormProps) => {
     const formConfig: TFormConfig = {};
 
@@ -37,10 +39,20 @@ const N_Form = ({
 
     const methods = useForm(formConfig);
 
-    const { handleSubmit } = methods;
+    const { handleSubmit, formState } = methods;
+
+    const { dirtyFields } = formState;
 
     const submit: SubmitHandler<FieldValues> = (data) => {
-        onSubmit(data);
+        const filteredData = Object.keys(dirtyFields).reduce(
+            (acc: Record<string, any>, field) => {
+                acc[field] = data[field] === "" ? undefined : data[field];
+                return acc;
+            },
+            {} as Record<string, any>
+        );
+
+        onSubmit(onlyDirtyFields ? filteredData : data);
     };
 
     return (

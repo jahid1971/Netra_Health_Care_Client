@@ -1,5 +1,5 @@
-import { TQuery } from "@/types/common";
+import { IMeta, TQuery } from "@/types/common";
 
-export default function tableSerial(query: TQuery, index: number) {
-    return ((query?.page ?? 1) - 1) * (query?.limit ?? 5) + index + 1 + ".";
+export default function tableSerial(meta: IMeta | undefined, index: number) {
+    return ((meta?.page ?? 1) - 1) * (meta?.limit ?? 5) + index + 1 + ".";
 }

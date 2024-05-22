@@ -12,6 +12,7 @@ import N_Chips from "@/components/ui/N_Chips";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import Link from "next/link";
 import tableSerial from "@/utils/tableSerial";
+import { IMeta } from "@/types/common";
 
 const PatientAppoinmtntPage = () => {
     const [query, setQuery] = useState<Record<string, any>>({});
@@ -26,7 +27,8 @@ const PatientAppoinmtntPage = () => {
 
     console.log(appointmentsData, "appointmentdataaa");
 
-    const meta = data?.meta;
+    const meta= data?.meta as IMeta 
+   
 
     const columns: GridColDef[] = [
         {
@@ -54,7 +56,7 @@ const PatientAppoinmtntPage = () => {
             field: "appointmentTime",
             headerName: "Appointment Time",
             flex: 1,
-            width:200,
+            width: 200,
             renderCell: ({ row }) => timeFormatter(row?.schedule.startDateTime),
         },
         {
@@ -106,8 +108,9 @@ const PatientAppoinmtntPage = () => {
                 columns={columns}
                 isLoading={isFetching}
                 notFoundFor="Schedule"
+                meta={meta}
             />
-            <N_Pagination setQuery={setQuery} meta={meta} />
+            {/* <N_Pagination setQuery={setQuery} meta={meta} /> */}
         </Box>
     );
 };

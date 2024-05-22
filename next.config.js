@@ -11,21 +11,37 @@ const nextConfig = {
 
     // customized .....................................................
 
-    webpack(config) {
+    webpack(config, { isServer, dev }) {
         config.ignoreWarnings = [
-          (warning) =>
-            warning.message.includes("__barrel_optimize__"), // Suppress specific warning logs
+            (warning) => warning.message.includes("__barrel_optimize__"), // Suppress specific warning logs
         ];
-        return config;
-      },
+        // Enable caching for faster rebuilds
+        config.cache = true;
 
-      devIndicators: {
+        // Reduce the number of workers for smaller projects
+        if (dev && !isServer) {
+            config.optimization.splitChunks = {
+                cacheGroups: {
+                    default: false,
+                    vendors: false,
+                },
+            };
+        }
+        return config;
+    },
+
+    devIndicators: {
         buildActivity: false, // Disables build activity indicators
+    },
+    experimental: {
+      turbo: {
+          enabled: true, // Correctly enable Turbopack
       },
-      webpack(config) {
+  },
+    webpack(config) {
         config.stats = "errors-warnings"; // Reduces logs to errors and warnings only
         return config;
-      },
+    },
 };
 
 module.exports = nextConfig;

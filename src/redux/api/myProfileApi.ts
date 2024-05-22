@@ -6,7 +6,7 @@ import { IPatient } from "@/types/Patient";
 
 export const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        getMyProfile: queryApiBuilder<IDoctor | IPatient>(build, "/user/me", [
+        getMyProfile: queryApiBuilder<IDoctor & IPatient>(build, "/user/me", [
             tagTypes.user,
         ]),
 

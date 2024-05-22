@@ -7,7 +7,12 @@ const PatientDoctorsPage = ({
         specialty?: string;
     };
 }) => {
-    return <DoctorPageComponent searchParams={searchParams} />;
+    return (
+        <DoctorPageComponent
+            searchParams={searchParams}
+            withDashboardLayout={true}
+        />
+    );
 };
 
 export default PatientDoctorsPage;

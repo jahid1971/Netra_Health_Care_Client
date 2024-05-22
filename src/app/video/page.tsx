@@ -10,7 +10,9 @@ const VideoCalling = ({
     const videoCallingId = searchParams.videoCallingId;
 
     return (
-        <Container sx={{ height: "100vh" }}>
+        <Container
+            sx={{ minHeight: "100vh", backgroundColor: "secondary.main" }}
+        >
             <VideoCall videoCallingId={videoCallingId} />
         </Container>
     );

@@ -15,7 +15,6 @@ const CreateSchedule = () => {
 
     const [createSchedule] = useCreateScheduleMutation();
     const handleSubmit = (values: FieldValues) => {
-        console.log(values, "values");
         tryCatch(
             async () => {
                 const res = await createSchedule(values);

@@ -15,12 +15,16 @@ const doctorsApi = baseApi.injectEndpoints({
             tagTypes.doctor,
         ]),
 
-        getDoctors: queryApiBuilder<IDoctor[]>(build, "/doctor", [tagTypes.doctor]),
-
-        editDoctor: updateApiBuilder(build, "/doctor", [
+        getDoctors: queryApiBuilder<IDoctor[]>(build, "/doctor", [
             tagTypes.doctor,
-            tagTypes.user,
         ]),
+
+        editDoctor: updateApiBuilder(
+            build,
+            "/doctor",
+            [tagTypes.doctor, tagTypes.user],
+            { contentType: "multipart/form-data" }
+        ),
 
         getSingleDoctor: singleQueryApiBuilder<IDoctor>(build, "/doctor", [
             tagTypes.doctor,

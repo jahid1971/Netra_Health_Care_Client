@@ -4,6 +4,18 @@ import {
     TypedUseQueryHookResult,
     TypedUseQueryStateResult,
 } from "@reduxjs/toolkit/query/react";
+import { IPatient } from "./Patient";
+import { IDoctor } from "./Doctors";
+
+export type TUser = {
+    id: string;
+    email: string;
+    role: TUserRole;
+    name: string;
+    needPasswordChange?: boolean;
+    profilePhoto?: string;
+} & Partial<IPatient> &
+    Partial<IDoctor>;
 
 export interface IMeta {
     page: number;

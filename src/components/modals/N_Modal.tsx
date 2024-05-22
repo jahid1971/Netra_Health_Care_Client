@@ -97,7 +97,6 @@
 //     );
 // }
 
-
 import * as React from "react";
 import Button from "@mui/material/Button";
 import { styled, SxProps } from "@mui/material/styles";
@@ -145,6 +144,7 @@ type TModalProps = {
     title?: string;
     children: React.ReactNode;
     fullScreen?: boolean;
+    sx?: SxProps;
 } & TOpenState;
 
 export default function N_Modal({
@@ -152,6 +152,7 @@ export default function N_Modal({
     modalId,
     children,
     fullScreen = false,
+    sx,
 }: TModalProps) {
     const isOpen = useAppSelector(selectIsOpen);
     const currentModalId = useAppSelector(selectModalId);
@@ -159,12 +160,9 @@ export default function N_Modal({
     const childModalId = useAppSelector(selectChildModalId);
     const dispatch = useAppDispatch();
 
-
-
     const handleClose = () => {
         modalId === childModalId && dispatch(closeChildModal());
         modalId === currentModalId && dispatch(closeModal());
-        
     };
 
     return (
@@ -178,13 +176,16 @@ export default function N_Modal({
                     (isOpen && modalId === currentModalId) ||
                     (childModalOpen && modalId === childModalId)
                 }
+                sx={{ ...sx }}
             >
-                <DialogTitle
-                    sx={{ textAlign: "center", mt: 3 }}
-                    id="customized-dialog-title"
-                >
-                    {title}
-                </DialogTitle>
+                {title && (
+                    <DialogTitle
+                        sx={{ textAlign: "center", mt: 3 }}
+                        id="customized-dialog-title"
+                    >
+                        {title}
+                    </DialogTitle>
+                )}
                 <IconButton
                     aria-label="close"
                     onClick={handleClose}

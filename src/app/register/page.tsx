@@ -22,7 +22,6 @@ const RegisterPage = ({ searchParams }: any) => {
     const router = useRouter();
     const [error, setError] = useState("");
     const redirectPath = searchParams.redirect;
- 
 
     const onSubmit = async (data: FieldValues) => {
         const patientData = JSON.stringify(data);
@@ -32,14 +31,15 @@ const RegisterPage = ({ searchParams }: any) => {
         tryCatch(
             async () => {
                 const registerResponse = await registerPatient(formData);
+                console.log("🚀 ~ registerResponse:", registerResponse);
 
                 if (registerResponse?.success) {
                     const logInRespone = await userLogIn({
-                        email: data.patient.email,
-                        password: data.password,
+                        email: data?.email,
+                        password: data?.password,
                     });
 
-                    if (logInRespone?.data?.accessToken) {
+                    if (logInRespone?.success) {
                         router.push("/dashboard");
                     } else {
                         setError(logInRespone?.message);
@@ -84,21 +84,17 @@ const RegisterPage = ({ searchParams }: any) => {
 
                 <N_Form
                     onSubmit={onSubmit}
-                    resolver={zodResolver(registerPatientSchema)}
+                    // resolver={zodResolver(registerPatientSchema)}
                     error={error}
                 >
                     <Stack spacing={2} mt={2}>
-                        <N_Input label="Name" name="patient.name" />
+                        <N_Input label="Name" name="name" />
 
                         <Stack
                             direction={{ xs: "column", md: "row" }}
                             spacing={{ xs: 2, md: 2 }}
                         >
-                            <N_Input
-                                label="Email"
-                                type="email"
-                                name="patient.email"
-                            />
+                            <N_Input label="Email" type="email" name="email" />
                             <N_Input
                                 label="Password"
                                 type="password"
@@ -112,12 +108,12 @@ const RegisterPage = ({ searchParams }: any) => {
                         >
                             <N_Input
                                 label="Contact Number"
-                                name="patient.contactNumber"
+                                name="contactNumber"
                             />
                             <N_Input
                                 label="Address"
                                 size="small"
-                                name="patient.address"
+                                name="address"
                             />
                         </Stack>
                     </Stack>

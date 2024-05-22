@@ -44,7 +44,7 @@ const doctorSchedulePage = () => {
         useMemo(() => {
             return data?.data?.map((item: TDoctorSchedule, index) => {
                 return {
-                    sl: tableSerial(query, index),
+                    sl: tableSerial(meta, index),
                     id: item?.scheduleId,
                     startDate: dateFaormatter(item?.schedule?.startDateTime),
                     // endDate: dateFaormatter(item?.schedule?.endDateTime),

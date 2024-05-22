@@ -55,12 +55,8 @@ const CreateDrSchedule = () => {
         // skip: !pickedDate,
     });
 
-    // if (schedules?.data?.length === 0) {
-    //     setError("pickDate", {
-    //         type: "manual",
-    //         message: "No schedules available for the selected date",
-    //     });
-    // }
+    console.log(schedules, "schedules");
+
     const hasNoSchedulesError = schedules?.data?.length === 0;
 
     const schedulesData = schedules?.data?.map(
@@ -71,6 +67,7 @@ const CreateDrSchedule = () => {
             value: schedule.id,
         })
     );
+    
 
     const [createDrSchedule] = useCreateDoctorScheduleMutation();
 

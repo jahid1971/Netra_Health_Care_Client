@@ -1,5 +1,6 @@
 import { baseApi } from "./api/baseApi";
 import { authReducer } from "./slices/authSlice";
+import { generalReducer } from "./slices/generalSlices";
 
 import { modalReducer } from "./slices/modalSlice";
 import { notificationReducer } from "./slices/notificationSlice";
@@ -12,6 +13,7 @@ const appReducer = combineReducers({
     modal: modalReducer,
     auth: authReducer,
     notification: notificationReducer,
+    generalState: generalReducer,
 });
 
 const rootReducer = (state, action) => {

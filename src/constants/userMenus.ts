@@ -8,6 +8,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import TryIcon from "@mui/icons-material/Try";
 import PersonIcon from "@mui/icons-material/Person";
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 import KeyIcon from "@mui/icons-material/Key";
 import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
@@ -138,6 +139,11 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
             title: "Prescriptions",
             path: `${role}/prescriptions`,
             icon: ReceiptLongIcon,
+        },
+        {
+            title: "Medical History",
+            path: `${role}/medical-history`,
+            icon: HealthAndSafetyIcon,
         },
         {
             title: "Payment History",

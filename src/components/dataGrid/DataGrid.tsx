@@ -18,7 +18,7 @@ type TDataGridProps = {
     searchTerm?: any;
     sorting?: boolean;
     setQuery?: (queryUpdater: (prevQuery: any) => any) => void;
-    meta?: any
+    meta?: any;
 };
 
 const N_DataGrid = ({
@@ -90,7 +90,7 @@ const N_DataGrid = ({
 
     return (
         <Box my={2}>
-            <Box sx={{ backgroundColor: "white", mb: 2 }}>
+            <Box sx={{ backgroundColor: "white", mb: 2,border:"none" }}>
                 <DataGrid
                     rows={rows}
                     disableColumnSorting={sorting ? false : true}
@@ -115,13 +115,38 @@ const N_DataGrid = ({
                         "& .default-header": {
                             border: "none",
                             backgroundColor: blue[50],
-                            backdropFilter: "blur(10px)", 
+                            backdropFilter: "blur(10px)",
+                        },
+
+                        border: "none",
+                        // '& .MuiDataGrid-cell': {
+                        //     border: "none",
+                        // },
+                        // '& .MuiDataGrid-columnHeaders': {
+                        //     border: "none",
+                        // },
+                        // '& .MuiDataGrid-columnSeparator': {
+                        //     display: "none",
+                        // },
+                        // '& .MuiDataGrid-footerContainer': {
+                        //     border: "none",
+                        // },
+                        // '& .MuiDataGrid-virtualScroller': {
+                        //     // Remove horizontal lines
+                        //     '&::-webkit-scrollbar': {
+                        //         display: "none",
+                        //     },
+                        // },
+                        '& .MuiDataGrid-cell:focus': {
+                            outline: "none",
                         },
                     }}
                 />
             </Box>
 
-            {meta && <N_Pagination setQuery={setQuery} meta={meta} />}
+            {meta && meta?.total > 5 && (
+                <N_Pagination setQuery={setQuery} meta={meta} />
+            )}
         </Box>
     );
 };

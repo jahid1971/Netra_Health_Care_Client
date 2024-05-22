@@ -24,6 +24,8 @@ const DoctorAppointment = () => {
         ...appointment,
         sl: tableSerial(query, index),
     }));
+
+    console.log(appointmentsData,"appointmentsData");
     const meta = data?.meta;
 
     const columns: GridColDef[] = [
@@ -49,9 +51,15 @@ const DoctorAppointment = () => {
         },
         {
             field: "appointmentTime",
-            headerName: "Appointment Date",
+            headerName: "Appointment Time",
             flex: 1,
             renderCell: ({ row }) => timeFormatter(row.schedule.startDateTime),
+        },
+        {
+            field: "status",
+            headerName: "Appointment Status",
+            flex: 1,
+            // renderCell: ({ row }) => timeFormatter(row.schedule.startDateTime),
         },
         {
             field: "action",

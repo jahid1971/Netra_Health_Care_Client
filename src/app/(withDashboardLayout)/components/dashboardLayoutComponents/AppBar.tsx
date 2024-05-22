@@ -20,13 +20,14 @@ import Notification from "./AppBarComponents/Notification";
 const AppBar = ({ handleDrawerToggle }) => {
     const profileData = useAppSelector(selectUser);
     const isLoading = useAppSelector(selectIsLoading);
-    console.log(profileData, "my profile");
 
     let greeting;
 
     const hours = new Date().getHours();
 
-    if (hours < 12) {
+    if (hours < 5) {
+        greeting = "Welcome Back";
+    } else if (hours < 12) {
         greeting = "Good Morning";
     } else if (hours < 18) {
         greeting = "Good Afternoon";

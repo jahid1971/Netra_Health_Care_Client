@@ -33,6 +33,7 @@ const NetraLogo = dynamic(() => import("@/components/NetraLogo"), {
 const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
     const pathname = usePathname();
     const user = useAppSelector(selectUser);
+    console.log(user, "user in sidebar");
 
     const [noHoverEffect, setNoHoverEffect] = useState(false);
 
@@ -82,6 +83,7 @@ const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
                     sx={{
                         opacity: drawerWidth === 60 ? 1 : 0,
                         transition: "opacity 0.1s ease-in-out",
+                        "& svg": { color: "#1586FD" }
                     }}
                 >
                     <MenuIcon />
@@ -93,6 +95,7 @@ const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
                     sx={{
                         opacity: drawerWidth === 60 ? 0 : 1,
                         transition: "opacity .1s ease-in-out",
+                        "& svg": { color: "#1586FD" }
                     }}
                 >
                     <ChevronLeftIcon />
@@ -120,10 +123,11 @@ const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
                                           ? {
                                                 borderRight:
                                                     "3px solid #1586FD",
-                                                "& svg": { color: "#1586FD" },
+                                                // "& svg": { color: "#1586FD" },
                                                 backgroundColor: blue[50],
                                             }
                                           : {}),
+                                          "& svg": { color: "#1586FD" }
                                   }}
                                   disablePadding
                               >

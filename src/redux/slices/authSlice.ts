@@ -1,9 +1,11 @@
 import { RootState } from "../store";
 import { TUser } from "@/types/global.types";
 import { createSlice } from "@reduxjs/toolkit";
+import { useAppSelector } from "../hooks";
+import { IPatient } from "@/types/Patient";
 
 type TAuthState = {
-    user: null | TUser;
+    user: TUser | null;
     // token: null | string;
     isLoading: boolean;
 };
@@ -41,7 +43,11 @@ export const { setUser, logOut, setIsLoadinTrue, setIsLoadingFalse } =
     authSlice.actions;
 
 export const authReducer = authSlice.reducer;
-// export const selectCurrentToken = (state: RootState) => state.auth.token;
+
 export const selectUser = (state: RootState) => state?.auth?.user;
 
 export const selectIsLoading = (state: RootState) => state?.auth?.isLoading;
+
+type SelectUserType = ReturnType<typeof selectUser>;
+
+export const useUserSelector = (): SelectUserType => useAppSelector(selectUser);

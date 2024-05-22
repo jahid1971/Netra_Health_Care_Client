@@ -4,13 +4,15 @@ import { Controller, useFormContext } from "react-hook-form";
 type TInputProps = {
     name: string;
     label?: string;
-    type?: string;
+    type?: "text" | "number" | "password";
     size?: "small" | "medium";
     fullWidth?: boolean;
     sx?: SxProps;
     placeholder?: string;
     required?: boolean;
     defaultValue?: string;
+    multiline?: boolean;
+    rows?: number;
 };
 
 const N_Input = ({
@@ -22,6 +24,8 @@ const N_Input = ({
     sx,
     required,
     placeholder,
+    multiline,
+    rows = 4,
 }: TInputProps) => {
     const { control } = useFormContext();
     return (
@@ -42,6 +46,8 @@ const N_Input = ({
                     required={required}
                     error={!!error?.message}
                     helperText={error?.message}
+                    multiline={multiline}
+                    rows={multiline && rows ? rows : 1}
                 />
             )}
         />

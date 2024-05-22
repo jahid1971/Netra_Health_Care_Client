@@ -9,9 +9,15 @@ type TProps = {
     name: string;
     label?: string;
     sx?: SxProps;
+    variant?: "contained" | "outlined" | "text";
 };
 
-export default function N_FileUploader({ name, label, sx }: TProps) {
+export default function N_FileUploader({
+    name,
+    label,
+    sx,
+    variant = "outlined",
+}: TProps) {
     const { control } = useFormContext();
     return (
         <Controller
@@ -20,18 +26,24 @@ export default function N_FileUploader({ name, label, sx }: TProps) {
             render={({ field: { onChange, value, ...field } }) => {
                 return (
                     <Button
+                        fullWidth
+                        variant={variant}
                         component="label"
                         role={undefined}
-                        variant="contained"
                         tabIndex={-1}
                         startIcon={<CloudUploadIcon />}
-                        sx={{ ...sx }}>
+                        sx={{ ...sx }}
+                    >
                         {label || "Upload file"}
                         <Input
                             {...field}
                             type={name}
                             value={value?.fileName}
-                            onChange={(e) => onChange((e?.target as HTMLInputElement).files?.[0])}
+                            onChange={(e) =>
+                                onChange(
+                                    (e?.target as HTMLInputElement).files?.[0]
+                                )
+                            }
                             style={{ display: "none" }}
                         />
                     </Button>

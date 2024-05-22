@@ -23,7 +23,7 @@ export const tryCatch: tryCatch = async (
         console.log(res, "response in try block");
 
         if (res?.success || res?.data?.success || res?.data?.data?.success) {
-            toast.success(successMessage, { id: toastId });
+            if (successMessage) toast.success(successMessage, { id: toastId });
 
             if (successAction) await successAction();
         } else if (
@@ -32,16 +32,15 @@ export const tryCatch: tryCatch = async (
         ) {
             console.log(res, "error response in else if block of tryCatch");
 
-            toast.error(
-                res?.message ?? res?.error?.data?.message,
-                { id: toastId }
-            );
+            toast.error(res?.message ?? res?.error?.data?.message, {
+                id: toastId,
+            });
         } else if (res?.success === false || res?.error)
             toast.error("Something went wrong", { id: toastId });
 
         return res;
     } catch (err: any) {
-        console.log(err?.message, "error in catch block");
+        console.error(err?.message || err, "error in catch block");
 
         err.name === "AppError"
             ? toast.error(err.message, { id: toastId })

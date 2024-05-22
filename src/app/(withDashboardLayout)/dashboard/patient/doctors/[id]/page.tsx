@@ -1,38 +1,31 @@
 import DashedLine from "@/components/ui/DashedLine";
-import { defaultDoctorPhoto } from "@/constants/authKey";
+import defaultDoctorPhoto from "@/assets/icons/doctor_icon.png";
 import { baseUrl } from "@/constants/commmon";
-import { Doctor, IDoctor } from "@/types/Doctors";
+import { IDoctor } from "@/types/Doctors";
 import { Box, Button, Chip, Container, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import Image from "next/image";
-import DoctorScheduleSlots from "../components/DoctorScheduleSlots";
 
-const DocotorProfilePage = async ({ params }:any) => {
-    const res = await fetch(`${baseUrl}/doctor/${params.id}`).then((res) => res.json());
-    const doctor: Doctor = res.data;
+import { fetchWithAuth } from "@/utils/fetchWithAuth";
+import DoctorScheduleSlots from "@/app/(withCommonLayout)/doctors/components/DoctorScheduleSlots";
+
+const DocotorProfilePage = async ({ params }: any) => {
+    const res = await fetchWithAuth(`/doctor/${params.id}`);
+    const doctor: IDoctor = res?.data;
 
     return (
         <Container>
-            <Box p={{ xs: 0, md: 3 }} sx={{ bgcolor: grey[100] }}>
+            {/* <Box p={{ xs: 0, md: 3 }} sx={{ bgcolor: grey[100] }}> */}
+            <Box >
                 <Box bgcolor={"background.paper"} p={3}>
                     <Box>
-                        <Typography variant="h4" fontWeight={700} textAlign="center">
+                        <Typography
+                            variant="h4"
+                            fontWeight={700}
+                            textAlign="center"
+                        >
                             Doctor&apos;s Profile Details
                         </Typography>
-                        {/* <Typography
-                            textAlign="center"
-                            mt={2}
-                            sx={{
-                                width: "70%",
-                                margin: "10px auto",
-                                display: { xs: "none", sm: "block" },
-                            }}
-                            variant="h6">
-                            Compassionate and dedicated doctor committed to delivering
-                            high-quality care. Proficient in diagnosis, treatment, and
-                            advocating for comprehensive well-being. Prioritizing
-                            patient-centered approaches for optimal health outcomes.
-                        </Typography> */}
                     </Box>
 
                     <DashedLine />
@@ -41,7 +34,8 @@ const DocotorProfilePage = async ({ params }:any) => {
                         direction={{ xs: "column", md: "row" }}
                         alignItems={"center"}
                         gap={3}
-                        pt={2}>
+                        pt={2}
+                    >
                         <Box>
                             <Image
                                 src={doctor?.profilePhoto || defaultDoctorPhoto}
@@ -64,10 +58,11 @@ const DocotorProfilePage = async ({ params }:any) => {
 
                             <Typography my={1}>
                                 Specialist in{" "}
-                                {doctor?.doctorSpecialties?.map((ds) => (
+                                {doctor?.specialties?.map((s) => (
                                     <Chip
-                                        key={ds?.specialties?.id}
-                                        label={ds?.specialties?.title}
+                                        component={"span"}
+                                        key={s?.id}
+                                        label={s?.title}
                                         color="primary"
                                         sx={{ mx: 1 }}
                                     />
@@ -78,31 +73,44 @@ const DocotorProfilePage = async ({ params }:any) => {
 
                             <Typography>Working at</Typography>
 
-                            <Typography>{doctor?.currentWorkingPlace}</Typography>
+                            <Typography>
+                                {doctor?.currentWorkingPlace}
+                            </Typography>
 
                             <DashedLine />
 
                             <Stack direction={"row"}>
-                                <Typography fontWeight={600}>Consultation Fee</Typography>
+                                <Typography fontWeight={600}>
+                                    Consultation Fee
+                                </Typography>
                                 <Box ml={2}>
                                     <Typography>
-                                        Taka : {doctor?.apointmentFee} (incl. Vat)
+                                        Taka : {doctor?.apointmentFee} (incl.
+                                        Vat)
                                     </Typography>{" "}
                                     <Typography>Per consultation</Typography>
                                 </Box>
                             </Stack>
-
                         </Stack>
                     </Stack>
-                    
+
                     <Stack direction={"row"} my={3} gap={4}>
                         <InfoBox
                             title="Total Experience"
                             value={`${doctor?.experience}+ Years`}
                         />
-                        <InfoBox title="Qualification" value={doctor?.qualification} />
-                        <InfoBox title="Average Rating" value={doctor?.averageRating} />
-                        <InfoBox title="Contact Number" value={doctor?.contactNumber} />
+                        <InfoBox
+                            title="Qualification"
+                            value={doctor?.qualification}
+                        />
+                        <InfoBox
+                            title="Average Rating"
+                            value={doctor?.averageRating}
+                        />
+                        <InfoBox
+                            title="Contact Number"
+                            value={doctor?.contactNumber}
+                        />
                     </Stack>
 
                     <Stack>
@@ -126,9 +134,10 @@ const InfoBox = ({ title, value }: any) => {
                     color: "primary.main",
                 },
                 "& p": {
-                    color: "secondary.main",
+                    color: "text.primary",
                 },
-            }}>
+            }}
+        >
             <Typography variant="h6">{title}</Typography>
             <Typography>{value}</Typography>
         </Box>

@@ -14,8 +14,8 @@ const commonPrivateRoutes = [
     "/doctors",
 ];
 const roleBasedPrivateRoutes = {
-    PATIENT: [/^\/dashboard\/patient/],
-    DOCTOR: [/^\/dashboard\/doctor/],
+    PATIENT: [/^\/dashboard\/patient/, /^\/video/],
+    DOCTOR: [/^\/dashboard\/doctor/, /^\/video/],
     ADMIN: [/^\/dashboard\/admin/],
     SUPER_ADMIN: [/^\/dashboard\/super-admin/],
 };
@@ -34,7 +34,6 @@ export function middleware(req: NextRequest) {
             loginUrl.searchParams.set("redirect", pathname); // Capture intended route
 
             return NextResponse.redirect(loginUrl);
-            // return NextResponse.redirect(new URL("/login", req.url));
         }
     }
 
@@ -62,7 +61,7 @@ export function middleware(req: NextRequest) {
         }
     }
 
-    return NextResponse.next();
+    return NextResponse.redirect(new URL("/login", req.url));
 }
 
 export const config = {
@@ -70,8 +69,8 @@ export const config = {
         "/login",
         "/register",
         "/dashboard/:page*",
-        "/doctors/:path*",
+        "/doctors",
         "/video/:path*",
-        "/",
+        // "/",
     ],
 };

@@ -25,7 +25,6 @@ const DoctorForm = ({
     isLoading,
 }: any) => {
     const dispatch = useAppDispatch();
-    const childModalOpen = useAppSelector(selectChildModalOpen);
 
     const { data } = useGetAllSpecialitiesQuery(undefined);
     const allSpecialities = data?.data;
@@ -143,7 +142,6 @@ const DoctorForm = ({
                                     borderRadius: "0 8px 8px 0",
                                     borderLeft: "0",
                                 }}
-                                color="secondary"
                             >
                                 <AddIcon />
                             </Button>
