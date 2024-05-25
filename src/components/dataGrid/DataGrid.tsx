@@ -1,11 +1,22 @@
 "use client";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Stack, styled, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Slide,
+    Stack,
+    styled,
+    TextField,
+    Typography,
+} from "@mui/material";
 import { DataGrid, GridSortModel } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
 import N_Pagination from "../pagination/Pagination";
 import { theme } from "@/lib/theme/theme";
 import { blue } from "@mui/material/colors";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import N_Input from "../forms/N_Input";
+import N_Form from "../forms/N_Form";
 
 type TDataGridProps = {
     rows: any[];
@@ -19,6 +30,15 @@ type TDataGridProps = {
     sorting?: boolean;
     setQuery?: (queryUpdater: (prevQuery: any) => any) => void;
     meta?: any;
+    children?: any;
+    createButton?: any;
+    filter?: boolean;
+    rowSelection?: boolean;
+    headerClassName?: string;
+    headerStyle?: any;
+    setSelectedRows?: any;
+    selectedRows?: any;
+    selectedActionButton?: any;
 };
 
 const N_DataGrid = ({
@@ -33,10 +53,18 @@ const N_DataGrid = ({
     sorting = true,
     setQuery,
     meta,
-
+    createButton,
+    children,
+    filter = true,
     headerClassName = "default-header",
+    rowSelection = true,
+    setSelectedRows,
+    selectedRows,
+    selectedActionButton,
     headerStyle = {},
 }: TDataGridProps) => {
+    const [showFilters, setShowFilters] = useState(false);
+
     const debouncedSearchTerm = useDebounced({
         searchQuery: searchTerm,
         delay: 500,
@@ -88,60 +116,140 @@ const N_DataGrid = ({
         }));
     }, []);
 
+    const handleRowSelection = (selectionModel: any) => {
+        const selectedData = rows.filter((row) =>
+            selectionModel.includes(row.id)
+        );
+        setSelectedRows(selectedData);
+    };
+
+    const handleFieldChange = (field, value) => {
+        console.log(field, value,"----------------------------------------------");
+        setQuery((prevQuery) => ({
+            ...prevQuery,
+            [field]: value,
+        }));
+    };
+
     return (
         <Box my={2}>
-            <Box sx={{ backgroundColor: "white", mb: 2,border:"none" }}>
-                <DataGrid
-                    rows={rows}
-                    disableColumnSorting={sorting ? false : true}
-                    sortingMode="server"
-                    onSortModelChange={handleSortModelChange}
-                    disableColumnFilter
-                    columns={styledColumns}
-                    loading={isLoading}
-                    hideFooter={hideFooter}
-                    autoHeight={autoHeight}
-                    slotProps={{
-                        loadingOverlay: {
-                            variant: "linear-progress",
-                            noRowsVariant: "skeleton",
-                        },
-                    }}
-                    slots={{
-                        noRowsOverlay: CustomNoRowsOverlay,
-                        ...slots,
-                    }}
-                    sx={{
-                        "& .default-header": {
-                            border: "none",
-                            backgroundColor: blue[50],
-                            backdropFilter: "blur(10px)",
-                        },
+            <Box>
+                <Stack
+                    direction={"row"}
+                    justifyContent={"space-between"}
+                    alignItems={"flex-start"}
+                    mb={1}
+                >
+                    <Stack
+                        direction={"row"}
+                        spacing={2}
+                        flexWrap={"wrap"}
+                        rowGap={1}
+                    >
+                        {createButton}
 
-                        border: "none",
-                        // '& .MuiDataGrid-cell': {
-                        //     border: "none",
-                        // },
-                        // '& .MuiDataGrid-columnHeaders': {
-                        //     border: "none",
-                        // },
-                        // '& .MuiDataGrid-columnSeparator': {
-                        //     display: "none",
-                        // },
-                        // '& .MuiDataGrid-footerContainer': {
-                        //     border: "none",
-                        // },
-                        // '& .MuiDataGrid-virtualScroller': {
-                        //     // Remove horizontal lines
-                        //     '&::-webkit-scrollbar': {
-                        //         display: "none",
-                        //     },
-                        // },
-                        '& .MuiDataGrid-cell:focus': {
-                            outline: "none",
-                        },
-                    }}
-                />
+                        {filter && (
+                            <Button
+                                size="small"
+                                variant={showFilters ? "contained" : "outlined"}
+                                endIcon={<FilterAltIcon />}
+                                onClick={() => setShowFilters(!showFilters)}
+                            >
+                                filter
+                            </Button>
+                        )}
+                        {/*  all filter fields as children */}
+                        {children && (
+                            <Slide
+                                direction="right"
+                                in={showFilters}
+                                mountOnEnter
+                                unmountOnExit
+                                timeout={300}
+                            >
+                                <Box>
+                                    <N_Form
+                                        handleFieldChange={handleFieldChange}
+                                    >
+                                        {children}
+                                    </N_Form>
+                                </Box>
+                            </Slide>
+                        )}
+                    </Stack>
+
+                    <N_Form handleFieldChange={handleFieldChange}>
+                        <N_Input
+                            name="searchTerm"
+                            label="Search..."
+                            sx={{
+                                "& .MuiInputBase-root": {
+                                    backgroundColor: "white",
+                                    height: "36px",
+                                    fontSize: "14px",
+                                },
+
+                                "& .MuiInputLabel-root": {
+                                    top: "-2px",
+                                    fontSize: "14px",
+                                },
+                            }}
+                        />
+                    </N_Form>
+                </Stack>
+
+                {selectedActionButton && (
+                    <Slide
+                        direction="right"
+                        in={selectedRows?.length > 0}
+                        mountOnEnter
+                        unmountOnExit
+                        timeout={300}
+                    >
+                        <Box mb={1}> {selectedActionButton}</Box>
+                    </Slide>
+                )}
+
+                <Box sx={{ backgroundColor: "white", mb: 2 }}>
+                    <DataGrid
+                        rows={rows}
+                        checkboxSelection={rowSelection}
+                        disableColumnSorting={sorting ? false : true}
+                        sortingMode="server"
+                        onSortModelChange={handleSortModelChange}
+                        disableColumnFilter
+                        columns={styledColumns}
+                        loading={isLoading}
+                        hideFooter={hideFooter}
+                        autoHeight={autoHeight}
+                        onRowSelectionModelChange={handleRowSelection}
+                        slotProps={{
+                            loadingOverlay: {
+                                variant: "linear-progress",
+                                noRowsVariant: "skeleton",
+                            },
+                        }}
+                        slots={{
+                            noRowsOverlay: CustomNoRowsOverlay,
+                            ...slots,
+                        }}
+                        sx={{
+                            "& .default-header": {
+                                border: "none",
+                                backgroundColor: blue[50],
+                                backdropFilter: "blur(10px)",
+                            },
+                            "& .MuiDataGrid-columnHeaderCheckbox": {
+                                backgroundColor: blue[50],
+                            },
+
+                            border: "none",
+                            "& .MuiDataGrid-cell:focus": {
+                                outline: "none",
+                            },
+                        }}
+                    />
+                </Box>
             </Box>
 
             {meta && meta?.total > 5 && (

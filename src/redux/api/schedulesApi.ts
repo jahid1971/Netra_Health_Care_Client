@@ -2,6 +2,7 @@ import {
     createApiBuilder,
     deleteApiBuilder,
     queryApiBuilder,
+    updateApiBuilder,
 } from "@/utils/apiBuilders";
 import { baseApi } from "./baseApi";
 import { tagTypes } from "../tagTypes";
@@ -18,9 +19,15 @@ const schedulesApi = baseApi.injectEndpoints({
             tagTypes.schedule,
         ]),
 
-        deleteSchedule: deleteApiBuilder(build, "/schedule", [
-            tagTypes.schedule,
-        ]),
+        deleteSchedule: updateApiBuilder(
+            build,
+            "/schedule",
+            [tagTypes.schedule],
+            { method: "delete" }
+        ),
+        // deleteSchedule: deleteApiBuilder(build, "/schedule", [
+        //     tagTypes.schedule,
+        // ]),
     }),
 });
 

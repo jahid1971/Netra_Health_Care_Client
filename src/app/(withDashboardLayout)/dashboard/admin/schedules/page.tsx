@@ -1,8 +1,7 @@
 "use client";
-
 import { openModal } from "@/redux/slices/modalSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Stack } from "@mui/material";
 import CreateSchedule from "./component/CreateSchedule";
 import { GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -13,13 +12,14 @@ import {
 } from "@/redux/api/schedulesApi";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { ISchedule, TSchedule } from "@/types/schedules";
-import N_Pagination from "@/components/pagination/Pagination";
+import { TSchedule } from "@/types/schedules";
 import { tryCatch } from "@/utils/tryCatch";
 import ConfirmationModal from "@/components/modals/ConfirmationModal";
+import N_Input from "@/components/forms/N_Input";
 
 const SchedulePage = () => {
     const [allSchedules, setAllSchedule] = useState<any>([]);
+    const [selectedRows, setSelectedRows] = useState<any[]>([]);
     const dispatch = useAppDispatch();
 
     const [query, setQuery] = useState<Record<string, any>>({
@@ -35,9 +35,12 @@ const SchedulePage = () => {
 
     const meta = data?.meta;
 
-    const handleDelete = (id: string) => {
+    const handleDelete = (ids: string | string[]) => {
         tryCatch(
-            async () => await deleteSchedule(id),
+            async () =>
+                await deleteSchedule({
+                    data: Array.isArray(ids) ? ids : [ids],
+                }),
             "Deleting Schedule",
             "Schedule Deleted Successfully"
         );
@@ -55,8 +58,6 @@ const SchedulePage = () => {
         );
         setAllSchedule(schedulesData);
     }, [schedules]);
-
-    console.log(allSchedules, "allSchedules");
 
     const columns: GridColDef[] = [
         {
@@ -113,20 +114,38 @@ const SchedulePage = () => {
         },
     ];
 
+    const createScheScheduleButton = (
+        <Button
+            size="small"
+            onClick={() => dispatch(openModal({ modalId: "createSchedule" }))}
+        >
+            Create Schedule
+        </Button>
+    );
+
+    const actionButton = (
+        <Button
+            color="error"
+            size="small"
+            onClick={() =>
+                dispatch(
+                    openModal({
+                        modalId: "confirm",
+                        modalData: () =>
+                            handleDelete(selectedRows.map((row) => row.id)),
+                    })
+                )
+            }
+        >
+            Delete (Selected Rows)
+        </Button>
+    );
+
     return (
         <Box>
-            <Button
-                size="small"
-                onClick={() =>
-                    dispatch(openModal({ modalId: "createSchedule" }))
-                }
-            >
-                Create Schedule
-            </Button>
-
             <CreateSchedule />
             <ConfirmationModal title="Do you want to Delete this ?" />
-            
+
             <N_DataGrid
                 rows={allSchedules}
                 columns={columns}
@@ -134,7 +153,30 @@ const SchedulePage = () => {
                 notFoundFor="Schedule"
                 setQuery={setQuery}
                 meta={meta}
-            />
+                createButton={createScheScheduleButton}
+                setSelectedRows={setSelectedRows}
+                selectedRows={selectedRows}
+                selectedActionButton={actionButton}
+            >
+                <Stack
+                    direction={"row"}
+                    spacing={2}
+                    flexWrap={"wrap"}
+                    rowGap={1}
+                >
+                    <Button size="small" variant="outlined">
+                        filter by date
+                    </Button>
+
+                    <Button size="small" variant="outlined">
+                        filter by time
+                    </Button>
+                    <Button size="small" variant="outlined">
+                        filter by time
+                    </Button>
+     
+                </Stack>
+            </N_DataGrid>
         </Box>
     );
 };

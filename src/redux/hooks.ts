@@ -8,7 +8,7 @@ export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 type TDebouncedProps = {
-    searchQuery: string;
+    searchQuery: any,
     delay: number;
 };
 export const useDebounced = ({ searchQuery, delay }: TDebouncedProps) => {

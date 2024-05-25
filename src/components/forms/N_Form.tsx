@@ -1,5 +1,8 @@
+import { useDebounced } from "@/redux/hooks";
+import { debounce } from "@/utils/generalUtils";
 import { Typography } from "@mui/material";
 import { red } from "@mui/material/colors";
+import { useEffect } from "react";
 import {
     FieldValues,
     FormProvider,
@@ -14,9 +17,10 @@ type TFormConfig = {
 
 type TFormProps = {
     children: React.ReactNode;
-    onSubmit: SubmitHandler<FieldValues>;
+    onSubmit?: SubmitHandler<FieldValues>;
     error?: string;
     onlyDirtyFields?: boolean;
+    handleFieldChange?: (field: string, value: any) => void;
 } & TFormConfig;
 
 const N_Form = ({
@@ -25,7 +29,8 @@ const N_Form = ({
     resolver,
     defaultValues,
     error,
-    onlyDirtyFields
+    onlyDirtyFields,
+    handleFieldChange,
 }: TFormProps) => {
     const formConfig: TFormConfig = {};
 
@@ -39,7 +44,7 @@ const N_Form = ({
 
     const methods = useForm(formConfig);
 
-    const { handleSubmit, formState } = methods;
+    const { handleSubmit, watch, formState } = methods;
 
     const { dirtyFields } = formState;
 
@@ -54,6 +59,35 @@ const N_Form = ({
 
         onSubmit(onlyDirtyFields ? filteredData : data);
     };
+
+    // useEffect(() => {
+    //     if (handleFieldChange) {
+    //         const subscription = watch((value, { name }) => {
+    //             if (name) {
+    //                 handleFieldChange(name, value[name]);
+    //             }
+    //         });
+    //         return () => subscription.unsubscribe();
+    //     }
+    // }, [watch, handleFieldChange]);
+
+    const debouncedHandleFieldChange = handleFieldChange
+        ? debounce((name: string, value: any) => {
+              handleFieldChange(name, value);
+          }, 500) 
+        : undefined;
+
+    useEffect(() => {
+        if (debouncedHandleFieldChange) {
+            const subscription = watch((value, { name }) => {
+                if (name) {
+                    debouncedHandleFieldChange(name, value[name]);
+                }
+            });
+
+            return () => subscription.unsubscribe()
+        }
+    }, [watch, debouncedHandleFieldChange]);
 
     return (
         <FormProvider {...methods}>
