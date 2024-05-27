@@ -5,6 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 
 interface ITimePicker {
     name: string;
@@ -14,10 +15,22 @@ interface ITimePicker {
     required?: boolean;
     fullWidth?: boolean;
     sx?: SxProps;
+    onFieldChange?: boolean;
+    setQuery?: any;
 }
 
-const N_TimePicker = ({ name, label, size = "small", required, fullWidth = true, sx }: ITimePicker) => {
-    const { control, formState } = useFormContext();
+const N_TimePicker = ({
+    name,
+    label,
+    size = "small",
+    required,
+    fullWidth = true,
+    sx,
+    onFieldChange = false,
+    setQuery,
+}: ITimePicker) => {
+    dayjs.extend(utc);
+    const { control, formState, setValue } = useFormContext();
     const isError = formState.errors[name] !== undefined;
 
     return (
@@ -32,7 +45,20 @@ const N_TimePicker = ({ name, label, size = "small", required, fullWidth = true,
                             {...field}
                             label={label}
                             value={value || Date.now()}
-                            onChange={(time) => onChange(time)}
+                            onChange={(time) => {
+                                onFieldChange &&
+                                    setValue("onFieldChange", true);
+
+                                onChange(time);
+
+                                setQuery &&
+                                    setQuery((prev:any) => ({
+                                        ...prev,
+                                        [name]: dayjs(time)
+                                            .utc()
+                                            .format("HH:mm:ss"),
+                                    }));
+                            }}
                             timezone="system"
                             slotProps={{
                                 textField: {
@@ -44,7 +70,10 @@ const N_TimePicker = ({ name, label, size = "small", required, fullWidth = true,
                                     },
                                     variant: "outlined",
                                     error: isError,
-                                    helperText: isError ? (formState.errors[name]?.message as string) : "",
+                                    helperText: isError
+                                        ? (formState.errors[name]
+                                              ?.message as string)
+                                        : "",
                                 },
                             }}
                         />

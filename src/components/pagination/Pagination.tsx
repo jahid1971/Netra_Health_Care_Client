@@ -1,3 +1,4 @@
+import { defaultQuery } from "@/constants/commmon";
 import { IMeta } from "@/types/common";
 import {
     Box,
@@ -17,8 +18,8 @@ interface PaginationProps {
 }
 
 const N_Pagination = ({ setQuery, meta }: PaginationProps) => {
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(5);
+    const [page, setPage] = useState(defaultQuery.page);
+    const [limit, setLimit] = useState(defaultQuery.limit);
 
     let pageCount: number = 1;
     if (meta?.total) {
@@ -44,16 +45,34 @@ const N_Pagination = ({ setQuery, meta }: PaginationProps) => {
                 justifyContent: "center",
                 alignItems: "center",
                 position: "relative",
-            }}>
-            <Pagination color="primary" count={pageCount} page={page} onChange={handleChange} />
+            }}
+        >
+            <Pagination
+                color="primary"
+                count={pageCount}
+                page={page}
+                onChange={handleChange}
+            />
 
-            <Box sx={{ display: "flex", alignItems: "center", position: "absolute", left: 0 }}>
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    position: "absolute",
+                    left: 0,
+                }}
+            >
                 <Typography variant="body2">Rows Per Page:</Typography>
                 <FormControl size="small">
                     <Select
-                        sx={{ "& .MuiOutlinedInput-notchedOutline": { border: "none" } }}
+                        sx={{
+                            "& .MuiOutlinedInput-notchedOutline": {
+                                border: "none",
+                            },
+                        }}
                         value={limit}
-                        onChange={handleLimitChange}>
+                        onChange={handleLimitChange}
+                    >
                         <MenuItem value={5}>5</MenuItem>
                         <MenuItem value={10}>10</MenuItem>
                         <MenuItem value={20}>20</MenuItem>

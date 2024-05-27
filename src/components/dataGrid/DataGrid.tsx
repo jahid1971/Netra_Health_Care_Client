@@ -17,6 +17,8 @@ import { blue } from "@mui/material/colors";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import N_Input from "../forms/N_Input";
 import N_Form from "../forms/N_Form";
+import CloseIcon from "@mui/icons-material/Close";
+import { defaultQuery } from "@/constants/commmon";
 
 type TDataGridProps = {
     rows: any[];
@@ -39,6 +41,7 @@ type TDataGridProps = {
     setSelectedRows?: any;
     selectedRows?: any;
     selectedActionButton?: any;
+    searchField?: boolean;
 };
 
 const N_DataGrid = ({
@@ -61,7 +64,7 @@ const N_DataGrid = ({
     setSelectedRows,
     selectedRows,
     selectedActionButton,
-    headerStyle = {},
+    searchField = true,
 }: TDataGridProps) => {
     const [showFilters, setShowFilters] = useState(false);
 
@@ -124,7 +127,6 @@ const N_DataGrid = ({
     };
 
     const handleFieldChange = (field, value) => {
-        console.log(field, value,"----------------------------------------------");
         setQuery((prevQuery) => ({
             ...prevQuery,
             [field]: value,
@@ -167,35 +169,54 @@ const N_DataGrid = ({
                                 unmountOnExit
                                 timeout={300}
                             >
-                                <Box>
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap={2}
+                                    flexWrap={"wrap"}
+                                >
                                     <N_Form
                                         handleFieldChange={handleFieldChange}
                                     >
                                         {children}
                                     </N_Form>
+
+                                    <Button
+                                        variant="outlined"
+                                        color="error"
+                                        size="small"
+                                        onClick={() =>
+                                            setQuery({ ...defaultQuery })
+                                        }
+                                        endIcon={<CloseIcon />}
+                                    >
+                                        clear
+                                    </Button>
                                 </Box>
                             </Slide>
                         )}
                     </Stack>
 
-                    <N_Form handleFieldChange={handleFieldChange}>
-                        <N_Input
-                            name="searchTerm"
-                            label="Search..."
-                            sx={{
-                                "& .MuiInputBase-root": {
-                                    backgroundColor: "white",
-                                    height: "36px",
-                                    fontSize: "14px",
-                                },
+                    {searchField && (
+                        <N_Form handleFieldChange={handleFieldChange}>
+                            <N_Input
+                                name="searchTerm"
+                                label="Search..."
+                                sx={{
+                                    "& .MuiInputBase-root": {
+                                        backgroundColor: "white",
+                                        height: "36px",
+                                        fontSize: "14px",
+                                    },
 
-                                "& .MuiInputLabel-root": {
-                                    top: "-2px",
-                                    fontSize: "14px",
-                                },
-                            }}
-                        />
-                    </N_Form>
+                                    "& .MuiInputLabel-root": {
+                                        top: "-2px",
+                                        fontSize: "14px",
+                                    },
+                                }}
+                            />
+                        </N_Form>
+                    )}
                 </Stack>
 
                 {selectedActionButton && (

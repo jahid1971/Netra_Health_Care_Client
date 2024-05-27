@@ -49,6 +49,10 @@ const N_Form = ({
     const { dirtyFields } = formState;
 
     const submit: SubmitHandler<FieldValues> = (data) => {
+        console.log(
+            data,
+            "----------------------------------------------data in onSumbit"
+        );
         const filteredData = Object.keys(dirtyFields).reduce(
             (acc: Record<string, any>, field) => {
                 acc[field] = data[field] === "" ? undefined : data[field];
@@ -60,32 +64,26 @@ const N_Form = ({
         onSubmit(onlyDirtyFields ? filteredData : data);
     };
 
-    // useEffect(() => {
-    //     if (handleFieldChange) {
-    //         const subscription = watch((value, { name }) => {
-    //             if (name) {
-    //                 handleFieldChange(name, value[name]);
-    //             }
-    //         });
-    //         return () => subscription.unsubscribe();
-    //     }
-    // }, [watch, handleFieldChange]);
-
     const debouncedHandleFieldChange = handleFieldChange
         ? debounce((name: string, value: any) => {
               handleFieldChange(name, value);
-          }, 500) 
+          }, 500)
         : undefined;
 
     useEffect(() => {
         if (debouncedHandleFieldChange) {
             const subscription = watch((value, { name }) => {
-                if (name) {
+                
+                if (name && value["onFieldChange"] === true) {
                     debouncedHandleFieldChange(name, value[name]);
+                    console.log(
+                        value,
+                        "data value ----------------------------------------------"
+                    );
                 }
             });
 
-            return () => subscription.unsubscribe()
+            return () => subscription.unsubscribe();
         }
     }, [watch, debouncedHandleFieldChange]);
 

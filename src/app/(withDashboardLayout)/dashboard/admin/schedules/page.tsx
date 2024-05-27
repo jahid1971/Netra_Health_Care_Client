@@ -1,7 +1,7 @@
 "use client";
 import { openModal } from "@/redux/slices/modalSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { Box, Button, IconButton, Stack } from "@mui/material";
+import { Box, Button, IconButton, Popover, Stack } from "@mui/material";
 import CreateSchedule from "./component/CreateSchedule";
 import { GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -16,16 +16,16 @@ import { TSchedule } from "@/types/schedules";
 import { tryCatch } from "@/utils/tryCatch";
 import ConfirmationModal from "@/components/modals/ConfirmationModal";
 import N_Input from "@/components/forms/N_Input";
+import N_DatePicker from "@/components/forms/N_DatePicker";
+import FilterByDate from "@/components/dataGrid/filters/FilterByDate";
+import FilterByTime from "@/components/dataGrid/filters/FilterByTime";
 
 const SchedulePage = () => {
     const [allSchedules, setAllSchedule] = useState<any>([]);
     const [selectedRows, setSelectedRows] = useState<any[]>([]);
     const dispatch = useAppDispatch();
 
-    const [query, setQuery] = useState<Record<string, any>>({
-        sortBy: "startDateTime",
-        sortOrder: "asc",
-    });
+    const [query, setQuery] = useState<Record<string, any>>({});
 
     const { data, isFetching } = useGetSchedulesQuery(query);
 
@@ -157,6 +157,7 @@ const SchedulePage = () => {
                 setSelectedRows={setSelectedRows}
                 selectedRows={selectedRows}
                 selectedActionButton={actionButton}
+                searchField={false}
             >
                 <Stack
                     direction={"row"}
@@ -164,17 +165,9 @@ const SchedulePage = () => {
                     flexWrap={"wrap"}
                     rowGap={1}
                 >
-                    <Button size="small" variant="outlined">
-                        filter by date
-                    </Button>
+                    <FilterByTime query={query} setQuery={setQuery} />
 
-                    <Button size="small" variant="outlined">
-                        filter by time
-                    </Button>
-                    <Button size="small" variant="outlined">
-                        filter by time
-                    </Button>
-     
+                    <FilterByDate query={query} setQuery={setQuery} />
                 </Stack>
             </N_DataGrid>
         </Box>

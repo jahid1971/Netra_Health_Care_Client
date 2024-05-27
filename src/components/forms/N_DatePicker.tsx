@@ -14,6 +14,9 @@ interface IDatePicker {
     sx?: SxProps;
     methods?: any;
     disablePast?: boolean;
+    disableDefaultDate?: boolean;
+    onFieldChange: boolean;
+    formatDateValue?: (date: string) => string;
 }
 
 const N_DatePicker = ({
@@ -25,11 +28,15 @@ const N_DatePicker = ({
     sx,
     methods,
     disablePast = true,
+    disableDefaultDate = false,
+    formatDateValue,
+    onFieldChange = true,
 }: IDatePicker) => {
     const {
         control,
         formState: { errors },
         getValues,
+        setValue,
     } = methods ?? useFormContext();
 
     const defaultValue = getValues(name) || dayjs(); //getValues(name) is for update previous date
@@ -41,7 +48,7 @@ const N_DatePicker = ({
             <Controller
                 name={name}
                 control={control}
-                defaultValue={formattedDefaultValue}
+                defaultValue={!disableDefaultDate && formattedDefaultValue}
                 render={({ field: { onChange, value, ...field } }) => {
                     return (
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -50,10 +57,23 @@ const N_DatePicker = ({
                                 timezone="system"
                                 disablePast={disablePast}
                                 {...field}
-                                onChange={(date) => onChange(date)}
+                                onChange={(date) => {
+                                    onFieldChange &&
+                                        setValue("onFieldChange", true);
+
+                                    onChange(
+                                        date
+                                            ? formatDateValue
+                                                ? formatDateValue(date)
+                                                : date.toISOString()
+                                            : null
+                                    );
+                                }}
                                 value={
                                     value
                                         ? dayjs(new Date(value).toDateString())
+                                        : disableDefaultDate
+                                        ? null
                                         : formattedDefaultValue
                                 }
                                 slotProps={{

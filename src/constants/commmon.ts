@@ -18,3 +18,5 @@ export const bloodGroups = [
     { label: "O+", value: "O+" },
     { label: "O-", value: "O-" },
 ]
+
+export  const defaultQuery = { page: 1, limit: 5 };
