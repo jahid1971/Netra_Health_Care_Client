@@ -1,8 +1,8 @@
 import { RootState } from "../store";
-import { TUser } from "@/types/global.types";
+
 import { createSlice } from "@reduxjs/toolkit";
 import { useAppSelector } from "../hooks";
-import { IPatient } from "@/types/Patient";
+import { TUser } from "@/types/common";
 
 type TAuthState = {
     user: TUser | null;

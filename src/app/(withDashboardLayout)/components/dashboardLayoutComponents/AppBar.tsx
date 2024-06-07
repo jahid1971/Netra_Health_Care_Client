@@ -1,6 +1,5 @@
 import {
     Avatar,
-    Badge,
     Box,
     IconButton,
     Stack,
@@ -9,17 +8,15 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import { useGetMyProfileQuery } from "@/redux/api/myProfileApi";
+
 import AccountMenu from "./AppBarComponents/AccountMenu";
-import { grey } from "@mui/material/colors";
+
 import { useAppSelector } from "@/redux/hooks";
-import { selectIsLoading, selectUser } from "@/redux/slices/authSlice";
+import {  selectUser } from "@/redux/slices/authSlice";
 import Notification from "./AppBarComponents/Notification";
 
-const AppBar = ({ handleDrawerToggle }) => {
+const AppBar = ({ handleDrawerToggle }:any) => {
     const profileData = useAppSelector(selectUser);
-    const isLoading = useAppSelector(selectIsLoading);
 
     let greeting;
 

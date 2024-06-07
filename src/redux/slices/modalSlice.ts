@@ -6,7 +6,7 @@ import { useAppDispatch } from "../hooks";
 type TModalState = {
     isOpen: boolean;
     modalId?: string;
-    modalData?: undefined;
+    modalData?: { action: () => void; title?: string; data?: any };
     childModalOpen: boolean;
     childModalId?: string;
 };
@@ -27,7 +27,6 @@ const modalSlice = createSlice({
             state.isOpen = true;
             state.modalId = action.payload.modalId;
             state.modalData = action.payload.modalData;
-            console.log("modalData in modalSlice", state.isOpen);
         },
         closeModal: (state) => {
             state.isOpen = false;

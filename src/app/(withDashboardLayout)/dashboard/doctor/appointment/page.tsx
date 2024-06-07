@@ -1,7 +1,7 @@
 "use client";
 import {
     useGetDocotorAppointmentsQuery,
-    useGetMyAppointmentQuery,
+    useGetAllAppointmentsQuery,
 } from "@/redux/api/appointmentApi";
 import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
 import { Box, IconButton } from "@mui/material";
@@ -16,7 +16,7 @@ import { TQuery } from "@/types/common";
 
 const DoctorAppointment = () => {
     const [query, setQuery] = useState<TQuery>({});
-    const { data, isFetching } = useGetMyAppointmentQuery(query);
+    const { data, isFetching } = useGetAllAppointmentsQuery(query);
 
     const appointments = data?.data || [];
 
@@ -97,6 +97,7 @@ const DoctorAppointment = () => {
                 isLoading={isFetching}
                 notFoundFor="Appointment"
                 meta={meta}
+                rowSelection={false}
             />
         </Box>
     );

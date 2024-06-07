@@ -34,10 +34,6 @@ const CreateDrSchedule = () => {
 
     const pickedDate = watch("pickDate");
 
-    // if (pickedDate) {
-    //     query.startDate = new Date(pickedDate).toISOString()
-    //     query.endDate = new Date(pickedDate)
-    // }
     if (!!pickedDate) {
         query["startDate"] = dayjs(pickedDate) //start of the day
             .hour(0)
@@ -59,15 +55,13 @@ const CreateDrSchedule = () => {
 
     const hasNoSchedulesError = schedules?.data?.length === 0;
 
-    const schedulesData = schedules?.data?.map(
-        (schedule: Record<string, any>) => ({
+    const schedulesData =
+        schedules?.data?.map((schedule: Record<string, any>) => ({
             label: `${formatedTime(schedule.startDateTime)} - ${formatedTime(
                 schedule.endDateTime
             )}`,
             value: schedule.id,
-        })
-    );
-    
+        })) || [];
 
     const [createDrSchedule] = useCreateDoctorScheduleMutation();
 

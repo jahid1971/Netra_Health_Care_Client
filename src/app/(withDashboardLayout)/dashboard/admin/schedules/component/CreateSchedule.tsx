@@ -9,6 +9,7 @@ import { TOpenState } from "@/types/common";
 import { tryCatch } from "@/utils/tryCatch";
 import { Button, Grid, Modal } from "@mui/material";
 import { FieldValues } from "react-hook-form";
+import N_Input from "@/components/forms/N_Input";
 
 const CreateSchedule = () => {
     const dispatch = useAppDispatch();
@@ -17,16 +18,15 @@ const CreateSchedule = () => {
     const handleSubmit = (values: FieldValues) => {
         tryCatch(
             async () => {
-                const res = await createSchedule(values);
-                if (res?.data?.data?.length < 1) throw new Error("Failed to create schedule");
+                const res = await createSchedule(values) as any
+                if (res?.data?.data?.length < 1)
+                    throw new Error("Failed to create schedule");
                 return res;
             },
             "Creating Schedule",
             "Schedule created successfully",
             () => dispatch(closeModal())
         );
-    
-
     };
 
     return (
@@ -44,6 +44,13 @@ const CreateSchedule = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <N_TimePicker name="endTime" label="End Time" />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <N_Input
+                            name="duration"
+                            label="Duration (in minutes)"
+                            type="number"
+                        />
                     </Grid>
                 </Grid>
                 <Button type="submit" sx={{ mt: 1 }}>

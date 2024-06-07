@@ -8,13 +8,8 @@ import { useGetAllSpecialitiesQuery } from "@/redux/api/specialitiesApi";
 import { Box, Button, Grid, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CreateSpecialities from "../../specialities/components/CreateSpecialities";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {
-    openChildModal,
-    openModal,
-    selectChildModalId,
-    selectChildModalOpen,
-} from "@/redux/slices/modalSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { openChildModal } from "@/redux/slices/modalSlice";
 import { ISpecialties } from "@/types/Doctors";
 
 const DoctorForm = ({
@@ -22,21 +17,17 @@ const DoctorForm = ({
     submitTitle,
     defaultValue,
     passwordField = true,
-    isLoading,
+    onlyDirtyFields,
 }: any) => {
     const dispatch = useAppDispatch();
 
     const { data } = useGetAllSpecialitiesQuery(undefined);
     const allSpecialities = data?.data;
 
-
     const specialitiesData = allSpecialities?.map((item: any) => ({
         label: item.title,
         value: item.id,
     }));
-
-  
-
 
     const defaultValueCopy = { ...defaultValue };
 
@@ -46,7 +37,11 @@ const DoctorForm = ({
 
     return (
         <Box>
-            <N_Form onSubmit={handleSubmit} defaultValues={defaultValueCopy}>
+            <N_Form
+                onSubmit={handleSubmit}
+                defaultValues={defaultValueCopy}
+                onlyDirtyFields={onlyDirtyFields}
+            >
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
                         <N_Input name="name" label="Name" />
@@ -61,7 +56,8 @@ const DoctorForm = ({
                             <N_Input
                                 name="password"
                                 type="password"
-                                label="Password"
+                                label="Default Password"
+                                defaultValue="123456"
                             />
                         </Grid>
                     )}
@@ -118,19 +114,20 @@ const DoctorForm = ({
 
                     <Grid item xs={12} md={4}>
                         <Stack direction={"row"}>
-                            <N_MultiSelect
-                                required={false}
-                                items={specialitiesData}
-                                name="specialties"
-                                label="Specialities"
-                                disabled={
-                                    !allSpecialities ||
-                                    allSpecialities?.length === 0
-                                }
-                            />          
+                            {specialitiesData && (
+                                <N_MultiSelect
+                                    required={false}
+                                    items={specialitiesData}
+                                    name="specialties"
+                                    label="Specialities"
+                                    disabled={
+                                        !allSpecialities ||
+                                        allSpecialities?.length === 0
+                                    }
+                                />
+                            )}
                             <Button
                                 onClick={() =>
-                                 
                                     dispatch(
                                         openChildModal({
                                             modalId: "createSpeciality",
@@ -153,7 +150,7 @@ const DoctorForm = ({
                     <SubmitButton label={submitTitle} fullWidth={false} />
                 </Stack>
             </N_Form>
-            <CreateSpecialities asChildModal = {true} />
+            <CreateSpecialities asChildModal={true} />
         </Box>
     );
 };

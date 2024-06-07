@@ -12,12 +12,11 @@ import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/navigation";
 import { logOutUser } from "@/services/actions/logOutuser";
-import { toast } from "sonner";
+
 import { grey } from "@mui/material/colors";
 import { useAppDispatch } from "@/redux/hooks";
 
-import { baseApi } from "@/redux/api/baseApi";
-import { setUser } from "@/redux/slices/authSlice";
+
 
 const menuStyles = {
     paper: {

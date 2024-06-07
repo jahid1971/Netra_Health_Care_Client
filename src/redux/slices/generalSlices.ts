@@ -5,10 +5,12 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 
 type generalStateProps = {
     searchTerm: string;
+    countUnreadMsg: number;
 };
 
 const initialState: generalStateProps = {
     searchTerm: "",
+    countUnreadMsg: 0,
 };
 
 const generalSlices = createSlice({
@@ -16,16 +18,24 @@ const generalSlices = createSlice({
     initialState,
     reducers: {
         setSearchTerm: (state, action) => {
-            state.searchTerm = action.payload
+            state.searchTerm = action.payload;
+        },
+        setCountUnread: (state, action) => {
+            state.countUnreadMsg = action.payload;
         },
     },
 });
 
 export const generalReducer = generalSlices.reducer;
 
-export const  { setSearchTerm } = generalSlices.actions;
+export const { setSearchTerm, setCountUnread } = generalSlices.actions;
 
 export const selectSearchTerm = (state: RootState) =>
     state?.generalState?.searchTerm;
 
 export const useSearchTermSelector = () => useAppSelector(selectSearchTerm);
+
+export const selectCountUnread = (state: RootState) =>
+    state?.generalState?.countUnreadMsg;
+
+export const useSelectCountUnread = () => useAppSelector(selectCountUnread);

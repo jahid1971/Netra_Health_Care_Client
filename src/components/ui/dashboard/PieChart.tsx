@@ -28,7 +28,7 @@ function PieCenterLabel({ children }: { children: React.ReactNode }) {
     );
 }
 
-export default function DashboardPieChart({ title, data = [] }) {
+export default function DashboardPieChart({ title, data} : { title: string, data: any }) {
     return (
         <Box
             sx={{

@@ -14,7 +14,8 @@ export type TUpdateArgs = {
 export const createApiBuilder = (
     build: any,
     url: string,
-    tagTypes?: string[]
+    tagTypes?: string[],
+    options: { method?: string; contentType?: string } = {}
 ) => {
     return build.mutation({
         query: (args: any) => {
@@ -23,19 +24,20 @@ export const createApiBuilder = (
                 url: url,
                 method: "POST",
                 data: args,
+                contentType: options.contentType ?? "application/json",
             };
         },
         invalidatesTags: tagTypes,
     });
 };
 
-export const updateApiBuilder = (
+export const updateApiBuilder = <T>(
     build: IBuildApi,
     url: string,
     tagTypes: string[],
     options: { method?: string; contentType?: string } = {}
 ) => {
-    return build.mutation<any, TUpdateArgs>({
+    return build.mutation<TResponse<T>, TUpdateArgs>({
         query: (args) => {
             console.log("args in updateApiBuilderrrrr", args);
             return {
@@ -79,10 +81,13 @@ export const singleQueryApiBuilder = <T>(
     url: string,
     tagTypes?: string[]
 ) => {
-    return build.query<TResponse<T>, { id?: string }>({
+    return build.query<TResponse<T>, { id?: string; id_2?: string }>({
         query: (args) => {
             return {
-                url: `${url}/${args?.id}`,
+                url:
+                    args?.id && args.id_2
+                        ? `${url}/${args.id}/${args.id_2}`
+                        : `${url}/${args.id}`,
                 method: "GET",
             };
         },

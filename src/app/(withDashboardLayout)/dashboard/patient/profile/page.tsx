@@ -21,7 +21,7 @@ const PatientProfilePage = () => {
     const [updatePatient, { isLoading: isUpdating }] =
         useUpdatePatientMutation();
 
-    const patientData: IPatient = data?.data;
+    const patientData = data?.data as IPatient;
 
     const dispatch = useAppDispatch();
 

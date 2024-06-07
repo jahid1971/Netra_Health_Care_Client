@@ -23,15 +23,11 @@ const SubmitButton = ({
 }: SubmitButtonProps) => {
     const { toasts } = useSonner();
 
-    let onSubmit;
+    const { handleSubmit } = useFormContext();
 
-    if (customSubmit) {
-        const { handleSubmit } = useFormContext();
-        
-        onSubmit = handleSubmit(async (data: any) => {
-            customSubmit(data);
-        });
-    }
+    const onSubmit = handleSubmit(async (data: any) => {
+        customSubmit && customSubmit(data);
+    });
 
     const loading = toasts.length && toasts[0].type === "loading" ? true : null;
 

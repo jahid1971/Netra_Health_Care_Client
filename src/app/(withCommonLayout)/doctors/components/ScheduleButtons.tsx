@@ -1,10 +1,10 @@
 "use client";
-import { ISchedule } from "@/types/schedules";
+import { ISchedule, TDoctorSchedule } from "@/types/schedules";
 import { Button, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 
 type ScheduleButtonsProps = {
-    doctorSchedules: ISchedule[];
+    doctorSchedules: TDoctorSchedule[];
     setScheduleID: any;
     scheduleId: string;
 };
@@ -16,7 +16,7 @@ const ScheduleButtons = ({
 }: ScheduleButtonsProps) => {
     return doctorSchedules?.length > 0 ? (
         <Stack direction={"row"} gap={2} flexWrap="wrap">
-            {doctorSchedules?.map((slot: ISchedule) => {
+            {doctorSchedules?.map((slot: TDoctorSchedule) => {
                 const startDateTime = dayjs(slot?.schedule?.startDateTime).format(
                     "hh:mm A"
                 );

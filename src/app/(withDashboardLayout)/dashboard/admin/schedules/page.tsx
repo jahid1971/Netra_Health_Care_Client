@@ -15,10 +15,10 @@ import dayjs from "dayjs";
 import { TSchedule } from "@/types/schedules";
 import { tryCatch } from "@/utils/tryCatch";
 import ConfirmationModal from "@/components/modals/ConfirmationModal";
-import N_Input from "@/components/forms/N_Input";
-import N_DatePicker from "@/components/forms/N_DatePicker";
+
 import FilterByDate from "@/components/dataGrid/filters/FilterByDate";
 import FilterByTime from "@/components/dataGrid/filters/FilterByTime";
+
 
 const SchedulePage = () => {
     const [allSchedules, setAllSchedule] = useState<any>([]);
@@ -57,7 +57,7 @@ const SchedulePage = () => {
             })
         );
         setAllSchedule(schedulesData);
-    }, [schedules]);
+    }, [schedules, query]);
 
     const columns: GridColDef[] = [
         {
@@ -101,7 +101,9 @@ const SchedulePage = () => {
                             dispatch(
                                 openModal({
                                     modalId: "confirm",
-                                    modalData: () => handleDelete(row.id),
+                                    modalData: {
+                                        action: () => handleDelete(row.id),
+                                    },
                                 })
                             )
                         }
@@ -131,8 +133,10 @@ const SchedulePage = () => {
                 dispatch(
                     openModal({
                         modalId: "confirm",
-                        modalData: () =>
-                            handleDelete(selectedRows.map((row) => row.id)),
+                        modalData: {
+                            action: () =>
+                                handleDelete(selectedRows.map((row) => row.id)),
+                        },
                     })
                 )
             }
@@ -152,6 +156,7 @@ const SchedulePage = () => {
                 isLoading={isFetching}
                 notFoundFor="Schedule"
                 setQuery={setQuery}
+                query={query}
                 meta={meta}
                 createButton={createScheScheduleButton}
                 setSelectedRows={setSelectedRows}
@@ -167,7 +172,7 @@ const SchedulePage = () => {
                 >
                     <FilterByTime query={query} setQuery={setQuery} />
 
-                    <FilterByDate query={query} setQuery={setQuery} />
+                    <FilterByDate query={query} />
                 </Stack>
             </N_DataGrid>
         </Box>

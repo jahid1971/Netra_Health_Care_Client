@@ -7,7 +7,7 @@ import N_DataGrid from "@/components/dataGrid/DataGrid";
 import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
 import { useState } from "react";
 import N_Pagination from "@/components/pagination/Pagination";
-import { useGetMyAppointmentQuery } from "@/redux/api/appointmentApi";
+import { useGetAllAppointmentsQuery } from "@/redux/api/appointmentApi";
 import N_Chips from "@/components/ui/N_Chips";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import Link from "next/link";
@@ -17,7 +17,7 @@ import { IMeta } from "@/types/common";
 const PatientAppoinmtntPage = () => {
     const [query, setQuery] = useState<Record<string, any>>({});
 
-    const { data, isFetching } = useGetMyAppointmentQuery(query);
+    const { data, isFetching } = useGetAllAppointmentsQuery(query);
 
     const appointments = data?.data;
     const appointmentsData = appointments?.map((appointment, index) => ({
@@ -27,8 +27,7 @@ const PatientAppoinmtntPage = () => {
 
     console.log(appointmentsData, "appointmentdataaa");
 
-    const meta= data?.meta as IMeta 
-   
+    const meta = data?.meta as IMeta;
 
     const columns: GridColDef[] = [
         {
@@ -107,10 +106,12 @@ const PatientAppoinmtntPage = () => {
                 rows={appointmentsData || []}
                 columns={columns}
                 isLoading={isFetching}
-                notFoundFor="Schedule"
+                notFoundFor="appointment"
                 meta={meta}
+                rowSelection={false}
+                searchField={false}
+                filter={false}
             />
-            {/* <N_Pagination setQuery={setQuery} meta={meta} /> */}
         </Box>
     );
 };

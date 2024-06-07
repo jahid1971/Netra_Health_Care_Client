@@ -2,23 +2,29 @@ import { authKey, refreshKey } from "@/constants/authKey";
 import { baseUrl } from "@/constants/commmon";
 import { handleUnAuthenticated } from "@/services/actions/cookies";
 import { refreshAccessToken } from "@/services/actions/refreshAccessToken";
-import Error from "next/error";
 import { cookies } from "next/headers";
 
-export async function fetchWithAuth(urlEndpoint, options = {}) {
+interface FetchOptions extends RequestInit {
+    data?: any;
+}
+
+export async function fetchWithAuth(
+    urlEndpoint: string,
+    options: FetchOptions = {}
+) {
     const cookieStore = cookies();
     const accessToken = cookieStore.get(authKey)?.value;
 
-    const fetchOptions = {
+    const fetchOptions: RequestInit & { headers: Record<string, string> } = {
         ...options,
         credentials: "include",
-        headers: {
+        headers: <Record<string, string>>{
             ...options?.headers,
-            authorization: accessToken,
+            authorization: accessToken || "",
         },
     };
 
-    if (["POST", "PUT", "PATCH"].includes(options?.method)) {
+    if (["POST", "PUT", "PATCH"].includes(options?.method ?? "")) {
         fetchOptions.headers["Content-Type"] = "application/json";
     }
 

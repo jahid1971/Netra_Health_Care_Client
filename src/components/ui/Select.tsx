@@ -5,7 +5,19 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Box } from "@mui/material";
 
-export default function CustomSelect({ items, setValue, value, label, sx }) {
+export default function CustomSelect({
+    items,
+    setValue,
+    value,
+    label,
+    sx,
+}: {
+    items: { label: string; value: any }[];
+    setValue: any;
+    value: any;
+    label?: string;
+    sx?: any;
+}) {
     const handleChange = (event: SelectChangeEvent) => {
         setValue(event.target.value);
     };

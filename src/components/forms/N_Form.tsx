@@ -21,6 +21,7 @@ type TFormProps = {
     error?: string;
     onlyDirtyFields?: boolean;
     handleFieldChange?: (field: string, value: any) => void;
+    query?: any;
 } & TFormConfig;
 
 const N_Form = ({
@@ -31,6 +32,7 @@ const N_Form = ({
     error,
     onlyDirtyFields,
     handleFieldChange,
+    query,
 }: TFormProps) => {
     const formConfig: TFormConfig = {};
 
@@ -44,15 +46,11 @@ const N_Form = ({
 
     const methods = useForm(formConfig);
 
-    const { handleSubmit, watch, formState } = methods;
+    const { handleSubmit, watch, formState, getValues, setValue } = methods;
 
     const { dirtyFields } = formState;
 
     const submit: SubmitHandler<FieldValues> = (data) => {
-        console.log(
-            data,
-            "----------------------------------------------data in onSumbit"
-        );
         const filteredData = Object.keys(dirtyFields).reduce(
             (acc: Record<string, any>, field) => {
                 acc[field] = data[field] === "" ? undefined : data[field];
@@ -61,7 +59,7 @@ const N_Form = ({
             {} as Record<string, any>
         );
 
-        onSubmit(onlyDirtyFields ? filteredData : data);
+        onSubmit && onSubmit(onlyDirtyFields ? filteredData : data);
     };
 
     const debouncedHandleFieldChange = handleFieldChange
@@ -73,19 +71,30 @@ const N_Form = ({
     useEffect(() => {
         if (debouncedHandleFieldChange) {
             const subscription = watch((value, { name }) => {
-                
-                if (name && value["onFieldChange"] === true) {
+                // if (name && value["onFieldChange"] === true) {
+                if (name && handleFieldChange) {
                     debouncedHandleFieldChange(name, value[name]);
-                    console.log(
-                        value,
-                        "data value ----------------------------------------------"
-                    );
                 }
             });
 
             return () => subscription.unsubscribe();
         }
-    }, [watch, debouncedHandleFieldChange]);
+    }, [watch, debouncedHandleFieldChange, handleFieldChange]);
+
+    // Reset all fields to null when query is empty
+    const resetFieldsToNull = () => {
+        const currentValues = getValues();
+        Object.keys(currentValues).forEach((field) => {
+            setValue(field, null);
+        });
+    };
+
+    useEffect(() => {
+        if (query) {
+            const { page, limit, ...newQuery } = query;
+            if (Object.keys(newQuery).length === 0) resetFieldsToNull();
+        }
+    }, [query, setValue, getValues]); //eslint-disable-line
 
     return (
         <FormProvider {...methods}>

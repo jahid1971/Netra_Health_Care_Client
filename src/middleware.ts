@@ -16,8 +16,19 @@ const commonPrivateRoutes = [
 const roleBasedPrivateRoutes = {
     PATIENT: [/^\/dashboard\/patient/, /^\/video/],
     DOCTOR: [/^\/dashboard\/doctor/, /^\/video/],
-    ADMIN: [/^\/dashboard\/admin/],
-    SUPER_ADMIN: [/^\/dashboard\/super-admin/],
+    ADMIN: [
+        /^\/dashboard\/admin/,
+        /^\/dashboard\/patient/,
+        /^\/dashboard\/doctor/,
+        /^\/video/,
+    ],
+    SUPER_ADMIN: [
+        /^\/dashboard\/super-admin/,
+        /^\/dashboard\/admin/,
+        /^\/dashboard\/patient/,
+        /^\/dashboard\/doctor/,
+        /^\/video/,
+    ],
 };
 
 export function middleware(req: NextRequest) {

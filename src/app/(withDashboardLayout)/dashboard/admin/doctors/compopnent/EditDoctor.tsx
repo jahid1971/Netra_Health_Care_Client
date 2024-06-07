@@ -6,39 +6,28 @@ import { FieldValues } from "react-hook-form";
 import { useEditDoctorMutation } from "@/redux/api/doctorsApi";
 import { tryCatch } from "@/utils/tryCatch";
 import { IDoctor } from "@/types/Doctors";
+import { modifyPayload } from "@/utils/modifyPayload";
 
 const EditDoctor = () => {
-    const doctorInfo: Partial<IDoctor> = useAppSelector(selectModalData) || {};
+    const modalData = useAppSelector(selectModalData);
+    const doctorInfo: Partial<IDoctor> = modalData?.data;
     const [editDoctor, { isLoading }] = useEditDoctorMutation();
     const dispatch = useAppDispatch();
 
-    const defaultValue = {
-        name: doctorInfo?.name,
-        email: doctorInfo?.email,
-        contactNumber: doctorInfo?.contactNumber,
-        address: doctorInfo?.address,
-        registrationNumber: doctorInfo?.registrationNumber,
-        experience: doctorInfo?.experience,
-        gender: doctorInfo?.gender,
-        apointmentFee: doctorInfo?.apointmentFee,
-        qualification: doctorInfo?.qualification,
-        currentWorkingPlace: doctorInfo?.currentWorkingPlace,
-        designation: doctorInfo?.designation,
-    };
-
     const handleSubmit = (data: FieldValues) => {
-        data.experience = Number(data.experience);
-        data.apointmentFee = Number(data.apointmentFee);
+        data.experience && (data.experience = Number(data.experience));
+        data.apointmentFee && (data.apointmentFee = Number(data.apointmentFee));
 
-        let { doctorSpecialties, ...updateData } = data;
-        console.log(doctorSpecialties, "doctorSpecialties");
-        updateData.specialties = doctorSpecialties?.map((item: any) => item);
+        if (data?.doctorSpecialties) {
+            data.specialties = data.doctorSpecialties.map(
+                (item: any) => item.id
+            );
+        }
 
-        updateData = { id: doctorInfo?.id as string, data: updateData };
-
+        const payload = modifyPayload(data);
 
         tryCatch(
-            async () => await editDoctor(updateData),
+            async () => await editDoctor({ data: payload, id: doctorInfo?.id }),
             "Updating Doctor",
             "Doctor Updated Successfully",
             () => dispatch(closeModal())
@@ -48,10 +37,11 @@ const EditDoctor = () => {
         <N_Modal fullScreen title="Edit Doctor" modalId="editDoctor">
             <DoctorForm
                 handleSubmit={handleSubmit}
-                defaultValue={defaultValue}
+                defaultValue={doctorInfo}
                 submitTitle="Edit"
                 passwordField={false}
                 isLoading={isLoading}
+                onlyDirtyFields={true}
             />
         </N_Modal>
     );

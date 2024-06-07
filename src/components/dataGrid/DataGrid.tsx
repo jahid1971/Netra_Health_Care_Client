@@ -1,18 +1,10 @@
 "use client";
-import { useDebounced } from "@/redux/hooks";
-import {
-    Box,
-    Button,
-    Slide,
-    Stack,
-    styled,
-    TextField,
-    Typography,
-} from "@mui/material";
+
+import { Box, Button, Slide, Stack, Typography } from "@mui/material";
 import { DataGrid, GridSortModel } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
 import N_Pagination from "../pagination/Pagination";
-import { theme } from "@/lib/theme/theme";
+
 import { blue } from "@mui/material/colors";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import N_Input from "../forms/N_Input";
@@ -28,9 +20,9 @@ type TDataGridProps = {
     autoHeight?: boolean;
     notFoundFor?: string;
     slots?: any;
-    searchTerm?: any;
+    // searchTerm?: any;
     sorting?: boolean;
-    setQuery?: (queryUpdater: (prevQuery: any) => any) => void;
+    setQuery?: (prevQuery: any) => void;
     meta?: any;
     children?: any;
     createButton?: any;
@@ -42,6 +34,7 @@ type TDataGridProps = {
     selectedRows?: any;
     selectedActionButton?: any;
     searchField?: boolean;
+    query?: any;
 };
 
 const N_DataGrid = ({
@@ -52,9 +45,10 @@ const N_DataGrid = ({
     autoHeight,
     notFoundFor,
     slots,
-    searchTerm,
+    // searchTerm,
     sorting = true,
     setQuery,
+    query,
     meta,
     createButton,
     children,
@@ -68,28 +62,15 @@ const N_DataGrid = ({
 }: TDataGridProps) => {
     const [showFilters, setShowFilters] = useState(false);
 
-    const debouncedSearchTerm = useDebounced({
-        searchQuery: searchTerm,
-        delay: 500,
-    });
-
-    useEffect(() => {
-        if (debouncedSearchTerm) {
-            setQuery((prevQuery) => ({
-                ...prevQuery,
-                searchTerm: debouncedSearchTerm,
-            }));
-        }
-    }, [debouncedSearchTerm]);
-
     useEffect(() => {
         if (rows?.length < 1 && meta?.page > 1) {
-            setQuery((prevQuery) => ({
-                ...prevQuery,
-                page: meta?.page - 1,
-            }));
+            setQuery &&
+                setQuery((prevQuery: any) => ({
+                    ...prevQuery,
+                    page: meta?.page - 1,
+                }));
         }
-    }, [rows?.length]);
+    }, [rows?.length, meta?.page, setQuery]);
 
     const styledColumns = columns.map((col) => ({
         ...col,
@@ -111,26 +92,28 @@ const N_DataGrid = ({
     };
 
     const handleSortModelChange = useCallback((sortModel: GridSortModel) => {
-        setQuery((prev: any) => ({
-            ...prev,
-            page: 0,
-            sortBy: sortModel[0]?.field,
-            sortOrder: sortModel[0]?.sort,
-        }));
-    }, []);
+        setQuery &&
+            setQuery((prev: any) => ({
+                ...prev,
+                page: 0,
+                sortBy: sortModel[0]?.field,
+                sortOrder: sortModel[0]?.sort,
+            }));
+    }, [setQuery]);
 
     const handleRowSelection = (selectionModel: any) => {
         const selectedData = rows.filter((row) =>
             selectionModel.includes(row.id)
         );
-        setSelectedRows(selectedData);
+        setSelectedRows && setSelectedRows(selectedData);
     };
 
-    const handleFieldChange = (field, value) => {
-        setQuery((prevQuery) => ({
-            ...prevQuery,
-            [field]: value,
-        }));
+    const handleFieldChange = (field: string, value: any) => {
+        setQuery &&
+            setQuery((prevQuery: any) => ({
+                ...prevQuery,
+                [field]: value,
+            }));
     };
 
     return (
@@ -177,6 +160,7 @@ const N_DataGrid = ({
                                 >
                                     <N_Form
                                         handleFieldChange={handleFieldChange}
+                                        query={query}
                                     >
                                         {children}
                                     </N_Form>
@@ -185,12 +169,13 @@ const N_DataGrid = ({
                                         variant="outlined"
                                         color="error"
                                         size="small"
-                                        onClick={() =>
-                                            setQuery({ ...defaultQuery })
-                                        }
+                                        onClick={() => {
+                                            setQuery &&
+                                                setQuery({ ...defaultQuery });
+                                        }}
                                         endIcon={<CloseIcon />}
                                     >
-                                        clear
+                                        reset
                                     </Button>
                                 </Box>
                             </Slide>
@@ -198,8 +183,12 @@ const N_DataGrid = ({
                     </Stack>
 
                     {searchField && (
-                        <N_Form handleFieldChange={handleFieldChange}>
+                        <N_Form
+                            handleFieldChange={handleFieldChange}
+                            query={query}
+                        >
                             <N_Input
+                                onFieldChange={true}
                                 name="searchTerm"
                                 label="Search..."
                                 sx={{
@@ -244,6 +233,7 @@ const N_DataGrid = ({
                         hideFooter={hideFooter}
                         autoHeight={autoHeight}
                         onRowSelectionModelChange={handleRowSelection}
+                        disableRowSelectionOnClick={true}
                         slotProps={{
                             loadingOverlay: {
                                 variant: "linear-progress",
@@ -273,7 +263,7 @@ const N_DataGrid = ({
                 </Box>
             </Box>
 
-            {meta && meta?.total > 5 && (
+            {meta && meta?.total > 5 && setQuery && (
                 <N_Pagination setQuery={setQuery} meta={meta} />
             )}
         </Box>

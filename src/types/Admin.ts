@@ -1,0 +1,13 @@
+export interface IAdmin {
+    id: string;
+    email: string;
+    name: string;
+    profilePhoto?: string;
+    contactNumber?: string;
+    address?: string;
+    isDeleted: boolean;
+    adminId?: string;
+    role?: string;
+    createdAt: Date;
+    updatedAt: Date;
+}

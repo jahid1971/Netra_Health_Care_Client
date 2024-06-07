@@ -15,8 +15,8 @@ interface IDatePicker {
     methods?: any;
     disablePast?: boolean;
     disableDefaultDate?: boolean;
-    onFieldChange: boolean;
-    formatDateValue?: (date: string) => string;
+    onFieldChange?: boolean;
+    formatDateValue?: (date: any) => string;
 }
 
 const N_DatePicker = ({
@@ -35,20 +35,21 @@ const N_DatePicker = ({
     const {
         control,
         formState: { errors },
-        getValues,
-        setValue,
-    } = methods ?? useFormContext();
+        getValues
+    } = methods ?? useFormContext() //eslint-disable-line
 
     const defaultValue = getValues(name) || dayjs(); //getValues(name) is for update previous date
 
-    const formattedDefaultValue = dayjs(new Date(defaultValue).toDateString());
+    // const formattedDefaultValue = dayjs(new Date(defaultValue).toDateString());
+    const formattedDefaultValue = null;
 
     return (
         <>
             <Controller
                 name={name}
                 control={control}
-                defaultValue={!disableDefaultDate && formattedDefaultValue}
+                defaultValue={formattedDefaultValue}
+                // defaultValue={!disableDefaultDate && formattedDefaultValue}
                 render={({ field: { onChange, value, ...field } }) => {
                     return (
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -58,8 +59,8 @@ const N_DatePicker = ({
                                 disablePast={disablePast}
                                 {...field}
                                 onChange={(date) => {
-                                    onFieldChange &&
-                                        setValue("onFieldChange", true);
+                                    // onFieldChange &&
+                                    //     setValue("onFieldChange", true);
 
                                     onChange(
                                         date
@@ -72,8 +73,6 @@ const N_DatePicker = ({
                                 value={
                                     value
                                         ? dayjs(new Date(value).toDateString())
-                                        : disableDefaultDate
-                                        ? null
                                         : formattedDefaultValue
                                 }
                                 slotProps={{
@@ -85,6 +84,31 @@ const N_DatePicker = ({
                                         },
                                         variant: "outlined",
                                         fullWidth: fullWidth,
+                                    },
+
+                                    popper: {
+                                        modifiers: [
+                                            {
+                                                name: "flip",
+                                                enabled: true,
+                                                options: {
+                                                    altBoundary: true,
+                                                    rootBoundary: "document",
+                                                    padding: 8,
+                                                },
+                                            },
+                                            {
+                                                name: "preventOverflow",
+                                                enabled: true,
+                                                options: {
+                                                    altAxis: true,
+                                                    // altBoundary: true,
+                                                    // tether: true,
+                                                    rootBoundary: "document",
+                                                    padding: 8,
+                                                },
+                                            },
+                                        ],
                                     },
                                 }}
                             />

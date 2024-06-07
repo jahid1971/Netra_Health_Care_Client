@@ -1,13 +1,13 @@
 "use client";
 import DashedLine from "@/components/ui/DashedLine";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { tryCatch } from "@/utils/tryCatch";
 import ScheduleButtons from "./ScheduleButtons";
 import { useMemo, useState } from "react";
 import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
 import { createAppointment } from "@/services/actions/appointment";
-import { initialPayment } from "@/services/actions/payment";
+
 import { useRouter } from "next/navigation";
 import SubmitButton from "@/components/ui/SubmitButton";
 import AppError from "@/utils/AppError";
@@ -63,11 +63,22 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
 
     return (
         <Box mt={2}>
-            <Typography variant="h5" color={"primary.main"} textAlign={"center"} mb={2}>
+            <Typography
+                variant="h5"
+                color={"primary.main"}
+                textAlign={"center"}
+                mb={2}
+            >
                 Availability
             </Typography>
 
-            <Typography variant="h6" fontSize={15} fontWeight={600} mb={1} textAlign={"center"}>
+            <Typography
+                variant="h6"
+                fontSize={15}
+                fontWeight={600}
+                mb={1}
+                textAlign={"center"}
+            >
                 Today: {dayjs().format("MMMM D, YYYY, dddd")}
             </Typography>
 
@@ -83,7 +94,13 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
 
             <DashedLine />
 
-            <Typography variant="h6" fontSize={15} fontWeight={600} mb={1} textAlign={"center"}>
+            <Typography
+                variant="h6"
+                fontSize={15}
+                fontWeight={600}
+                mb={1}
+                textAlign={"center"}
+            >
                 Tomrrow: {dayjs().add(1, "day").format("MMMM D, YYYY, dddd")}
             </Typography>
 
@@ -97,12 +114,19 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
                 />
             )}
 
-            <SubmitButton
+            {/* <SubmitButton
                 onClick={handleBookAppointment}
                 sx={{ mt: 2 }}
                 label=" Book Appointment Now"
                 fullWidth={false}
-            />
+            /> */}
+            <Button
+                onClick={handleBookAppointment}
+                sx={{ mt: 2 }}
+                fullWidth={false}
+            >
+                Book Appointment Now
+            </Button>
         </Box>
     );
 };

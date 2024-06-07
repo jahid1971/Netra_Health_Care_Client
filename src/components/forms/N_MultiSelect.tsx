@@ -4,8 +4,8 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
+import Select from "@mui/material/Select";
+
 import { Controller, useFormContext } from "react-hook-form";
 import { Checkbox, ListItemText, Typography } from "@mui/material";
 
@@ -20,16 +20,6 @@ type TMultiselect = {
     defaultValue?: any[];
 };
 
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-//     PaperProps: {
-//         style: {
-//             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-//             width: 250,
-//         },
-//     },
-// };
 
 export default function N_MultiSelect({
     name,
@@ -44,7 +34,7 @@ export default function N_MultiSelect({
     const {
         control,
         formState: { errors },
-    } = methods ?? useFormContext();
+    } = methods ?? useFormContext(); //eslint-disable-line
 
     const valueToLabelMap = items?.reduce<Record<any, string>>((acc, item) => {
         acc[item.value] = item.label;

@@ -28,8 +28,8 @@ export default function Notification() {
     };
 
     const handleNotificationClick = (index: number) => {
-        setNotifications((prev) =>
-            prev.map((item, i) =>
+        setNotifications((prev:any) =>
+            prev.map((item:any, i:number) =>
                 i === index ? { ...item, active: false, clicked: true } : item
             )
         );
@@ -53,7 +53,7 @@ export default function Notification() {
             >
                 <Badge
                     badgeContent={
-                        notifications.filter((item) => item.active).length
+                        notifications.filter((item:any) => item.active).length
                     }
                     color="primary"
                 >
@@ -78,7 +78,7 @@ export default function Notification() {
                     <Divider sx={{ my: 1 }} />
 
                     {notifications?.length ? (
-                        notifications.map((item, index) => (
+                        notifications.map((item:any, index:number) => (
                             <Box
                                 key={index}
                                 sx={{

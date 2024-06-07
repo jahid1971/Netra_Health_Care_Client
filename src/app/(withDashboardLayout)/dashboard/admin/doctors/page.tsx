@@ -1,25 +1,8 @@
 "use client";
-import {
-    Box,
-    Button,
-    IconButton,
-    MenuItem,
-    Select,
-    Stack,
-    TextField,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import {
-    useDeleteSpecialityMutation,
-    useGetAllSpecialitiesQuery,
-} from "@/redux/api/specialitiesApi";
-import {
-    DataGrid,
-    GridColDef,
-    GridFilterInputValueProps,
-    GridFilterItem,
-} from "@mui/x-data-grid";
-import Image from "next/image";
+import { Box, Button, IconButton, Stack } from "@mui/material";
+import { useState } from "react";
+
+import { GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { tryCatch } from "@/utils/tryCatch";
 import CreateDoctor from "./compopnent/CreateDoctor";
@@ -27,20 +10,25 @@ import {
     useDeleteDoctorMutation,
     useGetDoctorsQuery,
 } from "@/redux/api/doctorsApi";
-import { useAppDispatch, useDebounced } from "@/redux/hooks";
+import { useAppDispatch} from "@/redux/hooks";
 import N_DataGrid from "@/components/dataGrid/DataGrid";
 import EditIcon from "@mui/icons-material/Edit";
-import Link from "next/link";
+
 import { openModal } from "@/redux/slices/modalSlice";
 import EditDoctor from "./compopnent/EditDoctor";
-import { set } from "react-hook-form";
+
 import tableSerial from "@/utils/tableSerial";
+import FilterPopover from "@/components/dataGrid/filters/FilterPopover";
+import N_Select from "@/components/forms/N_Select";
+import { defaultQuery, Gender } from "@/constants/commmon";
+import N_Input from "@/components/forms/N_Input";
+import ConfirmationModal from "@/components/modals/ConfirmationModal";
 
 const DoctorsPage = () => {
     // const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useAppDispatch();
-    const [query, setQuery] = useState<Record<string, any>>({});
-    const [searchTerm, setSearchTerm] = useState("");
+    const [query, setQuery] = useState<Record<string, any>>(defaultQuery);
+    // const [searchTerm, setSearchTerm] = useState("");
 
     const { data, isLoading, isFetching } = useGetDoctorsQuery(query);
 
@@ -88,7 +76,16 @@ const DoctorsPage = () => {
             renderCell: ({ row }) => (
                 <Box>
                     <IconButton
-                        onClick={() => handleDelete(row.id)}
+                        onClick={() =>
+                            dispatch(
+                                openModal({
+                                    modalId: "confirm",
+                                    modalData: {
+                                        action: () => handleDelete(row.id),
+                                    },
+                                })
+                            )
+                        }
                         aria-label="delete"
                     >
                         <DeleteIcon sx={{ color: "red" }} />
@@ -99,7 +96,7 @@ const DoctorsPage = () => {
                             dispatch(
                                 openModal({
                                     modalId: "editDoctor",
-                                    modalData: row,
+                                    modalData: { data: row },
                                 })
                             )
                         }
@@ -112,38 +109,53 @@ const DoctorsPage = () => {
         },
     ];
 
+    const createButton = (
+        <Button
+            size="small"
+            onClick={() => dispatch(openModal({ modalId: "createDoctor" }))}
+        >
+            Create New Doctor
+        </Button>
+    );
+
     return (
         <Box>
-            <Stack direction={"row"} justifyContent={"space-between"}>
-                <Button
-                    size="small"
-                    onClick={() =>
-                        dispatch(openModal({ modalId: "createDoctor" }))
-                    }
-                >
-                    Create New Doctor
-                </Button>
-
-                <TextField
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    fullWidth={false}
-                    size="small"
-                    placeholder="Search Doctor"
-                />
-            </Stack>
-
             <N_DataGrid
+                createButton={createButton}
                 rows={doctors}
                 columns={columnDef}
                 isLoading={isFetching}
                 notFoundFor="Doctor"
-                searchTerm={searchTerm}
+                // searchTerm={searchTerm}
                 setQuery={setQuery}
+                query={query}
                 meta={meta}
-            />
+                rowSelection={false}
+            >
+                <Stack direction="row" spacing={2}>
+                    <FilterPopover
+                        filterLabel={"Filter By Gender"}
+                        btnBackgroundTrue={query.gender}
+                        minWidth="200px"
+                    >
+                        <N_Select items={Gender} name="gender" label="Gender" />
+                    </FilterPopover>
+
+                    <FilterPopover
+                        filterLabel={"Filter by Fees Range"}
+                        btnBackgroundTrue={query.maxFees || query.minFees}
+                        minWidth="200px"
+                    >
+                        <N_Input name="minFees" label="Minimum Fess" />
+                        <N_Input name="maxFees" label="Maximum Fess" />
+                    </FilterPopover>
+                </Stack>
+            </N_DataGrid>
+
             {/* modals */}
             <CreateDoctor />
             <EditDoctor />
+            <ConfirmationModal title="Do You Want to Delete this Doctor" />
         </Box>
     );
 };

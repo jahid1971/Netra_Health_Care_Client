@@ -1,4 +1,12 @@
-import { MenuItem, SxProps, TextField } from "@mui/material";
+import {
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    MenuItem,
+    Select,
+    SxProps,
+    TextField,
+} from "@mui/material";
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -12,6 +20,7 @@ interface ITextField {
     sx?: SxProps;
     items: { label: string; value: any }[];
     methods?: any;
+    variant?: "standard" | "outlined" | "filled";
 }
 
 const N_Select = ({
@@ -23,33 +32,46 @@ const N_Select = ({
     fullWidth = true,
     sx,
     methods,
+    variant,
 }: ITextField) => {
-    const { control, formState } = methods ?? useFormContext();
+    const { control, formState } = methods ?? useFormContext(); //eslint-disable-line
     const isError = formState.errors[name] !== undefined;
 
     return (
         <Controller
             control={control}
             name={name}
+            defaultValue=""
             render={({ field }) => (
-                <TextField
-                    {...field}
-                    sx={{
-                        ...sx,
-                    }}
-                    size={size}
-                    select
-                    label={label}
-                    required={required}
-                    fullWidth={fullWidth}
-                    error={isError}
-                    helperText={isError ? (formState.errors[name]?.message as string) : ""}>
-                    {items.map((item) => (
-                        <MenuItem key={item.value} value={item.value}>
-                            {item.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
+                <FormControl fullWidth size={size} variant={variant}>
+                    <InputLabel id="select-label">{label}</InputLabel>
+                    <Select
+                        labelId="select-label"
+                        {...field}
+                        sx={{
+                            ...sx,
+                            fontSize: size === "small" ? "0.875rem" : "1rem",
+                        }}
+                        size={size}
+                        label={label}
+                        required={required}
+                        fullWidth={fullWidth}
+                        error={isError}
+
+                        // onChange={(e) => field.onChange(e.target.value)}
+                    >
+                        {items.map((item) => (
+                            <MenuItem key={item.value} value={item.value}>
+                                {item.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    {isError && (
+                        <FormHelperText error>
+                            {formState.errors[name]?.message as string}
+                        </FormHelperText>
+                    )}
+                </FormControl>
             )}
         />
     );

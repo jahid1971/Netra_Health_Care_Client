@@ -8,10 +8,10 @@ import DoctorCard from "@/components/ui/doctor/DoctorCard";
 import DoctorCardSkeleton from "@/components/ui/homepage/skeletons/DoctorCardSkeleton";
 import { baseUrl } from "@/constants/commmon";
 
-import { Box, TextField, Typography } from "@mui/material";
+import { Box,  Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Suspense } from "react";
-import N_Input from "@/components/forms/N_Input";
+
 import SearchBar from "./Searchbar";
 
 const DoctorPageComponent = async ({

@@ -2,10 +2,10 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { TextField } from "@mui/material";
-import { useAppDispatch, useAppSelector, useDebounced } from "@/redux/hooks";
-import { useEffect, useState } from "react";
+import { useAppDispatch,  useDebounced } from "@/redux/hooks";
+import { useEffect} from "react";
 import {
-    selectSearchTerm,
+
     setSearchTerm,
     useSearchTermSelector,
 } from "@/redux/slices/generalSlices";
@@ -30,10 +30,6 @@ const SearchBar = () => {
         }
         router.push(`?${params.toString()}`);
 
-        console.log(
-            "searchTerm----------------------------------------------",
-            searchTerm
-        );
     }, [debouncedSearchTerm, router, searchParams]);
 
     const handleInputChange = (event: any) => {

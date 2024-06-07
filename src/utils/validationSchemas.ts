@@ -33,3 +33,14 @@ export const resePasswordSchema = z
         message: " Passwords do not match",
         path: ["confirmPassword"],
     });
+
+
+
+export const forgotPasswordSchema = z.object({
+    email: z.string().email("Invalid email address"),
+});
+
+export const changePasswordSchema = z.object({
+    oldPassword: z.string().min(1, "Old password is required"),
+    newPassword: z.string().min(6, "Must be at least 6 characters"),
+});

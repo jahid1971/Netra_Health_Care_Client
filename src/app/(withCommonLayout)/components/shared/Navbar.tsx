@@ -3,18 +3,29 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Box, Button, Container, Drawer, IconButton, Stack, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Drawer,
+    IconButton,
+    Stack,
+    Typography,
+} from "@mui/material";
 import { logOutUser } from "@/services/actions/logOutuser";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import NetraLogo from "@/components/NetraLogo";
-import { isSmallScreen } from "@/utils/isSmallScreen";
 
-export const Navbar = ({ userInfo }) => {
+import { grey } from "@mui/material/colors";
+import { useIsSmallScreen } from "@/utils/isSmallScreen";
+import { TUserInfo } from "@/services/actions/auth.services";
+
+export const Navbar = ({ userInfo }: { userInfo?: TUserInfo }) => {
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
+    const isSmallScreen = useIsSmallScreen();
 
     const handleLogOut = () => logOutUser(router);
 
@@ -22,7 +33,7 @@ export const Navbar = ({ userInfo }) => {
         setOpen(newOpen);
     };
 
-    const NavLink = ({ href, children }) => {
+    const NavLink = ({ href, children }: any) => {
         const isActive = pathname === href;
         return (
             <Link href={href}>
@@ -32,7 +43,8 @@ export const Navbar = ({ userInfo }) => {
                         textDecoration: "none",
                         color: isActive ? "primary.main" : "inherit",
                         fontWeight: isActive ? 600 : 400,
-                    }}>
+                    }}
+                >
                     {children}
                 </Typography>
             </Link>
@@ -40,21 +52,31 @@ export const Navbar = ({ userInfo }) => {
     };
 
     const menuLinks = [
-        <NavLink href="/consultation">Consultation</NavLink>,
-        <NavLink href="/health-plans">Health Plans</NavLink>,
-        <NavLink href="/medicine">Medicine</NavLink>,
-        <NavLink href="/diagnostics">Diagnostics</NavLink>,
-        <NavLink href="/ngos">NGOs</NavLink>,
-        <NavLink href="/doctors">Doctors</NavLink>,
-        userInfo?.userId && <NavLink href="/dashboard">Dashboard</NavLink>,
+        <Typography key={"health-care"} color={grey[900]}>
+            Health Plans
+        </Typography>,
+        <Typography key={"medicine"} color={grey[900]}>
+            Medicine
+        </Typography>,
+        <NavLink key={"Doctor"} href="/doctors">
+            Doctors
+        </NavLink>,
+        userInfo?.userId && (
+            <NavLink key={"dashboard"} href="/dashboard">
+                Dashboard
+            </NavLink>
+        ),
     ];
 
     const authButton = userInfo?.userId ? (
-        <Button onClick={handleLogOut} size={isSmallScreen() ? "small" : "medium"}>
+        <Button
+            onClick={handleLogOut}
+            size={isSmallScreen ? "small" : "medium"}
+        >
             LOG OUT
         </Button>
     ) : (
-        <Button size={isSmallScreen() ? "small" : "medium"} href="/login">
+        <Button size={isSmallScreen ? "small" : "medium"} href="/login">
             Log In
         </Button>
     );
@@ -68,10 +90,19 @@ export const Navbar = ({ userInfo }) => {
                 zIndex: 1,
                 boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                 bgcolor: "background.paper",
-            }}>
-            <Stack py={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+            }}
+        >
+            <Stack
+                py={2}
+                direction={"row"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+            >
                 <Box display={"flex"} alignItems={"center"}>
-                    <IconButton sx={{ display: { md: "none" } }} onClick={toggleDrawer(true)}>
+                    <IconButton
+                        sx={{ display: { md: "none" } }}
+                        onClick={toggleDrawer(true)}
+                    >
                         <MenuIcon />
                     </IconButton>
 
@@ -82,7 +113,8 @@ export const Navbar = ({ userInfo }) => {
                     display={{ xs: "none", md: "flex" }}
                     direction={"row"}
                     justifyContent={"space-between"}
-                    gap={4}>
+                    gap={4}
+                >
                     {[...menuLinks]}
                 </Stack>
 
@@ -96,7 +128,8 @@ export const Navbar = ({ userInfo }) => {
                     p={2}
                     justifyContent={"center"}
                     alignItems={"center"}
-                    minHeight={300}>
+                    minHeight={300}
+                >
                     {/* <NetraLogo /> */}
 
                     {[...menuLinks]}

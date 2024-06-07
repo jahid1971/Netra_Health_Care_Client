@@ -1,15 +1,7 @@
-
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import {
-    Box,
-    Button,
-    IconButton,
-    Stack,
-    Tooltip,
-    Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Stack, Tooltip } from "@mui/material";
 import {
     CallEnd,
     Fullscreen,
@@ -32,14 +24,20 @@ import {
     createMicrophoneAudioTrack,
 } from "agora-rtc-sdk-ng/esm";
 import Link from "next/link";
-import { getUserInfo } from "@/services/actions/auth.services";
-import { useUserSelector } from "@/redux/slices/authSlice";
-import { TUser } from "@/types/common";
 
-const client: IAgoraRTCClient = createClient({
+import { TUser } from "@/types/common";
+import { useAppDispatch } from "@/redux/hooks";
+import { openModal } from "@/redux/slices/modalSlice";
+import ConfirmationModal from "@/components/modals/ConfirmationModal";
+import { useUpdateAppointStatusMutation } from "@/redux/api/appointmentApi";
+import { TAppointment } from "@/types/Appointment";
+import { IDoctor } from "@/types/Doctors";
+import { IPatient } from "@/types/Patient";
+
+const client = createClient({
     mode: "rtc",
     codec: "vp8",
-});
+}) as any;
 
 let audioTrack: IMicrophoneAudioTrack | null = null;
 let videoTrack: ICameraVideoTrack | null = null;
@@ -47,12 +45,17 @@ let videoTrack: ICameraVideoTrack | null = null;
 const VideoArea = ({
     videoCallingId,
     userData,
-    videoCallUi,
+    currentAppointment,
+    isJoined,
+    setIsJoined,
 }: {
     videoCallingId: string;
-    videoCallUi: boolean;
-    userData: TUser;
+    userData: any;
+    currentAppointment: TAppointment | null;
+    isJoined: boolean;
+    setIsJoined: (value: boolean) => void;
 }) => {
+    const dispatch = useAppDispatch();
     const videoContainerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -61,19 +64,21 @@ const VideoArea = ({
     const [isVideoEnabled, setIsVideoEnabled] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [showControls, setShowControls] = useState(true);
-    const [isJoined, setIsJoined] = useState(false);
     const [isAudioPubed, setIsAudioPubed] = useState(false);
     const [isVideoPubed, setIsVideoPubed] = useState(false);
 
     const appid = process.env.NEXT_PUBLIC_VIDEO_CALL_APP_ID || "";
     const channel = videoCallingId;
     const uid = userData?.doctorId || userData?.patientId;
+    const [updateStatus] = useUpdateAppointStatusMutation();
 
     const turnOnCamera = async (enabled: boolean = true) => {
         // if (enabled && isVideoEnabled) return;
         setIsVideoEnabled(enabled);
         if (enabled) {
-            if (!videoTrack) videoTrack = await createCameraVideoTrack();
+            if (!videoTrack)
+                videoTrack =
+                    (await createCameraVideoTrack()) as unknown as ICameraVideoTrack;
             videoTrack?.setEnabled(true);
             videoTrack?.play("camera-video");
         } else if (videoTrack) {
@@ -96,9 +101,12 @@ const VideoArea = ({
     const joinChannel = async () => {
         if (isJoined) return;
 
-        client.on("user-published", async (user, mediaType) => {
+        client.on("user-published", async (user: any, mediaType: any) => {
             // await client.subscribe(user, mediaType);
-            const remoteTrack = await client.subscribe(user, mediaType);
+            const remoteTrack = (await client.subscribe(
+                user,
+                mediaType
+            )) as any;
             if (mediaType === "video") {
                 remoteTrack?.play("remote-video");
             } else {
@@ -165,15 +173,37 @@ const VideoArea = ({
     };
 
     const endCall = async () => {
-        await unpublishTrack(videoTrack, setIsVideoPubed);
-        await unpublishTrack(audioTrack, setIsAudioPubed);
-        await leaveChannel();
-        setIsVideoEnabled(false);
-        setAudioEnabled(false);
-        // await turnOnCamera(false);
-        // await turnOnMicrophone(false);
-        videoTrack = null;
-        audioTrack = null;
+        const callEnd = async () => {
+            await unpublishTrack(videoTrack, setIsVideoPubed);
+            await unpublishTrack(audioTrack, setIsAudioPubed);
+            await leaveChannel();
+            setIsVideoEnabled(false);
+            setAudioEnabled(false);
+            // await turnOnCamera(false);
+            // await turnOnMicrophone(false);
+            videoTrack = null;
+            audioTrack = null;
+        };
+
+        if (isJoined && remoteUsers.length) {
+            dispatch(
+                openModal({
+                    modalId: "confirm",
+                    modalData: {
+                        action: () => {
+                            updateStatus({
+                                id: currentAppointment?.id,
+                                data: { status: "COMPLETED" },
+                            });
+                            callEnd();
+                        },
+                    },
+                })
+            );
+            return;
+        }
+
+        await callEnd();
     };
 
     const toggleFullscreen = () => {
@@ -195,6 +225,13 @@ const VideoArea = ({
     }, [showControls, isFullscreen]);
 
     useEffect(() => {
+        if (isJoined && remoteUsers.length) {
+            updateStatus({
+                id: currentAppointment?.id,
+                data: { status: "INPROGRESS" },
+            });
+        }
+
         const handleUserJoined = (user: IAgoraRTCRemoteUser) => {
             setRemoteUsers((prevUsers) => [...prevUsers, user]);
         };
@@ -212,33 +249,7 @@ const VideoArea = ({
             client.off("user-joined", handleUserJoined);
             client.off("user-left", handleUserLeft);
         };
-    }, []);
-
-
-
-    // useEffect(() => {
-    //     const initializeTracks = async () => {
-    //         await turnOnCamera(true); // Turn on the camera
-    //         await turnOnMicrophone(true); // Turn on the microphone
-    //     };
-
-    //     initializeTracks();
-
-    //     return () => {
-    //         if (videoTrack) {
-    //             videoTrack.stop();
-    //             videoTrack.close();
-    //         }
-    //         if (audioTrack) {
-    //             audioTrack.stop();
-    //             audioTrack.close();
-    //         }
-    //         videoTrack = null;
-    //         audioTrack = null;
-    //     };
-    // }, []);
-
-    
+    }, [client, remoteUsers, isJoined, currentAppointment, updateStatus]); //eslint-disable-line
 
     return (
         <Stack>
@@ -248,30 +259,28 @@ const VideoArea = ({
                     position: "relative",
                     width: "100%",
                     height: "100%",
-                    // border: "1px solid black",
-                    // overflow: "hidden",
+
                     backgroundColor: "#000",
                     aspectRatio: "16/9",
                     borderRadius: "10px 10px 0 0",
                 }}
             >
-                {isJoined &&
-                    !remoteUsers.filter((user) => user.uid !== uid).length && (
-                        <Box
-                            sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                height: "100%",
-                                color: "primary.main",
-                                fontSize: "1.5rem",
-                            }}
-                        >
-                            {userData?.patientId
-                                ? "Please Wait.Doctor will join soon..."
-                                : "Please Wait untill patient joins or schedule period ends..."}
-                        </Box>
-                    )}
+                {isJoined && !remoteUsers.length && (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100%",
+                            color: "primary.main",
+                            fontSize: "1.5rem",
+                        }}
+                    >
+                        {userData?.patientId
+                            ? "Please Wait.Doctor will join soon..."
+                            : "Please Wait untill patient joins or schedule period ends..."}
+                    </Box>
+                )}
 
                 <video
                     ref={videoRef}
@@ -279,21 +288,7 @@ const VideoArea = ({
                     style={{ width: "100%", height: "100%" }}
                     autoPlay
                 ></video>
-                {/* {!isVideoEnabled && (
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            height: "100%",
-                            color: "white",
-                        }}
-                    >
-                        Video Disabled
-                    </Box>
-                )} */}
 
-                {/* Remote User Videos */}
                 <Box
                     sx={{
                         position: "absolute",
@@ -304,25 +299,11 @@ const VideoArea = ({
                         flexWrap: "wrap",
                     }}
                 >
-                    {/* {remoteUsers.map((user) => (
-                        <Box
-                            key={user.uid}
-                            id={`remote-video-${user.uid}`}
-                            sx={{
-                                width: "150px",
-                                height: "100px",
-                                // border: "1px solid white",
-                                backgroundColor: "white",
-                            }}
-                        ></Box>
-                    ))} */}
                     <Box
                         id={isJoined ? "camera-video" : "remote-video"}
                         sx={{
                             width: isFullscreen ? "200px" : "150px",
                             height: isFullscreen ? "150px" : 100,
-                            // border: "1px solid white",
-                            // backgroundColor: "white",
                         }}
                     ></Box>
                 </Box>
@@ -374,7 +355,7 @@ const VideoArea = ({
                         position: "absolute",
                         zIndex: 40,
                         bottom: -100,
-                        px: 2,
+                        px: { xs: 0, md: 2 },
                         display: "flex",
                         flexDirection: "row",
                         justifyContent: "space-between",
@@ -397,6 +378,7 @@ const VideoArea = ({
                     </Button>
                 </Box>
             </Box>
+            <ConfirmationModal title="if you end this call session  will be completed for this appointment.Will you proceed?" />
         </Stack>
     );
 };

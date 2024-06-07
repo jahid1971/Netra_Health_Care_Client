@@ -9,7 +9,6 @@ type TDashboardCard = {
     count: number;
 };
 const SummaryCard = ({ icon, title, count }: TDashboardCard) => {
-   
     return (
         <Stack
             direction={"row"}
@@ -47,7 +46,8 @@ const SummaryCard = ({ icon, title, count }: TDashboardCard) => {
                     {count}
                 </Typography>
                 <Typography variant="body2" color={grey[600]}>
-                    Total {title}
+                    {" "}
+                    {title}
                 </Typography>
             </Stack>
         </Stack>

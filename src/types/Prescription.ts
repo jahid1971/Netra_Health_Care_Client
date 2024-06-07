@@ -1,3 +1,5 @@
+import { IDoctor } from "./Doctors";
+
 export type TPrescription = {
     id: string;
     appointmentId: string;
@@ -9,6 +11,7 @@ export type TPrescription = {
     followUpDate?: string | null;
     recommendedLabTests?: string | null;
     note?: string | null;
+    doctor?: IDoctor;
     isDeleted?: boolean | null;
     createdAt: string;
     updatedAt: string;

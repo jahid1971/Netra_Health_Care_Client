@@ -8,9 +8,9 @@ const metaApi = baseApi.injectEndpoints({
             tagTypes.appointment,
         ]),
 
-        getLineChart: queryApiBuilder(build, "/metaData/line-chart", [
-            tagTypes.appointment,
-        ]),
+        getLineChart: queryApiBuilder<
+            { period: string; totalAmount: number }[]
+        >(build, "/metaData/line-chart", [tagTypes.appointment]),
     }),
 });
 

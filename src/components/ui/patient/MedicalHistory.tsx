@@ -1,13 +1,21 @@
 import { Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 
-const Field = ({ label, value, minWidth = "70%" }) => (
+const Field = ({
+    label,
+    value,
+    minWidth = "70%",
+}: {
+    label: string;
+    value: string;
+    minWidth?: string;
+}) => (
     <Stack
         direction={"row"}
         alignItems={"center"}
         justifyContent={"space-between"}
         py={1}
-        px={6}
+        px={{ xs: 2, md: 6 }}
         borderRadius={2}
         sx={{ backgroundColor: "white" }}
         border={`1px solid ${grey[300]}`}

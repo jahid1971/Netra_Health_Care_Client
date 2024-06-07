@@ -1,67 +1,37 @@
 import N_DatePicker from "@/components/forms/N_DatePicker";
-import { Box, Button, Popover } from "@mui/material";
+import { Box } from "@mui/material";
 import dayjs from "dayjs";
-import { useState } from "react";
+import FilterPopover from "./FilterPopover";
 
-const FilterByDate = ({ query }) => {
-    const [dateAnchorEl, setDateAnchorEl] = useState<HTMLButtonElement | null>(
-        null
-    );
-    const datePopoverOpen = Boolean(dateAnchorEl);
-    const datepopoverId = datePopoverOpen ? "date-popover" : undefined;
+const FilterByDate = ({ query }: any) => {
     return (
-        <Box>
-            <Button
-                size="small"
-                variant={
-                    datePopoverOpen || query.startDate
-                        ? "contained"
-                        : "outlined"
-                }
-                aria-describedby={datepopoverId}
-                onClick={(e) => setDateAnchorEl(e.currentTarget)}
-            >
-                filter by date
-            </Button>
-
-            <Popover
-                onClose={() => setDateAnchorEl(null)}
-                open={datePopoverOpen}
-                anchorEl={dateAnchorEl}
-                id={datepopoverId}
-                anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                }}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                }}
-            >
-                <Box p={2}>
+        <FilterPopover
+            filterLabel={"Filter By Date"}
+            btnBackgroundTrue={query.startDate || query.endDate}
+        >
+            <Box p={2}>
+                <N_DatePicker
+                    name="startDate"
+                    label="Start Date"
+                    disablePast={false}
+                    disableDefaultDate={true}
+                    formatDateValue={(date: string) =>
+                        dayjs(date).startOf("day").toISOString()
+                    }
+                />
+                <Box mt={2}>
                     <N_DatePicker
-                        name="startDate"
-                        label="Start Date"
+                        name="endDate"
+                        label="End Date"
                         disablePast={false}
                         disableDefaultDate={true}
                         formatDateValue={(date: string) =>
-                            dayjs(date).startOf("day").toISOString()
+                            dayjs(date).endOf("day").toISOString()
                         }
                     />
-                    <Box mt={2}>
-                        <N_DatePicker
-                            name="endDate"
-                            label="End Date"
-                            disablePast={false}
-                            disableDefaultDate={true}
-                            formatDateValue={(date: string) =>
-                                dayjs(date).endOf("day").toISOString()
-                            }
-                        />
-                    </Box>
                 </Box>
-            </Popover>
-        </Box>
+            </Box>
+        </FilterPopover>
     );
 };
 

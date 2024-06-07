@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, IconButton, Pagination } from "@mui/material";
+import { Box, Button, IconButton, Pagination, Stack } from "@mui/material";
 
 import { useAppDispatch } from "@/redux/hooks";
 import { openModal } from "@/redux/slices/modalSlice";
@@ -12,21 +12,24 @@ import {
     useDeleteDoctorScheduleMutation,
     useGetMySchedulesQuery,
 } from "@/redux/api/doctorScheduleApi";
-import { useGetSchedulesQuery } from "@/redux/api/schedulesApi";
+
 import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
 import { useMemo, useState } from "react";
-import N_Pagination from "@/components/pagination/Pagination";
-import { tryCatch } from "@/utils/tryCatch";
-import { ISchedule, TDoctorSchedule } from "@/types/schedules";
-import tableSerial from "@/utils/tableSerial";
-import ConfirmationModal from "@/components/modals/ConfirmationModal";
 
-const doctorSchedulePage = () => {
+import { tryCatch } from "@/utils/tryCatch";
+import {  TDoctorSchedule } from "@/types/schedules";
+
+import ConfirmationModal from "@/components/modals/ConfirmationModal";
+import FilterByDate from "@/components/dataGrid/filters/FilterByDate";
+import FilterByTime from "@/components/dataGrid/filters/FilterByTime";
+import { defaultQuery } from "@/constants/commmon";
+
+const DoctorSchedulePage = () => {
     const dispatch = useAppDispatch();
 
-    const [query, setQuery] = useState<Record<string, any>>({});
+    const [query, setQuery] = useState<Record<string, any>>(defaultQuery);
 
-    const { data, isLoading } = useGetMySchedulesQuery(query);
+    const { data, isLoading, isFetching } = useGetMySchedulesQuery(query);
 
     const [deleteDoctorSchedule] = useDeleteDoctorScheduleMutation();
 
@@ -43,8 +46,15 @@ const doctorSchedulePage = () => {
     const doctorSchedules =
         useMemo(() => {
             return data?.data?.map((item: TDoctorSchedule, index) => {
+                // console.log(
+                //     index,
+                //     query.page,
+                //     query.limit,
+                //     (query.page - 1) * query.limit + index + 1,
+                //     "item -----------------------------------------------------------"
+                // );
                 return {
-                    sl: tableSerial(meta, index),
+                    sl: (query.page - 1) * query.limit + index + 1 + ".",
                     id: item?.scheduleId,
                     startDate: dateFaormatter(item?.schedule?.startDateTime),
                     // endDate: dateFaormatter(item?.schedule?.endDateTime),
@@ -78,8 +88,10 @@ const doctorSchedulePage = () => {
                             dispatch(
                                 openModal({
                                     modalId: "confirm",
-                                    modalData: () =>
-                                        handleDelete(row.id as string),
+                                    modalData: {
+                                        action: () =>
+                                            handleDelete(row.id as string),
+                                    },
                                 })
                             )
                         }
@@ -92,25 +104,40 @@ const doctorSchedulePage = () => {
         },
     ];
 
+    const createButton = (
+        <Button
+            onClick={() => dispatch(openModal({ modalId: "createDrSchedule" }))}
+            endIcon={<AddIcon />}
+            size="small"
+        >
+            Create Doctor Schedule
+        </Button>
+    );
+
     return (
         <Box>
-            <Button
-                onClick={() =>
-                    dispatch(openModal({ modalId: "createDrSchedule" }))
-                }
-                endIcon={<AddIcon />}
-            >
-                Create Doctor Schedule
-            </Button>
-
             <N_DataGrid
                 setQuery={setQuery}
                 rows={doctorSchedules}
                 columns={columns}
-                isLoading={isLoading}
+                isLoading={isFetching}
                 notFoundFor="Schedule"
                 meta={meta}
-            />
+                searchField={false}
+                createButton={createButton}
+                rowSelection={false}
+                query={query}
+            >
+                <Stack
+                    direction={"row"}
+                    spacing={2}
+                    flexWrap={"wrap"}
+                    rowGap={1}
+                >
+                    <FilterByTime query={query} setQuery={setQuery} />
+                    <FilterByDate query={query} />
+                </Stack>
+            </N_DataGrid>
 
             {!isLoading && <CreateDrSchedule />}
             <ConfirmationModal title="Do you want to delete this?" />
@@ -118,4 +145,4 @@ const doctorSchedulePage = () => {
     );
 };
 
-export default doctorSchedulePage;
+export default DoctorSchedulePage;

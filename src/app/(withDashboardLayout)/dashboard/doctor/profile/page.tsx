@@ -17,6 +17,7 @@ import { openModal } from "@/redux/slices/modalSlice";
 import ProfileUpdate from "./components/ProfileUpdate";
 import { useEditDoctorMutation } from "@/redux/api/doctorsApi";
 import { modifyPayload } from "@/utils/modifyPayload";
+import defaultDoctorPhoto from "@/assets/icons/doctor_icon.png";
 
 const ProfilePage = () => {
     const { data } = useGetMyProfileQuery(undefined);
@@ -44,13 +45,25 @@ const ProfilePage = () => {
     return (
         <Box>
             <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-                <Box width={{ sx: "100%", md: "30%" }}>
-                    <Image
-                        src={doctorData?.profilePhoto ?? ""}
-                        width={400}
-                        height={300}
-                        alt="doctor"
-                    />
+                <Box width={{ xs: "100%", md: "30%" }}>
+                    <Box
+                        sx={{
+                            position: "relative",
+                            width: "100%",
+                            maxWidth: "350px",
+                            height: "auto",
+                            mx: "auto", 
+                        }}
+                    >
+                        <Image
+                            src={doctorData?.profilePhoto ?? defaultDoctorPhoto}
+                            width={300}
+                            height={250}
+                            alt="doctor"
+                            layout="responsive"
+                            objectFit="cover"
+                        />
+                    </Box>
                     <Stack my={2} width={{ xs: 400, md: "100%" }} spacing={1}>
                         <AutoFileUploader
                             name="file"

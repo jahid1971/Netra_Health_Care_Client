@@ -19,6 +19,7 @@ export default function N_FileUploader({
     variant = "outlined",
 }: TProps) {
     const { control } = useFormContext();
+    const [fileName, setFileName] = React.useState<string>("");
     return (
         <Controller
             name={name}
@@ -32,18 +33,34 @@ export default function N_FileUploader({
                         role={undefined}
                         tabIndex={-1}
                         startIcon={<CloudUploadIcon />}
-                        sx={{ ...sx }}
+                        sx={{
+                            ...sx,
+                            maxWidth: "200px",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            overflow: "hidden",
+                            "& > span": {
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                                overflow: "hidden",
+                            },
+                            whiteSpace: "nowrap",
+                        }}
                     >
-                        {label || "Upload file"}
+                        {fileName || label || "Upload file"}
                         <Input
                             {...field}
-                            type={name}
-                            value={value?.fileName}
-                            onChange={(e) =>
+                            type="file"
+                            // value={value?.fileName}
+                            onChange={(e) => {
                                 onChange(
                                     (e?.target as HTMLInputElement).files?.[0]
-                                )
-                            }
+                                );
+                                setFileName(
+                                    (e?.target as HTMLInputElement).files?.[0]
+                                        ?.name || ""
+                                );
+                            }}
                             style={{ display: "none" }}
                         />
                     </Button>

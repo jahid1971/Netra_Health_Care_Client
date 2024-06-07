@@ -1,11 +1,11 @@
 "use client";
-import AutoFileUploader from "@/components/forms/AutoFileUploader";
+
 import N_Checkbox from "@/components/forms/N_Checkbox";
 import N_DatePicker from "@/components/forms/N_DatePicker";
 import N_Form from "@/components/forms/N_Form";
 import N_Input from "@/components/forms/N_Input";
 import N_Select from "@/components/forms/N_Select";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
 import N_Modal from "@/components/modals/N_Modal";
 import { bloodGroups, Gender } from "@/constants/commmon";
 import { Grid, Stack } from "@mui/material";
@@ -17,9 +17,11 @@ import {
     useUpdateMedicalHistoryMutation,
 } from "@/redux/api/patientApi";
 import { tryCatch } from "@/utils/tryCatch";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { selectUser, useUserSelector } from "@/redux/slices/authSlice";
+
+import { useUserSelector } from "@/redux/slices/authSlice";
 import { useModalClose } from "@/redux/slices/modalSlice";
+
+import { FieldValues } from "react-hook-form";
 
 const maritalStatus = [
     { label: "Married", value: "married" },
@@ -38,7 +40,7 @@ const UpdateMedicalHistory = () => {
 
     const [updatePtMedicalHistory] = useUpdateMedicalHistoryMutation();
 
-    const handleSubmit = (data) => {
+    const handleSubmit = (data: FieldValues) => {
         const defaultData = {
             hasAllergies: false,
             hasDiabetes: false,
@@ -75,14 +77,6 @@ const UpdateMedicalHistory = () => {
             <N_Form onSubmit={handleSubmit} defaultValues={defaultValue}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
-                        {/* <AutoFileUploader
-                            name="file"
-                            label="Upload Test Reports"
-                            icon={<CloudUploadIcon />}
-                            // onFileUpload={handleUpload}
-                            variant="outlined"
-                            // isLoading={isUpdating}
-                        /> */}
                         <N_FileUploader
                             name="file"
                             label="Upload Test Report"

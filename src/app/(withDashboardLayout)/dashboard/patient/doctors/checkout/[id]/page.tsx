@@ -6,11 +6,11 @@ import Image from "next/image";
 import defaultDoctorPhoto from "@/assets/icons/doctor_icon.png";
 import { grey } from "@mui/material/colors";
 
-const CheckoutPage = async ({ params }) => {
+const CheckoutPage = async ({ params }: { params: { id: string } }) => {
     const res = await fetchWithAuth(`/doctor/${params.id}`);
     const doctor: IDoctor = res?.data;
     return (
-        <Box backgroundColor={"background.paper"} p={4}>
+        <Box p={4} sx={{ backgroundColor: "background.paper" }}>
             <Box
                 display={"flex"}
                 justifyContent={"center"}

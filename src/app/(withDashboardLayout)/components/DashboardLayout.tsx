@@ -7,19 +7,19 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch} from "@/redux/hooks";
 import { setIsLoadingFalse, setUser } from "@/redux/slices/authSlice";
 
 import DashboardDrawer from "./dashboardLayoutComponents/DashboardDrawer";
 import TopBar from "./dashboardLayoutComponents/AppBar";
-import { grey } from "@mui/material/colors";
+
 import { useGetMyProfileQuery } from "@/redux/api/myProfileApi";
 import {
-    selectNotification,
+ 
     setNotification,
 } from "@/redux/slices/notificationSlice";
-import { Link } from "@mui/material";
-// import Link from "next/link";
+
+
 
 export default function DashboardLayout({
     children,
@@ -39,14 +39,14 @@ export default function DashboardLayout({
         if (data?.data?.needPasswordChange) {
             dispatch(
                 setNotification({
-                    text: `Please change your Password .To secure your account you must change the given password`,
+                    text: `Please change your Password .To secure your account you must change the default password`,
                     active: true,
                     link: "/dashboard/change-password",
                     linkLabel: "Change Password",
                 })
             )
         }
-    }, [data?.data]);
+    }, [data?.data,dispatch]);
 
     const handleDrawerClose = () => {
         setIsClosing(true);

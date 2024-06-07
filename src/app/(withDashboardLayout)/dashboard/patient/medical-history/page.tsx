@@ -18,7 +18,7 @@ const MedicalHistory = () => {
     const mediHistory = data?.data as TMedicalHistory;
 
     return (
-        <Box>
+        <Box p={2}>
             <Button
                 size="small"
                 onClick={() =>

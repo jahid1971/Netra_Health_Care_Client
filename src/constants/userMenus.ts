@@ -8,7 +8,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import TryIcon from "@mui/icons-material/Try";
 import PersonIcon from "@mui/icons-material/Person";
-import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
+import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
 import KeyIcon from "@mui/icons-material/Key";
 import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
@@ -33,7 +33,6 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
         },
     ];
 
-
     const superAdminMenus = [
         {
             title: "Dashboard",
@@ -41,19 +40,30 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
             icon: DashboardIcon,
         },
         {
-            title: "Manage Users",
-            path: `${role}/manage-users`,
+            title: "Users",
             icon: GroupIcon,
+            childItems: [
+                {
+                    title: "Doctors",
+                    icon: PersonIcon,
+                    path: `${role}/doctors`,
+                },
+                {
+                    title: "Patients",
+                    icon: PersonIcon,
+                    path: `${role}/patients`,
+                },
+                {
+                    title: "Admins",
+                    icon: PersonIcon,
+                    path: `${role}/admins`,
+                },
+            ],
         },
         {
             title: "Specialties",
             path: `${role}/specialities`,
             icon: TryIcon,
-        },
-        {
-            title: "Doctors",
-            path: `${role}/doctors`,
-            icon: MedicalInformationIcon,
         },
         {
             title: "Schedules",
@@ -72,41 +82,20 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
         },
     ];
 
+    const adminMenus = superAdminMenus.map((menu) => {
+        if (menu.title === "Users" && menu.childItems) {
+            return {
+                ...menu,
+                childItems: menu.childItems.filter(
+                    (child) => child.title !== "Admins"
+                ),
+            };
+        }
 
-     const adminMenus = [
-        {
-            title: "Dashboard",
-            path: `${role}`,
-            icon: DashboardIcon,
-        },
-        {
-            title: "Specialties",
-            path: `${role}/specialities`,
-            icon: TryIcon,
-        },
-        {
-            title: "Doctors",
-            path: `${role}/doctors`,
-            icon: MedicalInformationIcon,
-        },
-        {
-            title: "Schedules",
-            path: `${role}/schedules`,
-            icon: CalendarMonthIcon,
-        },
-        {
-            title: "Appointments",
-            path: `${role}/appointments`,
-            icon: BookOnlineIcon,
-        },
-        {
-            title: "Reviews",
-            path: `${role}/reviews`,
-            icon: ReviewsIcon,
-        },
-    ];
+        return menu;
+    });
 
-     const doctorMenus = [
+    const doctorMenus = [
         {
             title: "Dashboard",
             path: `${role}`,
@@ -151,7 +140,6 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
             icon: AttachMoneyIcon,
         },
     ];
-    
 
     switch (userRole) {
         case USER_ROLE.SUPER_ADMIN:
@@ -176,13 +164,3 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
 
     return roleMenus;
 };
-
-
-
-
-
-
-
-
-
-

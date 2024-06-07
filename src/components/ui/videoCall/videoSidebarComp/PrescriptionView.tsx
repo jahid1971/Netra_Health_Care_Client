@@ -4,11 +4,11 @@ import { selectUser } from "@/redux/slices/authSlice";
 import { selectModalData } from "@/redux/slices/modalSlice";
 import { IDoctor } from "@/types/Doctors";
 import { IPatient } from "@/types/Patient";
-import { TPrescription } from "@/types/Prescription";
+import { TMedication, TPrescription } from "@/types/Prescription";
 import { Box, Stack, Typography } from "@mui/material";
 import logo from "@/assets/svgs/logo.svg";
 import Image from "next/image";
-import DashedLine from "../DashedLine";
+import DashedLine from "../../DashedLine";
 import { grey } from "@mui/material/colors";
 import NetraLogo from "@/components/NetraLogo";
 
@@ -84,7 +84,7 @@ const PrescriptionView = ({ data }: { data?: any; ref?: any }) => {
                     >
                         MEDICINES
                     </Typography>
-                    {medications?.map((medi, index) => (
+                    {medications?.map((medi: TMedication, index: number) => (
                         <Stack key={index} mb={2}>
                             <Typography fontWeight={500}>
                                 {medi.name.toUpperCase()}

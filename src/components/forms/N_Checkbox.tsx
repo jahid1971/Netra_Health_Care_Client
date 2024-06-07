@@ -9,10 +9,10 @@ export interface ICheckbox {
     defaultValue?: boolean;
 }
 
-const N_Checkbox = ({ name, label, methods, defaultValue }: ICheckbox) => {
-    const { control, formState, getValues } = methods ?? useFormContext();
+const N_Checkbox = ({ name, label, methods }: ICheckbox) => {
+    
+    const { control } = methods ?? useFormContext(); //eslint-disable-line
 
-    // const currentValue = true;
     return (
         <Controller
             control={control}

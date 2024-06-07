@@ -22,8 +22,10 @@ const SpecialitiesPage = () => {
 
     const { data, isLoading } = useGetAllSpecialitiesQuery(query);
 
-    const allSpecailities = data?.data;
+    const allSpecailities = data?.data || [];
     const meta = data?.meta;
+
+    console.log(allSpecailities, "allSpecailities ==================================");
 
     const [deleteSpeciality] = useDeleteSpecialityMutation();
 
@@ -78,7 +80,9 @@ const SpecialitiesPage = () => {
                             dispatch(
                                 openModal({
                                     modalId: "confirm",
-                                    modalData: () => handleDelete(row.id),
+                                    modalData: {
+                                        action: () => handleDelete(row.id),
+                                    },
                                 })
                             )
                         }
@@ -91,36 +95,20 @@ const SpecialitiesPage = () => {
         },
     ];
 
+    const createButton = (
+        <Button
+            onClick={() => dispatch(openModal({ modalId: "createSpeciality" }))}
+            size="small"
+        >
+            Create Speciality
+        </Button>
+    );
+
     return (
         <Box>
             {/* modals */}
             <CreateSpecialities />
             <ConfirmationModal title="Do you want to Delete this ?" />
-
-            <Stack direction={"row"} justifyContent={"space-between"}>
-                {/* <Button onClick={() => setIsModalOpen(true)}>Create Speciality</Button> */}
-                <Button
-                    onClick={() =>
-                        dispatch(openModal({ modalId: "createSpeciality" }))
-                    }
-                >
-                    Create Speciality
-                </Button>
-
-                <TextField
-                    fullWidth={false}
-                    size="small"
-                    placeholder="Search Speciality"
-                />
-            </Stack>
-
-            {/* {!isLoading ? (
-                <Box my={2}>
-                    <DataGrid rows={allSpecailities} columns={columnDef} hideFooter={true} />
-                </Box>
-            ) : (
-                <h1>Loading.....</h1>
-            )} */}
 
             <N_DataGrid
                 rows={allSpecailities}
@@ -129,7 +117,10 @@ const SpecialitiesPage = () => {
                 notFoundFor="Specialty"
                 setQuery={setQuery}
                 meta={meta}
-            />
+                createButton={createButton}
+                filter={false}
+                rowSelection={false}
+            ></N_DataGrid>
         </Box>
     );
 };

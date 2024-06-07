@@ -3,12 +3,12 @@ import N_Modal from "./N_Modal";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { closeModal, selectModalData } from "@/redux/slices/modalSlice";
 
-const ConfirmationModal = ({ title }: { title: string }) => {
+const ConfirmationModal = ({ title }: { title?: string }) => {
     const dispatch = useAppDispatch();
-    const action = useAppSelector(selectModalData);
+    const modalData = useAppSelector(selectModalData);
 
     return (
-        <N_Modal modalId="confirm" title={title}>
+        <N_Modal modalId="confirm" title={modalData?.title || title}>
             <Stack
                 direction="row"
                 justifyContent={"space-between"}
@@ -23,7 +23,7 @@ const ConfirmationModal = ({ title }: { title: string }) => {
                 </Button>
                 <Button
                     onClick={() => {
-                        action();
+                        modalData?.action();
                         dispatch(closeModal());
                     }}
                     color="primary"

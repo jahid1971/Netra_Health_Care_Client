@@ -1,24 +1,22 @@
 import { fetchWithAuth } from "@/utils/fetchWithAuth";
-import { Box, Grid, Stack } from "@mui/material";
-import DashboardBarChart from "./components/BarChart";
-import DashboardCard from "./components/DashboardCard/SummaryCard";
-import { TDashboardData } from "@/types/common";
-import SummaryCards from "./components/SummaryCards";
-import SummaryCard from "./components/DashboardCard/SummaryCard";
-import { SummaryCardsData } from "@/constants/summaryCardsData";
-import DashboardPieChart from "./components/PieChart";
-import N_LineChart from "./components/LineChart";
+import { Box, Grid } from "@mui/material";
+import DashboardBarChart from "../../../../components/ui/dashboard/BarChart";
+
+import SummaryCards from "../../../../components/ui/dashboard/SummaryCards";
+
+import DashboardPieChart from "../../../../components/ui/dashboard/PieChart";
+import N_LineChart from "../../../../components/ui/dashboard/LineChart";
 
 const AdminDashboardHome = async () => {
     const res = await fetchWithAuth("/metaData", {
         cache: "no-cache",
     });
 
-    console.log(res?.data, "res of meteData______________________________");
 
-    const metaData: TDashboardData = res?.data  || {};
 
-    const pieChartData = metaData?.appointmentsPieData?.map((item) => ({
+    const metaData: any = res?.data  || {};
+
+    const pieChartData = metaData?.appointmentsPieData?.map((item:any) => ({
         value: item.count,
         label: item.status,
     })) || [];

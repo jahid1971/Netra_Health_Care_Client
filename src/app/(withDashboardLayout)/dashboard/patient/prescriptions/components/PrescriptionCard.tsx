@@ -1,5 +1,5 @@
 import N_Modal from "@/components/modals/N_Modal";
-import PrescriptionView from "@/components/ui/videoCall/PrescriptionView";
+import PrescriptionView from "@/components/ui/videoCall/videoSidebarComp/PrescriptionView";
 import { useAppDispatch } from "@/redux/hooks";
 import { openModal } from "@/redux/slices/modalSlice";
 import { TPrescription } from "@/types/Prescription";
@@ -18,7 +18,6 @@ const PrescriptionCard = ({
     data: TPrescription;
     serial: number;
 }) => {
-
     console.log(data, "data");
     const dispatch = useAppDispatch();
     const ref = useRef<HTMLDivElement>(null);
@@ -66,7 +65,8 @@ const PrescriptionCard = ({
                         Doctor: {data?.doctor?.name}
                     </Typography>
                     <Typography>
-                        Issued At: {dateFaormatter(data?.issuedAt)}
+                        Issued At:{" "}
+                        {data?.issuedAt ? dateFaormatter(data.issuedAt) : ""}
                     </Typography>
                 </Stack>
             </Stack>

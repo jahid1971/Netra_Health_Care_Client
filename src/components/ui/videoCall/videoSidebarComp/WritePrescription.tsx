@@ -2,12 +2,12 @@
 import N_Form from "@/components/forms/N_Form";
 import N_Input from "@/components/forms/N_Input";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import DashedLine from "../DashedLine";
+
 import { useState } from "react";
 import { grey } from "@mui/material/colors";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import SubmitButton from "../SubmitButton";
+
 import { useFormContext } from "react-hook-form";
 import { TAppointment } from "@/types/Appointment";
 import { useAppDispatch } from "@/redux/hooks";
@@ -17,6 +17,9 @@ import PrescriptionView from "./PrescriptionView";
 import { useGetMyProfileQuery } from "@/redux/api/myProfileApi";
 import { useCreatePrescriptionMutation } from "@/redux/api/prescriptionApi";
 import { tryCatch } from "@/utils/tryCatch";
+import DashedLine from "../../DashedLine";
+import SubmitButton from "../../SubmitButton";
+import { TPrescription } from "@/types/Prescription";
 
 const MedicineFields = ({
     item,
@@ -75,7 +78,7 @@ const WritePrescription = ({
     const { data: doctor } = useGetMyProfileQuery(undefined);
     const [createPrescription] = useCreatePrescriptionMutation();
     const [medicineCount, setMedicineCount] = useState([1]);
-    const [prescData, setPrescData] = useState(null);
+    const [prescData, setPrescData] = useState<any>(null);
 
     const dispatch = useAppDispatch();
 
@@ -108,7 +111,7 @@ const WritePrescription = ({
         );
     };
 
-    const handlePreview = (data) => {
+    const handlePreview = (data:any) => {
         const medications = medicineCount.map(
             (item) => data[`medicine${item}`]
         );
@@ -132,7 +135,7 @@ const WritePrescription = ({
     console.log(prescData, "prescData______________");
 
     return (
-        <Box>
+        <Box p={2}>
             <Typography
                 variant="h5"
                 py={1}

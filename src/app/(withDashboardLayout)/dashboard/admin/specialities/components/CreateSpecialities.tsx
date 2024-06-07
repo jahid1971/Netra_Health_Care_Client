@@ -11,15 +11,13 @@ import tryCatch from "@/utils/tryCatch";
 import { Button, Stack } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 
-const CreateSpecialities = ({ asChildModal }: { asChildModal: boolean }) => {
+const CreateSpecialities = ({ asChildModal }: { asChildModal?: boolean }) => {
     const dispatch = useAppDispatch();
 
     const [createSpeciality] = useCreateSpecialityMutation();
 
     const handleSubmit = async (values: FieldValues) => {
         const data = modifyPayload(values);
-        console.log(data, "data in create ");
-        console.log(Object.entries(data), "data in create speciality");
         tryCatch(
             async () => await createSpeciality(data),
             "Creating speciality",

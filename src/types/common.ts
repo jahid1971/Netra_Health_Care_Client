@@ -1,9 +1,5 @@
 import { USER_ROLE } from "@/constants/role";
-import { BaseQueryApi, BaseQueryFn } from "@reduxjs/toolkit/query";
-import {
-    TypedUseQueryHookResult,
-    TypedUseQueryStateResult,
-} from "@reduxjs/toolkit/query/react";
+
 import { IPatient } from "./Patient";
 import { IDoctor } from "./Doctors";
 
@@ -14,6 +10,7 @@ export type TUser = {
     name: string;
     needPasswordChange?: boolean;
     profilePhoto?: string;
+    userId?: string;
 } & Partial<IPatient> &
     Partial<IDoctor>;
 
@@ -29,11 +26,15 @@ export type TDashboardData = {
     doctorCount: number;
     paymentCount: number;
     totalRevenue: number;
-    barChartData: {
+    appointmentsPieData: {
+        status: string;
+        count: number;
+    }[];
+    barChartData?: {
         month: string;
         count: number;
     }[];
-    pieChartData: {
+    pieChartData?: {
         status: string;
         count: number;
     }[];
@@ -43,17 +44,10 @@ export type TUserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 export interface IDrawerItem {
     title: string;
-    path: string;
-    parentPath?: string;
+    path?: string;
     icon?: any;
-    child?: IDrawerItem[];
+    childItems?: IDrawerItem[];
 }
-
-// export type TResponeSuccess = {
-//     success?: boolean;
-//     data: any;
-//     meta: IMeta;
-// };
 
 export type TOpenState = {
     open?: boolean;
@@ -81,7 +75,7 @@ export type TResponse<T> = {
     message?: string;
 };
 
-export type TQuery<T = {}> = {
+export type TQuery<T = Record<string, unknown>> = {
     searchTerm?: string;
     sortBy?: string;
     sortOrder?: string;
@@ -89,3 +83,13 @@ export type TQuery<T = {}> = {
     limit?: number;
     [key: string]: any;
 } & Partial<T>;
+
+export type TChatMessage = {
+    id?: string;
+    senderId: string;
+    receiverId: string;
+    message: string;
+    type?: "text" | "file" | "image";
+    read?: boolean;
+    createdAt?: Date;
+};

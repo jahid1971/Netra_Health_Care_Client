@@ -1,23 +1,27 @@
+"use client";
 import { Box, Drawer, IconButton } from "@mui/material";
 import SideArea from "./SideArea";
 import CloseIcon from "@mui/icons-material/Close";
-import { relative } from "path";
+import { useIsSmallScreen } from "@/utils/isSmallScreen";
+
+
 
 const VideoCallDrawer = ({
-    drawerWidth,
-    setDrawerWidth,
-    mobileOpen,
     handleDrawerTransitionEnd,
     handleDrawerClose,
-    // handleDrawerToggle,
+  
     isDrawerOpen,
     appointments,
     currentAppointment,
-    drawerContainer
+    drawerContainer,
+    userData,
+    isJoined
 }: any) => {
+    const isSmallScreen = useIsSmallScreen()
+    const anchor = isSmallScreen ? "bottom" : "right";
     return (
         <Drawer
-            anchor="right"
+            anchor={anchor}
             variant="temporary"
             open={isDrawerOpen}
             onClose={handleDrawerClose}
@@ -31,19 +35,15 @@ const VideoCallDrawer = ({
                     },
                 },
             }}
-
-            // sx={{
-            //     display: { xs: "block", sm: "none" },
-            //     "& .MuiDrawer-paper": {
-            //         boxSizing: "border-box",
-            //         width: drawerWidth,
-            //     },
-            // }}
         >
-            <Box width={"550px"} p={2}>
+            <Box
+                width={{ xs: "100%", md: "550px" }}
+                p={2}
+                height={{ xs: "340px", md: "100vh" }}
+            >
                 <IconButton
                     onClick={handleDrawerClose}
-                    sx={{ position: "absolute", left: 2, top: 2 }}
+                    sx={{ position: "absolute", left: 2, top: 2, zIndex: 20 }}
                 >
                     <CloseIcon />
                 </IconButton>
@@ -52,6 +52,8 @@ const VideoCallDrawer = ({
                     appointments={appointments}
                     currentAppointment={currentAppointment}
                     drawerContainer={drawerContainer}
+                    userData={userData}
+                    isJoined={isJoined}
                 />
             </Box>
         </Drawer>

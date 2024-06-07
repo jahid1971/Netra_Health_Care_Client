@@ -1,3 +1,4 @@
+import { baseUrl } from "@/constants/commmon";
 import { TSpecialty } from "@/types/Specialities";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
@@ -5,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const specialties = async () => {
-    const res = await fetch("http://localhost:5000/api/v1/specialties", {
+    const res = await fetch(`${baseUrl}/specialties`, {
         next: { revalidate: 30 },
     });
     const { data: specialities } = await res.json();
@@ -28,7 +29,7 @@ const specialties = async () => {
                     justifyContent="space-between"
                     mt={2}
                 >
-                    {specialities.slice(0, 6).map((speciality: TSpecialty) => (
+                    {specialities?.slice(0, 6).map((speciality: TSpecialty) => (
                         <Box
                             key={speciality.id}
                             sx={{

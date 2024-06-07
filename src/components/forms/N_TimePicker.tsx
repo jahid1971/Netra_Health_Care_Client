@@ -32,32 +32,32 @@ const N_TimePicker = ({
     dayjs.extend(utc);
     const { control, formState, setValue } = useFormContext();
     const isError = formState.errors[name] !== undefined;
+    const defaultValue = dayjs(new Date().toDateString());
 
     return (
         <Controller
             control={control}
             name={name}
-            defaultValue={dayjs(new Date().toDateString())}
+            defaultValue={defaultValue}
             render={({ field: { onChange, value, ...field } }) => {
                 return (
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <TimePicker
                             {...field}
                             label={label}
-                            value={value || Date.now()}
+                            value={value || defaultValue}
                             onChange={(time) => {
-                                onFieldChange &&
-                                    setValue("onFieldChange", true);
+                                // onFieldChange &&
+                                //     setValue("onFieldChange", true);
 
-                                onChange(time);
-
-                                setQuery &&
-                                    setQuery((prev:any) => ({
-                                        ...prev,
-                                        [name]: dayjs(time)
-                                            .utc()
-                                            .format("HH:mm:ss"),
-                                    }));
+                                setQuery
+                                    ? setQuery((prev: any) => ({
+                                          ...prev,
+                                          [name]: dayjs(time)
+                                              .utc()
+                                              .format("HH:mm:ss"),
+                                      }))
+                                    : onChange(time);
                             }}
                             timezone="system"
                             slotProps={{
