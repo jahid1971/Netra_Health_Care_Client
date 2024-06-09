@@ -1,4 +1,6 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import { CircularProgress } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const LoadingPage = () => {
     return (

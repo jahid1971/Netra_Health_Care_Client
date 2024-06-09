@@ -1,4 +1,8 @@
-import { ListItem, ListItemButton, ListItemIcon, ListItemText, Skeleton } from "@mui/material";
+import { ListItem } from "@mui/material";
+import { ListItemButton } from "@mui/material";
+import { ListItemIcon } from "@mui/material";
+import { ListItemText } from "@mui/material";
+import { Skeleton } from "@mui/material";
 
 export const sidebarSkeleton = [...Array(8)].map((_, index) => (
     <ListItem key={index} disablePadding>

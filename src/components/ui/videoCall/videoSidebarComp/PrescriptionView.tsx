@@ -1,7 +1,5 @@
 "use client";
-import { useAppSelector } from "@/redux/hooks";
-import { selectUser } from "@/redux/slices/authSlice";
-import { selectModalData } from "@/redux/slices/modalSlice";
+
 import { IDoctor } from "@/types/Doctors";
 import { IPatient } from "@/types/Patient";
 import { TMedication, TPrescription } from "@/types/Prescription";

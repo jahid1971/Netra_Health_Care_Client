@@ -1,6 +1,5 @@
 import { Stack } from "@mui/material";
 import { TDashboardData, TUserRole } from "@/types/common";
-import doctorIcon from "@/assets/icons/doctor-icon.png";
 import SummaryCard from "./SummaryCard";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";

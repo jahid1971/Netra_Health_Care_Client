@@ -1,4 +1,5 @@
-import { createTheme } from "@mui/material/styles";
+// import { createTheme } from "@mui/material/styles";
+import createTheme from "@mui/material/styles/createTheme";
 import type {} from "@mui/x-data-grid/themeAugmentation";
 
 export const theme = createTheme({

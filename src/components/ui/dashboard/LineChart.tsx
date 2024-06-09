@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { LineChart, lineElementClasses } from "@mui/x-charts/LineChart";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import { blue } from "@mui/material/colors";
 import { useGetLineChartQuery } from "@/redux/api/metaApi";
 import CustomSelect from "@/components/ui/Select";

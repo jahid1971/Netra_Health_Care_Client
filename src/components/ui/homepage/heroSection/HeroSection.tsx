@@ -1,5 +1,8 @@
 import assets from "@/assets";
-import { Box, Button, Container, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { Container } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Link from "next/link";
 

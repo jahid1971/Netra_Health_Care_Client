@@ -1,4 +1,7 @@
-import { Box, Container, Stack, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import { Container } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Link from "next/link";
 import facebookIcon from "@/assets/landing_page/facebook.png";

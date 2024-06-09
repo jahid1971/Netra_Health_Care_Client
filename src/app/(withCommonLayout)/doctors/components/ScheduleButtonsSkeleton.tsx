@@ -1,4 +1,5 @@
-import { Stack, Skeleton } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import { Skeleton } from "@mui/material";
 
 const ScheduleButtonsSkeleton = () => {
     return (
