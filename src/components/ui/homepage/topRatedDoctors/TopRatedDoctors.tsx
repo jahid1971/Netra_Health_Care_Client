@@ -14,9 +14,10 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Image from "next/image";
 import assets from "@/assets";
 import Link from "next/link";
+import { baseUrl } from "@/constants/commmon";
 
 const TopRatedDoctors = async () => {
-    const res = await fetch("http://localhost:5000/api/v1/doctor?page=1&limit=3");
+    const res = await fetch(`${baseUrl}/api/v1/doctor?page=1&limit=3`);
     const { data } = await res.json();
 
     const doctors: IDoctor[] = data?.data
