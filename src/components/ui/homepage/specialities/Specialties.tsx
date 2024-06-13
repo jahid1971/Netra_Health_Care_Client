@@ -4,8 +4,10 @@ import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import Image from "next/image";
 import Link from "next/link";
+import ViewAllButton from "./components/ViewAllButton";
+import { TUserInfo } from "@/services/actions/auth.services";
 
-const specialties = async () => {
+const specialties = async ({ userInfo }: { userInfo: TUserInfo }) => {
     const res = await fetch(`${baseUrl}/specialties`, {
         next: { revalidate: 30 },
     });
@@ -64,9 +66,11 @@ const specialties = async () => {
                     ))}
                 </Stack>
 
-                <Button variant="outlined" sx={{ mt: 4 }}>
-                    View all
-                </Button>
+                <Box mt={2}>
+                    <Button href="/doctors" component={Link}>
+                        View All
+                    </Button>
+                </Box>
             </Box>
         </Container>
     );

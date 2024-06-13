@@ -24,6 +24,7 @@ const SearchBar = () => {
     useEffect(() => {
         const params = new URLSearchParams(searchParams.toString());
         if (debouncedSearchTerm) {
+            params.delete("specialty");
             params.set("searchTerm", debouncedSearchTerm);
         } else {
             params.delete("searchTerm");

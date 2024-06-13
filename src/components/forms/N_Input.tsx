@@ -68,10 +68,10 @@ const N_Input = ({
                     helperText={error?.message}
                     multiline={multiline}
                     rows={multiline && rows ? rows : 1}
-                    InputProps={{
-                        endAdornment: type === "password" && <VisibilityBtn />,
-                        type: showPassword ? "text" : type,
-                    }}
+                    // InputProps={{
+                    //     endAdornment: type === "password" && <VisibilityBtn />,
+                    //     type: showPassword ? "text" : type,
+                    // }}
                     // onChange={(e) => {
                     //     field.onChange(e.target.value);
                     //     if (onFieldChange) {

@@ -56,43 +56,6 @@ const LogInForm = () => {
         );
     };
 
-    // const onSubmit = async (data: FieldValues) => {
-    //     tryCatch(
-    //         async () => {
-    //             const res = await userLogIn(data);
-
-    //             if (res?.data?.accessToken) {
-    //                 console.log(res?.data?.accessToken, "res in log in");
-
-    //                 redirectPath
-    //                     ? router.push(redirectPath)
-    //                     : router.push("/dashboard");
-    //             } else {
-    //                 setError(res?.message);
-    //                 deleteCookies([authKey, refreshKey]);
-    //             }
-    //             return res;
-    //         },
-    //         "Logging in",
-    //         "Logged in successfully"
-    //     );
-    // };
-
-    // const LoginWithGoogle = () => {
-    //     window.open(`${baseUrl}/auth/login-with-google`);
-    // };
-
-    // const LoginWithGoogle = async () => {
-    //     const url = redirectPath
-    //         ? `${baseUrl}/auth/login-with-google?redirect=${redirectPath}`
-    //         : `${baseUrl}/auth/login-with-google`;
-
-    //     const response = await fetch(url);
-
-    //     const googleUrl = await response.json();
-
-    //     window.open(googleUrl, "_self");
-    // };
 
 
 

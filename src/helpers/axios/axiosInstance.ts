@@ -12,20 +12,20 @@ instance.defaults.timeout = 60000;
 
 type TAxiosResponse<T> = AxiosResponse<T> & TResponse<T>;
 
-// instance.interceptors.request.use(
-//     function (config) {
-//         const accessToken = getCookie(authKey);
+instance.interceptors.request.use(
+    function (config) {
+        const accessToken = getCookie(authKey);
 
-//         if (accessToken) {
-//             config.headers.Authorization = accessToken;
-//         }
-//         return config;
-//     },
-//     function (error) {
-//         console.log(error, "error in axios instance request");
-//         return Promise.reject(error);
-//     }
-// );
+        if (accessToken) {
+            config.headers.Authorization = accessToken;
+        }
+        return config;
+    },
+    function (error) {
+        console.log(error, "error in axios instance request");
+        return Promise.reject(error);
+    }
+);
 
 instance.interceptors.response.use(
     function (response): TAxiosResponse<any> {
@@ -37,6 +37,12 @@ instance.interceptors.response.use(
     async function (error) {
         console.log(error, "error in axios instance response");
         const originalRequest = error.config;
+
+        //to prevent infinite loop by getNewAccessToken()
+        if (originalRequest.url === `${baseUrl}/auth/refresh-token`) {
+            return Promise.reject(error);
+        }
+
         //  ._retry is to prevent infinite loop
         if (error?.response?.status === 401 && !originalRequest._retry) {
             console.log("refresh req sentttttttttttttttttttttttttttt");
@@ -44,17 +50,8 @@ instance.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 const response = await getNewAccessToken();
-                // const accessToken = response?.data?.data?.accessToken;
-                console.log(
-                    response.data,
-                    "response.data after refresh.................................."
-                );
 
                 if (response?.status === 200) {
-                    // originalRequest.headers["Authorization"] = accessToken;
-
-                    // await setTokenToCookies(authKey, accessToken);
-
                     try {
                         const res = await instance(originalRequest);
 
@@ -63,25 +60,21 @@ instance.interceptors.response.use(
                             meta: res?.data?.meta,
                         };
 
-                        console.log(resObject, "resObject after retrying");
-
                         return resObject;
                     } catch (retryError) {
-                        console.log(
-                            "Error during retrying the original request",
-                            retryError
-                        );
+                        console.log("retryError", retryError);
+
                         return Promise.reject(retryError);
                     }
                 } else {
                     deleteCookies([authKey, refreshKey]);
-                    // console.log("No access token in response after refresh");
                 }
             } catch (refreshError) {
                 console.log(
                     refreshError,
-                    "Token refresh failed in axios main catch block"
+                    "Token refresh failed in refresh catch block"
                 );
+                deleteCookies([authKey, refreshKey]);
 
                 return Promise.reject(refreshError);
             }
@@ -89,7 +82,7 @@ instance.interceptors.response.use(
 
         console.warn(
             error,
-            "Warning: outside 401 handling, returning original error !!!!!!"
+            " outside 401 handling, returning original error !"
         );
 
         return Promise.reject(error);
@@ -107,13 +100,13 @@ const getNewAccessToken = async () => {
     });
 };
 
-// function getCookie(name: string) {
-//     const cookies = document.cookie.split(";");
-//     for (let i = 0; i < cookies.length; i++) {
-//         const cookie = cookies[i].trim();
-//         if (cookie.startsWith(name + "=")) {
-//             return cookie.substring(name.length + 1);
-//         }
-//     }
-//     return null;
-// }
+function getCookie(name: string) {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + "=")) {
+            return cookie.substring(name.length + 1);
+        }
+    }
+    return null;
+}

@@ -8,7 +8,14 @@ import Link from "next/link";
 
 const HeroSection = () => {
     return (
-        <Container sx={{ display: "flex", direction: "row", my: 16 }}>
+        <Container
+            sx={{
+                display: "flex",
+                direction: "row",
+                my: { xs: 5, md: 16 },
+                pb: { xs: 5, md: 0 },
+            }}
+        >
             <Box sx={{ position: "relative", flex: 1 }}>
                 <Box
                     sx={{
@@ -18,24 +25,32 @@ const HeroSection = () => {
                         top: "-120px",
                     }}
                 >
-                    <Image src={assets.svgs.grid} alt="doctor1" />
+                    <Image src={assets.svgs.grid} alt="svgGrid" />
                 </Box>
 
-                <Typography variant="h2" component="h1" fontWeight={600}>
+                <Typography
+                    variant="h2"
+                    fontWeight={600}
+                    fontSize={{ xs: 40, md: 55 }}
+                >
                     Healthier Hearts
                 </Typography>
-                <Typography variant="h2" component="h1" fontWeight={600}>
+                <Typography
+                    variant="h2"
+                    fontWeight={600}
+                    fontSize={{ xs: 40, md: 55 }}
+                >
                     Come From
                 </Typography>
                 <Typography
                     variant="h2"
-                    component="h1"
                     fontWeight={600}
                     color="primary.main"
+                    fontSize={{ xs: 40, md: 55 }}
                 >
                     Preventive Care
                 </Typography>
-                <Typography sx={{ my: 4 }}>
+                <Typography sx={{ my: 4, width: "90%" }}>
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                     Fugit eum iusto consequatur eius, doloribus nesciunt facere
                     aliquid eveniet et. Rerum maiores saepe cupiditate repellat
@@ -50,7 +65,13 @@ const HeroSection = () => {
                 </Box>
             </Box>
 
-            <Box sx={{ flex: 1, display: "flex", position: "relative" }}>
+            <Box
+                sx={{
+                    flex: 1,
+                    display: { md: "flex", xs: "none" },
+                    position: "relative",
+                }}
+            >
                 <Box sx={{ position: "absolute", left: "180px", top: "-30px" }}>
                     <Image
                         src={assets.svgs.arrow}

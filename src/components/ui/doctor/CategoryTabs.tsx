@@ -1,4 +1,3 @@
-
 "use client";
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
@@ -21,9 +20,8 @@ export default function CategoryTabs({ specialty }: { specialty: string }) {
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         dispatch(setSearchTerm(""));
-        
+
         const searchTerm = searchParams.get("searchTerm");
-     
 
         setValue(newValue);
         if (user?.role === USER_ROLE.PATIENT) {
@@ -33,29 +31,74 @@ export default function CategoryTabs({ specialty }: { specialty: string }) {
         }
     };
 
+    // React.useEffect(() => {
+    //     const searchTerm = searchParams.get("searchTerm");
+    //     if (searchTerm) {
+    //         const matchedSpecialty = specialties?.data?.find(
+    //             (specialty) =>
+    //                 specialty.title.toLowerCase() === searchTerm.toLowerCase()
+    //         );
+
+    //         if (matchedSpecialty) {
+
+    //             setValue(matchedSpecialty.id);
+    //             if (user?.role === USER_ROLE.PATIENT) {
+    //                 router.push(
+    //                     `/dashboard/patient/doctors?specialty=${matchedSpecialty.id}`
+    //                 );
+    //             } else {
+    //                 router.push(`/doctors?specialty=${matchedSpecialty.id}`);
+    //             }
+    //         }
+    //     }
+
+    // }, [searchParams, specialties, user, router]);
+
     React.useEffect(() => {
         const searchTerm = searchParams.get("searchTerm");
-        if (searchTerm) {
-            const matchedSpecialty = specialties?.data?.find(
-                (specialty) =>
-                    specialty.title.toLowerCase() === searchTerm.toLowerCase()
-            );
+        if (!searchTerm && specialty === specialties?.data?.[0]?.id) { //firts specialty as default
+            setValue(specialties?.data?.[0]?.id);
+        }
 
-            if (matchedSpecialty) {
-    
+        if (searchTerm && specialties?.data) {
+            const lowerSearchTerm = searchTerm.toLowerCase();
 
-                setValue(matchedSpecialty.id);
+            const partialMatches = specialties.data
+                .filter((specialty) => {
+                    const lowerSpecialtyTitle = specialty.title.toLowerCase();
+                    return (
+                        lowerSpecialtyTitle.includes(lowerSearchTerm) &&
+                        lowerSearchTerm.length >= 3
+                    );
+                })
+                .sort((a, b) => {
+                    const aIndex = a.title
+                        .toLowerCase()
+                        .indexOf(lowerSearchTerm);
+                    const bIndex = b.title
+                        .toLowerCase()
+                        .indexOf(lowerSearchTerm);
+
+                    if (aIndex === 0 && bIndex !== 0) return -1;
+                    if (bIndex === 0 && aIndex !== 0) return 1;
+
+                    return aIndex - bIndex;
+                });
+
+            if (partialMatches.length > 0) {
+                // Take the best match (the first one after sorting)
+                const bestMatch = partialMatches[0];
+                setValue(bestMatch.id);
                 if (user?.role === USER_ROLE.PATIENT) {
                     router.push(
-                        `/dashboard/patient/doctors?specialty=${matchedSpecialty.id}`
+                        `/dashboard/patient/doctors?specialty=${bestMatch.id}`
                     );
                 } else {
-                    router.push(`/doctors?specialty=${matchedSpecialty.id}`);
+                    router.push(`/doctors?specialty=${bestMatch.id}`);
                 }
             }
         }
- 
-    }, [searchParams, specialties, user, router]);
+    }, [searchParams, specialties, user, router, setValue, specialty]);
 
     return (
         <Box

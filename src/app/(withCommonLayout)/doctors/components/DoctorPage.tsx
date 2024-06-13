@@ -44,8 +44,8 @@ const DoctorPageComponent = async ({
 
     let url;
 
-    if (specialty && searchParams?.searchTerm) {
-        url = `${baseUrl}/doctor?specialties=${specialty?.id}&searchTerm=${searchParams.searchTerm}`;
+    if (searchParams?.searchTerm) {
+        url = `${baseUrl}/doctor?searchTerm=${searchParams.searchTerm}`;
     } else if (specialty) {
         url = `${baseUrl}/doctor?specialties=${specialty?.id}`;
     } else {
