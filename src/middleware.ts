@@ -23,7 +23,7 @@ const roleBasedPrivateRoutes = {
         /^\/video/,
     ],
     SUPER_ADMIN: [
-        /^\/dashboard\/super-admin/,
+        /^\/dashboard\/super_admin/,
         /^\/dashboard\/admin/,
         /^\/dashboard\/patient/,
         /^\/dashboard\/doctor/,
@@ -67,6 +67,12 @@ export function middleware(req: NextRequest) {
 
     if (role && roleBasedPrivateRoutes[role as Role]) {
         const routes = roleBasedPrivateRoutes[role as Role];
+        console.log(
+            role,
+            routes,
+            pathname,
+            "role =====================================================================------------"
+        );
         if (routes.some((route) => pathname.match(route))) {
             return NextResponse.next();
         }

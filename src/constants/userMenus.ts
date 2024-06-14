@@ -18,20 +18,24 @@ import { IDrawerItem, TUserRole } from "@/types/common";
 export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
     const roleMenus: IDrawerItem[] = [];
 
-    const role = userRole.toLowerCase();
+    let role = userRole.toLowerCase();
 
-    const defaultMenus = [
-        {
-            title: "Profile",
-            path: `${role}/profile`,
-            icon: PersonIcon,
-        },
-        {
-            title: "Change Password",
-            path: `change-password`,
-            icon: KeyIcon,
-        },
-    ];
+    if (userRole === USER_ROLE.SUPER_ADMIN) {
+        role = USER_ROLE.ADMIN.toLowerCase();
+    }
+
+    // const defaultMenus = [
+    //     {
+    //         title: "Profile",
+    //         path: `${role}/profile`,
+    //         icon: PersonIcon,
+    //     },
+    //     {
+    //         title: "Change Password",
+    //         path: `change-password`,
+    //         icon: KeyIcon,
+    //     },
+    // ];
 
     const superAdminMenus = [
         {
@@ -75,11 +79,11 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
             path: `${role}/appointments`,
             icon: BookOnlineIcon,
         },
-        {
-            title: "Reviews",
-            path: `${role}/reviews`,
-            icon: ReviewsIcon,
-        },
+        // {
+        //     title: "Reviews",
+        //     path: `${role}/reviews`,
+        //     icon: ReviewsIcon,
+        // },
     ];
 
     const adminMenus = superAdminMenus.map((menu) => {
@@ -111,6 +115,11 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
             path: `${role}/appointment`,
             icon: BookOnlineIcon,
         },
+        {
+            title: "Change Password",
+            path: `change-password`,
+            icon: KeyIcon,
+        },
     ];
 
     const patientMenus = [
@@ -139,23 +148,28 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
             path: `${role}/payment-history`,
             icon: AttachMoneyIcon,
         },
+        {
+            title: "Change Password",
+            path: `change-password`,
+            icon: KeyIcon,
+        },
     ];
 
     switch (userRole) {
         case USER_ROLE.SUPER_ADMIN:
-            roleMenus.push(...superAdminMenus, ...defaultMenus);
+            roleMenus.push(...superAdminMenus);
             break;
 
         case USER_ROLE.ADMIN:
-            roleMenus.push(...adminMenus, ...defaultMenus);
+            roleMenus.push(...adminMenus);
             break;
 
         case USER_ROLE.DOCTOR:
-            roleMenus.push(...doctorMenus, ...defaultMenus);
+            roleMenus.push(...doctorMenus);
             break;
 
         case USER_ROLE.PATIENT:
-            roleMenus.push(...patientMenus, ...defaultMenus);
+            roleMenus.push(...patientMenus);
             break;
 
         default:
