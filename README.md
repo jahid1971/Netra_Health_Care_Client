@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Netra Healthcare Client
 
-## Getting Started
+Frontend application for Netra Healthcare, a comprehensive telemedicine platform that connects patients with specialists.
 
-First, run the development server:
+## 🔗 Quick Links
+- **Live Site**: [https://netra-health-care.vercel.app](https://netra-health-care.vercel.app)
 
+- **Backend Repository**: [Netra Healthcare Server](https://github.com/jahid1971/Netra_Healthcare_server)
+
+## ✨ Features
+
+### For Patients
+- Schedule and manage appointments with eye specialists
+- Virtual consultations through video conferencing
+- Secure medical record access and management
+- Prescription viewing and refill requests
+- Seamless payment processing via SSLCommerz
+
+### For Doctors
+- Patient management dashboard
+- Appointment calendar and scheduling
+- Video consultation tools with screen sharing
+- Prescription creation and management
+- Patient medical history access
+
+### For Administrators
+- User management (patients, doctors, staff)
+- Analytics and reporting dashboard
+- Content management for website
+- System configuration and monitoring
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js
+- **Language**: TypeScript
+- **UI Library**: Material UI (MUI)
+- **State Management**: Redux Toolkit
+- **Form Handling**: React Hook Form with Zod validation
+- **Video Consultations**: Agora SDK
+- **Real-time Communication**: Socket.IO client
+- **API Communication**: Axios
+- **Styling**: Emotion, Tailwind CSS
+- **Deployment**: Vercel
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/netra-healthcare-client.git
+cd netra-healthcare-client
+```
+
+2. Install dependencies
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Configure environment variables
+```bash
+cp .env.example .env.local
+# Edit .env.local with your configuration
+```
+
+4. Start the development server
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧩 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
+/
+├── app/                    # Next.js app directory
+│   ├── (withLayout)/       # Pages with common layout
+│   ├── (withoutLayout)/    # Pages without layout
+│   ├── api/                # API routes
+│   └── page.tsx            # Home page
+├── components/             # React components
+│   ├── common/             # Shared components
+│   ├── dashboard/          # Dashboard-specific components
+│   ├── ui/                 # UI components
+│   └── layouts/            # Layout components
+├── hooks/                  # Custom React hooks
+├── lib/                    # Utility functions
+├── public/                 # Static assets
+├── services/               # API service layer
+└── store/                  # Redux store
+    ├── api/                # RTK Query API definitions
+    └── features/           # Redux slices
+```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

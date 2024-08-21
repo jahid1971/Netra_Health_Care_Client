@@ -1,5 +1,4 @@
 export const modifyPayload = (values: any) => {
-    console.log(values,"valyuesss")
     const obj = { ...values };
     const file = obj["file"];
     delete obj["file"];

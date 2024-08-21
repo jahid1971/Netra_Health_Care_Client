@@ -15,7 +15,11 @@ export const createApiBuilder = (
     build: any,
     url: string,
     tagTypes?: string[],
-    options: { method?: string; contentType?: string } = {}
+    options: {
+        method?: string;
+        contentType?: string;
+        credentials?: boolean;
+    } = {}
 ) => {
     return build.mutation({
         query: (args: any) => {
@@ -24,7 +28,11 @@ export const createApiBuilder = (
                 url: url,
                 method: "POST",
                 data: args,
-                contentType: options.contentType ?? "application/json",
+                // contentType: options.contentType ?? "application/json",
+                credentials: options.credentials ? "include" : undefined,
+                headers: {
+                    "Content-Type": options.contentType ?? "application/json",
+                },
             };
         },
         invalidatesTags: tagTypes,
@@ -65,7 +73,6 @@ export const queryApiBuilder = <T>(
             };
         },
         providesTags: tagTypes,
-
     });
 };
 

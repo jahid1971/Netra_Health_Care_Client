@@ -161,7 +161,7 @@ const SchedulePage = () => {
                 createButton={createScheScheduleButton}
                 setSelectedRows={setSelectedRows}
                 selectedRows={selectedRows}
-                selectedActionButton={actionButton}
+                checkedRowsActionBtn={actionButton}
                 searchField={false}
             >
                 <Stack

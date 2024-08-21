@@ -32,7 +32,7 @@ type TDataGridProps = {
     headerStyle?: any;
     setSelectedRows?: any;
     selectedRows?: any;
-    selectedActionButton?: any;
+    checkedRowsActionBtn?: any;
     searchField?: boolean;
     query?: any;
 };
@@ -57,7 +57,7 @@ const N_DataGrid = ({
     rowSelection = true,
     setSelectedRows,
     selectedRows,
-    selectedActionButton,
+    checkedRowsActionBtn,
     searchField = true,
 }: TDataGridProps) => {
     const [showFilters, setShowFilters] = useState(false);
@@ -91,15 +91,18 @@ const N_DataGrid = ({
         );
     };
 
-    const handleSortModelChange = useCallback((sortModel: GridSortModel) => {
-        setQuery &&
-            setQuery((prev: any) => ({
-                ...prev,
-                page: 0,
-                sortBy: sortModel[0]?.field,
-                sortOrder: sortModel[0]?.sort,
-            }));
-    }, [setQuery]);
+    const handleSortModelChange = useCallback(
+        (sortModel: GridSortModel) => {
+            setQuery &&
+                setQuery((prev: any) => ({
+                    ...prev,
+                    page: 0,
+                    sortBy: sortModel[0]?.field,
+                    sortOrder: sortModel[0]?.sort,
+                }));
+        },
+        [setQuery]
+    );
 
     const handleRowSelection = (selectionModel: any) => {
         const selectedData = rows.filter((row) =>
@@ -208,7 +211,7 @@ const N_DataGrid = ({
                     )}
                 </Stack>
 
-                {selectedActionButton && (
+                {checkedRowsActionBtn && (
                     <Slide
                         direction="right"
                         in={selectedRows?.length > 0}
@@ -216,7 +219,7 @@ const N_DataGrid = ({
                         unmountOnExit
                         timeout={300}
                     >
-                        <Box mb={1}> {selectedActionButton}</Box>
+                        <Box mb={1}> {checkedRowsActionBtn}</Box>
                     </Slide>
                 )}
 
