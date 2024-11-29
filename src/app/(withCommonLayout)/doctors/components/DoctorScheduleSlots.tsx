@@ -20,7 +20,7 @@ const DoctorScheduleSlots = ({
     adminView,
 }: {
     doctorId: string;
-    adminView: boolean;
+    adminView?: boolean;
 }) => {
     const [scheduleId, setScheduleID] = useState("");
     const router = useRouter();
