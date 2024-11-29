@@ -37,6 +37,8 @@ type TDataGridProps = {
     searchField?: boolean;
     query?: any;
     serial?: boolean;
+    rowHeight?: number;
+    autoRowHeight?: boolean;
 };
 
 const N_DataGrid = ({
@@ -44,7 +46,7 @@ const N_DataGrid = ({
     columns,
     isLoading,
     hideFooter,
-    autoHeight,
+    autoHeight = true,
     notFoundFor,
     slots,
     // searchTerm,
@@ -62,6 +64,9 @@ const N_DataGrid = ({
     checkedRowsActionBtn,
     searchField = true,
     serial = true,
+    rowHeight,
+    autoRowHeight,
+  
 }: TDataGridProps) => {
     const [showFilters, setShowFilters] = useState(false);
 
@@ -270,6 +275,8 @@ const N_DataGrid = ({
                         loading={isLoading}
                         hideFooter={hideFooter}
                         autoHeight={autoHeight}
+                        getRowHeight={autoRowHeight ? () => "auto" : undefined}
+                        // getEstimatedRowHeight={() => rowHeight || 52}
                         onRowSelectionModelChange={handleRowSelection}
                         disableRowSelectionOnClick={true}
                         slotProps={{
@@ -282,7 +289,7 @@ const N_DataGrid = ({
                             noRowsOverlay: CustomNoRowsOverlay,
                             ...slots,
                         }}
-                        sx={{
+            sx={{
                             "& .default-header": {
                                 border: "none",
                                 backgroundColor: blue[50],
@@ -291,12 +298,29 @@ const N_DataGrid = ({
                             "& .MuiDataGrid-columnHeaderCheckbox": {
                                 backgroundColor: blue[50],
                             },
-
+                            "& .MuiDataGrid-cell": {
+                                display: "flex",
+                                alignItems: "center",
+                            },
+                            "& .MuiDataGrid-row:nth-of-type(odd)": {
+                                backgroundColor: "#F4F7FE",
+                            },
+                            "& .MuiDataGrid-row:nth-of-type(even)": {
+                                backgroundColor: "white",
+                            },
                             border: "none",
                             "& .MuiDataGrid-cell:focus": {
                                 outline: "none",
                             },
+
+                            "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell":
+                                autoRowHeight ? { py: "8px" } : undefined,
+                            "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell":
+                                autoRowHeight ? { py: "15px" } : undefined,
+                            "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell":
+                                autoRowHeight ? { py: "22px" } : undefined,
                         }}
+                        rowHeight={rowHeight}
                     />
                 </Box>
             </Box>

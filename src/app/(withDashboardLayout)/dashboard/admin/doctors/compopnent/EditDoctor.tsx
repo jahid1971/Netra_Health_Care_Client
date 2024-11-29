@@ -39,9 +39,9 @@ const EditDoctor = () => {
                 handleSubmit={handleSubmit}
                 defaultValue={doctorInfo}
                 submitTitle="Edit"
-                passwordField={false}
                 isLoading={isLoading}
-                onlyDirtyFields={true}
+                editMode={true}
+               
             />
         </N_Modal>
     );

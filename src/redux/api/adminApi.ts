@@ -14,9 +14,6 @@ export const adminApi = baseApi.injectEndpoints({
             build,
             "/user/create-admin",
             [tagTypes.user],
-            {
-                contentType: "multipart/form-data",
-            }
         ),
 
         getAllAdmins: queryApiBuilder<IAdmin[]>(build, "/admin", [

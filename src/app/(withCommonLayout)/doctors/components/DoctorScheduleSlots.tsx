@@ -15,7 +15,13 @@ import AppError from "@/utils/AppError";
 import ScheduleButtonsSkeleton from "./ScheduleButtonsSkeleton";
 import { toast } from "sonner";
 
-const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
+const DoctorScheduleSlots = ({
+    doctorId,
+    adminView,
+}: {
+    doctorId: string;
+    adminView: boolean;
+}) => {
     const [scheduleId, setScheduleID] = useState("");
     const router = useRouter();
 
@@ -120,13 +126,15 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
                 label=" Book Appointment Now"
                 fullWidth={false}
             /> */}
-            <Button
-                onClick={handleBookAppointment}
-                sx={{ mt: 2 }}
-                fullWidth={false}
-            >
-                Book Appointment Now
-            </Button>
+            {!adminView && (
+                <Button
+                    onClick={handleBookAppointment}
+                    sx={{ mt: 2 }}
+                    fullWidth={false}
+                >
+                    Book Appointment Now
+                </Button>
+            )}
         </Box>
     );
 };

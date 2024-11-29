@@ -9,14 +9,14 @@ import Image from "next/image";
 import { fetchWithAuth } from "@/utils/fetchWithAuth";
 import DoctorScheduleSlots from "@/app/(withCommonLayout)/doctors/components/DoctorScheduleSlots";
 
-const DocotorProfilePage = async ({ params }: any) => {
+const DocotorProfilePage = async ({ params,adminView }: any) => {
     const res = await fetchWithAuth(`/doctor/${params.id}`);
     const doctor: IDoctor = res?.data;
 
     return (
         <Container>
             {/* <Box p={{ xs: 0, md: 3 }} sx={{ bgcolor: grey[100] }}> */}
-            <Box >
+            <Box>
                 <Box bgcolor={"background.paper"} p={3}>
                     <Box>
                         <Typography
@@ -114,7 +114,7 @@ const DocotorProfilePage = async ({ params }: any) => {
                     </Stack>
 
                     <Stack>
-                        <DoctorScheduleSlots doctorId={params.id} />
+                        <DoctorScheduleSlots adminView={adminView} doctorId={params.id} />
                     </Stack>
                 </Box>
             </Box>

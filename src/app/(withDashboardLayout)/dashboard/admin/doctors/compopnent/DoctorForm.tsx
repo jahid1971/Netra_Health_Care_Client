@@ -16,8 +16,7 @@ const DoctorForm = ({
     handleSubmit,
     submitTitle,
     defaultValue,
-    passwordField = true,
-    onlyDirtyFields,
+    editMode,
 }: any) => {
     const dispatch = useAppDispatch();
 
@@ -40,18 +39,20 @@ const DoctorForm = ({
             <N_Form
                 onSubmit={handleSubmit}
                 defaultValues={defaultValueCopy}
-                onlyDirtyFields={onlyDirtyFields}
+                onlyDirtyFields={editMode}
             >
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
                         <N_Input name="name" label="Name" required />
                     </Grid>
 
-                    <Grid item xs={12} md={4}>
-                        <N_Input name="email" label="Email" required />
-                    </Grid>
+                    {!editMode && (
+                        <Grid item xs={12} md={4}>
+                            <N_Input name="email" label="Email" required />
+                        </Grid>
+                    )}
 
-                    {passwordField && (
+                    {!editMode && (
                         <Grid item xs={12} md={4}>
                             <N_Input
                                 name="password"
@@ -122,10 +123,7 @@ const DoctorForm = ({
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                        <N_Input
-                            name="designation"
-                            label="Designation"
-                        />
+                        <N_Input name="designation" label="Designation" />
                     </Grid>
 
                     <Grid item xs={12} md={4}>

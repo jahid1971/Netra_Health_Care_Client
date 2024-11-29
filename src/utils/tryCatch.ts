@@ -30,6 +30,8 @@ export const tryCatch: tryCatch = async (
             if (successMessage) toast.success(successMessage, { id: toastId });
 
             if (successAction) await successAction();
+
+            dispatch && dispatch(setErrorMsg(""));
         } else if (
             (res?.success === false || res?.error) &&
             (res?.message || res?.error?.data?.message)

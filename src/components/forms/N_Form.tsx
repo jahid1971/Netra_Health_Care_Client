@@ -2,6 +2,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import {
     setErrorDetails,
     useSelectErrorDetails,
+    useSelectErrorMsg,
 } from "@/redux/slices/generalSlices";
 import { debounce } from "@/utils/generalUtils";
 import { Typography } from "@mui/material";
@@ -40,6 +41,8 @@ const N_Form = ({
 }: TFormProps) => {
     const dispatch = useAppDispatch();
     const formConfig: TFormConfig = {};
+
+    const errorMessage = useSelectErrorMsg();
 
     if (resolver) {
         formConfig["resolver"] = resolver;
@@ -135,7 +138,7 @@ const N_Form = ({
     useEffect(() => {
         if (errorDetails?.issues) {
             clearErrors();
-            errorDetails.issues.forEach((issue: any) => {
+            errorDetails?.issues?.forEach((issue: any) => {
                 if (issue.path) {
                     const fieldName = issue?.path;
                     setError(fieldName, {
@@ -155,7 +158,7 @@ const N_Form = ({
 
     return (
         <FormProvider {...methods}>
-            {error && (
+            {(error || errorMessage) && (
                 <Typography
                     py={1}
                     my={2}
@@ -164,8 +167,9 @@ const N_Form = ({
                         border: 1,
                         borderColor: "red",
                     }}
+                    textAlign={"center"}
                 >
-                    {error}
+                    {error || errorMessage}
                 </Typography>
             )}
             <form onSubmit={handleSubmit(submit)}>{children}</form>

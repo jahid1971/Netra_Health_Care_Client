@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, IconButton, Stack } from "@mui/material";
+import { Box, Button, Chip, IconButton, Stack, Tooltip } from "@mui/material";
 import { useState } from "react";
 
 import { GridColDef } from "@mui/x-data-grid";
@@ -23,12 +23,23 @@ import N_Select from "@/components/forms/N_Select";
 import { defaultQuery, Gender } from "@/constants/commmon";
 import N_Input from "@/components/forms/N_Input";
 import ConfirmationModal from "@/components/modals/ConfirmationModal";
+import Image from "next/image";
+import defaultDoctorPhoto from "@/assets/svgs/profile.svg";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import N_MultiSelect from "@/components/forms/N_MultiSelect";
+import { useGetAllSpecialitiesQuery } from "@/redux/api/specialitiesApi";
 
 const DoctorsPage = () => {
-    // const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useAppDispatch();
     const [query, setQuery] = useState<Record<string, any>>(defaultQuery);
-    // const [searchTerm, setSearchTerm] = useState("");
+
+    const { data: specialties, isLoading: isLoadingSpecialties } =
+        useGetAllSpecialitiesQuery(undefined);
+
+    const allSpecialitiesData = specialties?.data?.map((item: any) => ({
+        label: item.title,
+        value: item.id,
+    }));
 
     const { data, isLoading, isFetching } = useGetDoctorsQuery(query);
 
@@ -51,13 +62,65 @@ const DoctorsPage = () => {
     };
     const columnDef: GridColDef[] = [
         {
+            field: "profilePhoto",
+            headerName: "Photo",
+            flex: 1,
+            renderCell: ({ value }) => (
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        height: "100%",
+                    }}
+                >
+                    <Image
+                        src={value || defaultDoctorPhoto}
+                        alt="Doctor"
+                        width={50}
+                        height={50}
+                        objectFit="cover"
+                        
+
+                        style={{ borderRadius: "50%" }}
+                    />
+                </Box>
+            ),
+        },
+        {
             field: "name",
             headerName: "Name",
+            minWidth: 150,
             flex: 1,
             sortable: true,
-            // filterable: false,
         },
-        { field: "email", headerName: "Email", minWidth: 200 },
+        { field: "email", headerName: "Email", minWidth: 150 },
+
+        {
+            field: "specialties",
+            headerName: "Specialties",
+            // minWidth: 150,
+            renderCell: ({ value }) => (
+                <Box
+                    display={"flex"}
+                    flexWrap="wrap"
+                    sx={{ alignItems: "center", height: "100%", py: 1 }}
+                >
+                    {value?.length > 0 ? (
+                        value?.map((spec: any, index: number) => (
+                            <Chip
+                                color="primary"
+                                key={index}
+                                label={spec.title}
+                                size="small"
+                                sx={{ marginRight: 0.5, marginBottom: 0.5 }}
+                            />
+                        ))
+                    ) : (
+                        <span>No Specialties</span>
+                    )}
+                </Box>
+            ),
+        },
         { field: "contactNumber", headerName: "Contact Number", flex: 1 },
         {
             field: "gender",
@@ -68,7 +131,7 @@ const DoctorsPage = () => {
         },
         {
             field: "apointmentFee",
-            headerName: "Appointment Fee",
+            headerName: "Fee",
             flex: 1,
             sortable: true,
         },
@@ -77,37 +140,47 @@ const DoctorsPage = () => {
             headerName: "Action",
             disableColumnMenu: true,
             flex: 1,
+            minWidth: 150,
             renderCell: ({ row }) => (
                 <Box>
-                    <IconButton
-                        onClick={() =>
-                            dispatch(
-                                openModal({
-                                    modalId: "confirm",
-                                    modalData: {
-                                        action: () => handleDelete(row.id),
-                                    },
-                                })
-                            )
-                        }
-                        aria-label="delete"
-                    >
-                        <DeleteIcon sx={{ color: "red" }} />
-                    </IconButton>
+                    <Tooltip title="View Doctor Details">
+                        <IconButton href={`/dashboard/admin/doctors/${row.id}`}>
+                            <VisibilityIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete Doctor">
+                        <IconButton
+                            onClick={() =>
+                                dispatch(
+                                    openModal({
+                                        modalId: "confirm",
+                                        modalData: {
+                                            action: () => handleDelete(row.id),
+                                        },
+                                    })
+                                )
+                            }
+                            aria-label="delete"
+                        >
+                            <DeleteIcon sx={{ color: "red" }} />
+                        </IconButton>
+                    </Tooltip>
 
-                    <IconButton
-                        onClick={() =>
-                            dispatch(
-                                openModal({
-                                    modalId: "editDoctor",
-                                    modalData: { data: row },
-                                })
-                            )
-                        }
-                        aria-label="delete"
-                    >
-                        <EditIcon />
-                    </IconButton>
+                    <Tooltip title="Edit Doctor">
+                        <IconButton
+                            onClick={() =>
+                                dispatch(
+                                    openModal({
+                                        modalId: "editDoctor",
+                                        modalData: { data: row },
+                                    })
+                                )
+                            }
+                            aria-label="delete"
+                        >
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Box>
             ),
         },
@@ -136,8 +209,25 @@ const DoctorsPage = () => {
                 query={query}
                 meta={meta}
                 rowSelection={false}
+                // rowHeight={80}
+                autoRowHeight={true}
             >
                 <Stack direction="row" spacing={2}>
+                    <FilterPopover
+                        filterLabel={"Filter By Specialties"}
+                        btnBackgroundTrue={query.specialties}
+                        minWidth="200px"
+                    >
+                        <N_MultiSelect
+                            items={allSpecialitiesData || []}
+                            name="specialties"
+                            label="Specialties"
+                            disabled={
+                                isLoadingSpecialties ||
+                                !allSpecialitiesData?.length
+                            }
+                        />
+                    </FilterPopover>
                     <FilterPopover
                         filterLabel={"Filter By Gender"}
                         btnBackgroundTrue={query.gender}

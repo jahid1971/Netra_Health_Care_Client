@@ -18,10 +18,10 @@ const CreateDoctor = () => {
         values.experience = Number(values.experience);
         values.apointmentFee = Number(values.apointmentFee);
 
-        const updateData = modifyPayload(values);
+        // const updateData = modifyPayload(values);
 
         tryCatch(
-            async () => await createDoctor(updateData),
+            async () => await createDoctor(values),
             "Creating Doctor",
             "Doctor created successfully",
             () => dispatch(closeModal()),
