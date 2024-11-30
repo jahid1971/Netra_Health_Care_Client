@@ -81,14 +81,15 @@ export const Navbar = ({ userInfo }: { userInfo?: TUserInfo }) => {
         <Button size={isSmallScreen ? "small" : "medium"} href="/login">
             Log In
         </Button>
-    );
-
-    return (
+    );    return (
         <Box
             sx={{
                 px: { xs: 2, md: 5 },
-                position: "sticky",
+                position: "fixed", // Changed from sticky to fixed
                 top: 0,
+                left: 0,
+                right: 0,
+                width: "100%",
                 zIndex: 1000, 
                 boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                 bgcolor: "background.paper",
@@ -133,6 +134,7 @@ export const Navbar = ({ userInfo }: { userInfo?: TUserInfo }) => {
                     justifyContent={"center"}
                     alignItems={"center"}
                     minHeight={300}
+                    textAlign={"center"}
                 >
                     {/* <NetraLogo /> */}
 

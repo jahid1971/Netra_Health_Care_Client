@@ -23,7 +23,13 @@ const TopRatedDoctors = async () => {
     const { data: doctors }: { data: IDoctor[] } = await res.json();
 
     return (
-        <Box position="relative" sx={{ overflow: "hidden" }}>
+        <Container
+            sx={{
+                position: "relative",
+                overflow: "hidden",
+                backgroundColor: "white",
+            }}
+        >
             {/* Background with clip-path */}
             <Box
                 sx={{
@@ -37,7 +43,7 @@ const TopRatedDoctors = async () => {
                         xs: "polygon(0 0, 100% 15%, 100% 100%, 0 85%)",
                         sm: "polygon(0 0, 100% 25%, 100% 100%, 0 75%)",
                     },
-                    zIndex: -1,
+                    // zIndex: -1,
                     pointerEvents: "none",
                 }}
             />
@@ -63,7 +69,7 @@ const TopRatedDoctors = async () => {
                     </Typography>
                 </Box>
 
-                <Container sx={{ my: 5 }}>
+                <Box sx={{ my: 5 }}>
                     <Grid container spacing={3}>
                         {doctors?.map((doctor: IDoctor) => (
                             <Grid
@@ -154,9 +160,9 @@ const TopRatedDoctors = async () => {
                             <Button variant="outlined">View All Doctors</Button>
                         </Link>
                     </Box>
-                </Container>
+                </Box>
             </Box>
-        </Box>
+        </Container>
     );
 };
 

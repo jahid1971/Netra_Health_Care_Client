@@ -14,8 +14,8 @@ const specialties = async () => {
     const { data: specialities } = await res.json();
 
     return (
-        <Container sx={{ bottom: -50, position: "relative" }}>
-            <Box mt={2} textAlign={"center"}>
+        <Container sx={{ backgroundColor: "white" }}>
+            <Box pt={2} textAlign={"center"} sx={{  position: "relative",bottom: -50, zIndex: 10 }}>
                 <Box>
                     <Typography variant="h4" fontWeight={600} color={"primary"}>
                         Explore Treatments Across Specialties
@@ -29,7 +29,7 @@ const specialties = async () => {
                     gap={4}
                     alignItems={"center"}
                     justifyContent="space-between"
-                    mt={2}
+                    pt={5}
                     flexWrap="wrap"
                 >
                     {specialities?.slice(0, 6).map((speciality: TSpecialty) => (
@@ -67,9 +67,9 @@ const specialties = async () => {
                     ))}
                 </Stack>
 
-                <Box mt={2}>
+                <Box mt={5}>
                     <Link href={"doctors"}>
-                        <Button >View All </Button>
+                        <Button>View All </Button>
                     </Link>
                 </Box>
             </Box>

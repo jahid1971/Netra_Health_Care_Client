@@ -30,11 +30,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { IDrawerItem } from "@/types/common";
 import { useIsSmallScreen } from "@/utils/isSmallScreen";
-// import NetraLogo from "@/components/NetraLogo";
+import NetraLogo from "@/components/NetraLogo";
 
-const NetraLogo = dynamic(() => import("@/components/NetraLogo"), {
-    ssr: false,
-});
+// Remove dynamic import as it's causing chunk load errors
+// const NetraLogo = dynamic(() => import("@/components/NetraLogo"), {
+//     ssr: false,
+// });
 
 const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
     const isSmallScreen = useIsSmallScreen();

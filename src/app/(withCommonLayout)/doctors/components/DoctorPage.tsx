@@ -58,8 +58,13 @@ const DoctorPageComponent = async ({
         <Box
             px={!withDashboardLayout ? { xs: 0, md: 3 } : 0}
             py={!withDashboardLayout ? 3 : 0}
-            bgcolor={!withDashboardLayout ? grey[100] : "transparent"}
-            sx={{ position: "relative" }}
+            // bgcolor={!withDashboardLayout ? grey[100] : "transparent"}
+            sx={{
+                position: "relative",
+                maxWidth: "100%",
+                boxSizing: "border-box",
+                width: "100%",
+            }}
         >
             <Box
                 sx={{
@@ -68,6 +73,10 @@ const DoctorPageComponent = async ({
                     zIndex: 1201,
                     background: grey[100],
                     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                    width: "100%",
+                    marginLeft: 0,
+                    marginRight: 0,
+                    left: 0,
                 }}
             >
                 <CategoryTabs specialty={specialty?.id} />

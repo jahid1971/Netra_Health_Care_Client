@@ -1,6 +1,7 @@
 "use client";
 import { Box, Button, Chip, IconButton, Stack, Tooltip } from "@mui/material";
 import { useState } from "react";
+import Link from "next/link";
 
 import { GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -79,8 +80,6 @@ const DoctorsPage = () => {
                         width={50}
                         height={50}
                         objectFit="cover"
-                        
-
                         style={{ borderRadius: "50%" }}
                     />
                 </Box>
@@ -143,8 +142,12 @@ const DoctorsPage = () => {
             minWidth: 150,
             renderCell: ({ row }) => (
                 <Box>
+                    {" "}
                     <Tooltip title="View Doctor Details">
-                        <IconButton href={`/dashboard/admin/doctors/${row.id}`}>
+                        <IconButton
+                            component={Link}
+                            href={`/dashboard/admin/doctors/${row.id}`}
+                        >
                             <VisibilityIcon />
                         </IconButton>
                     </Tooltip>
@@ -165,7 +168,6 @@ const DoctorsPage = () => {
                             <DeleteIcon sx={{ color: "red" }} />
                         </IconButton>
                     </Tooltip>
-
                     <Tooltip title="Edit Doctor">
                         <IconButton
                             onClick={() =>

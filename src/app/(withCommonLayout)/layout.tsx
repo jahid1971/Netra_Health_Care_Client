@@ -8,16 +8,20 @@ import { ReactNode } from "react";
 const CommonLayout = ({ children }: { children: ReactNode }) => {
     const userInfo = getUserInfo() as TUserInfo;
     return (
-        <Box>
-            <Navbar userInfo={userInfo} />
+        <Box
+  
+        >
+            <Navbar userInfo={userInfo} />{" "}
             <Box
-                // overflow={"hidden"}
-                // display={"flex"}
-                // flexDirection={"column"}
-                // justifyContent={"space-between"}
-                minHeight={"100vh"}
+                sx={{
+                    minHeight: "100vh",
+                    width: "100%",
+                    position: "relative",
+                    maxWidth: "100vw",
+                    backgroundColor: "#F4F7FE",
+                    paddingTop: "64px",
+                }}
             >
-                {" "}
                 {children}
             </Box>
             <Footer />

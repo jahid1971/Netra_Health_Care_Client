@@ -37,82 +37,95 @@ const servicesData = [
 
 const WhyUs = () => {
     return (
-        <Container sx={{ top: -100, position: "relative" }}>
-            <Box>
-                <Box textAlign={"center"}>
-                    <Typography variant="h4" fontWeight={700} color={"primary"}>
-                        Why Choose Us
-                    </Typography>
-                </Box>
-            </Box>
-            <Grid
-                container
-                direction={{ md: "row" }}
-                spacing={5}
-                alignItems={"center"}
-                py={2}
-            >
-                <Grid item md={6}>
-                    {servicesData.map((service, index) => (
-                        <Box
-                            key={index}
-                            display={"flex"}
-                            alignItems={"center"}
-                            justifyContent={"center"}
-                            gap={2}
-                            sx={{
-                                backgroundColor: grey[100],
-                                px: 4,
-                                py: 3,
-                                my: 3,
-                            }}
-                            borderRadius={
-                                index % 2 === 0
-                                    ? "10px 10px 100px 10px"
-                                    : "10px 100px 10px 10px"
-                            }
+        <Container sx={{ backgroundColor: "white" }}>
+            <Box sx={{ top: -100, position: "relative" }}>
+                <Box>
+                    <Box textAlign={"center"}>
+                        <Typography
+                            variant="h4"
+                            fontWeight={700}
+                            color={"primary"}
                         >
-                            <Box>
-                                <Image
-                                    src={service?.imageSrc}
-                                    alt={service.title}
-                                    width={50}
-                                />
+                            Why Choose Us
+                        </Typography>
+                    </Box>
+                </Box>
+                <Grid
+                    container
+                    direction={{ md: "row" }}
+                    spacing={5}
+                    alignItems={"center"}
+                    py={2}
+                >
+                    <Grid item md={6}>
+                        {servicesData.map((service, index) => (
+                            <Box
+                                key={index}
+                                display={"flex"}
+                                alignItems={"center"}
+                                justifyContent={"center"}
+                                gap={2}
+                                sx={{
+                                    backgroundColor: grey[100],
+                                    px: 4,
+                                    py: 3,
+                                    my: 3,
+                                }}
+                                borderRadius={
+                                    index % 2 === 0
+                                        ? "10px 10px 100px 10px"
+                                        : "10px 100px 10px 10px"
+                                }
+                            >
+                                <Box>
+                                    <Image
+                                        src={service?.imageSrc}
+                                        alt={service.title}
+                                        width={50}
+                                    />
+                                </Box>
+                                <Box>
+                                    <Typography
+                                        variant="h6"
+                                        fontWeight={700}
+                                        color={"primary"}
+                                    >
+                                        {service.title}
+                                    </Typography>
+                                    <Typography>
+                                        {service.description}
+                                    </Typography>
+                                </Box>
                             </Box>
-                            <Box>
-                                <Typography
-                                    variant="h6"
-                                    fontWeight={700}
-                                    color={"primary"}
-                                >
-                                    {service.title}
-                                </Typography>
-                                <Typography>{service.description}</Typography>
-                            </Box>
-                        </Box>
-                    ))}
-                </Grid>
+                        ))}
+                    </Grid>
 
-                <Grid item md={6} position={"relative"}  display={{ xs: "none", md: "block" }}>
-                    <Box
-                        sx={{
-                            backgroundColor: "primary.main",
-                            clipPath:
-                                "polygon(0 0, 100% 25%, 100% 100%, 0 75%)",
-                            width: "100%",
-                            height: 550,
-                        }}
-                    ></Box>
-                    <Box
-                        position={"absolute"}
-                        top={0}
-                        left={0}
+                    <Grid
+                        item
+                        md={6}
+                        position={"relative"}
                         display={{ xs: "none", md: "block" }}
                     >
-                        <Image src={chooseUsImg} alt="Why Us" width={600} />
-                    </Box>
+                        <Box
+                            sx={{
+                                backgroundColor: "primary.main",
+                                clipPath:
+                                    "polygon(0 0, 100% 25%, 100% 100%, 0 75%)",
+                                width: "100%",
+                                height: 550,
+                            }}
+                        ></Box>
+                        <Box
+                            position={"absolute"}
+                            top={0}
+                            left={0}
+                            display={{ xs: "none", md: "block" }}
+                        >
+                            <Image src={chooseUsImg} alt="Why Us" width={600} />
+                        </Box>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Box>
         </Container>
     );
 };

@@ -1,5 +1,6 @@
 import { Container } from "@mui/material";
 import DoctorPageComponent from "./components/DoctorPage";
+// import DoctorPageComponent from "./components/DoctorPage";
 
 
 const DoctorsPage = ({

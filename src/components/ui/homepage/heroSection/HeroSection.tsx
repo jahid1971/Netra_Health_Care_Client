@@ -12,22 +12,38 @@ const HeroSection = () => {
             sx={{
                 display: "flex",
                 direction: "row",
-                my: { xs: 5, md: 16 },
-                pb: { xs: 5, md: 0 },
+                py: { xs: 5, md: 10 },
+                backgroundColor: "white",
+                maxWidth: "100%",
+                overflow: "hidden",
             }}
         >
             <Box sx={{ position: "relative", flex: 1 }}>
+                {" "}
                 <Box
                     sx={{
                         position: "absolute",
-                        width: "700px",
-                        left: "-90px",
+                        width: { xs: "100%", md: "700px" },
+                        left: { xs: "0px", md: "-90px" }, 
                         top: "-120px",
+                        overflow: "hidden",
+                        maxWidth: "100vw",
+                        "& img": {
+                            maxWidth: { xs: "100%", md: "700px" },
+                            height: "auto",
+                            objectFit: "contain",
+                        },
                     }}
                 >
-                    <Image src={assets.svgs.grid} alt="svgGrid" />
+                    <Image
+                        src={assets.svgs.grid}
+                        alt="svgGrid"
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto",
+                        }}
+                    />
                 </Box>
-
                 <Typography
                     variant="h2"
                     fontWeight={600}
@@ -56,7 +72,6 @@ const HeroSection = () => {
                     aliquid eveniet et. Rerum maiores saepe cupiditate repellat
                     recusandae atque sed. Saepe, vitae id?
                 </Typography>
-
                 <Box sx={{ display: "flex", gap: 2 }}>
                     <Link href="/dashboard">
                         <Button>Make Appointment </Button>
