@@ -36,7 +36,7 @@ export default function DashboardLayout({
     useEffect(() => {
         dispatch(setUser(data?.data));
         if (data?.data) dispatch(setIsLoadingFalse());
-        if (data?.data?.needPasswordChange) {
+        if (data?.data?.needPasswordChange) { //temporary testing --------------------
             dispatch(
                 setNotification({
                     text: `Please change your Password .To secure your account you must change the default password`,

@@ -17,7 +17,7 @@ import { openModal } from "@/redux/slices/modalSlice";
 import ProfileUpdate from "./components/ProfileUpdate";
 import { useEditDoctorMutation } from "@/redux/api/doctorsApi";
 import { modifyPayload } from "@/utils/modifyPayload";
-import defaultDoctorPhoto from "@/assets/icons/doctor_icon.png";
+import defaultDoctorPhoto from "@/assets/svgs/profile.svg";
 
 const ProfilePage = () => {
     const { data } = useGetMyProfileQuery(undefined);

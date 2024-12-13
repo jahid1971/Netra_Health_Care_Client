@@ -3,11 +3,12 @@ import { Controller, useFormContext } from "react-hook-form";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
+import { isTypedArray } from "util/types";
 
 type TInputProps = {
     name: string;
     label?: string;
-    type?: "text" | "number" | "password"| "email";
+    type?: "text" | "number" | "password" | "email";
     size?: "small" | "medium";
     fullWidth?: boolean;
     sx?: SxProps;
@@ -33,20 +34,8 @@ const N_Input = ({
     defaultValue,
     onFieldChange,
 }: TInputProps) => {
-    const [showPassword, setShowPassword] = useState(false);
     const { control, getValues } = useFormContext();
 
-    const VisibilityBtn = () => {
-        return (
-            <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-            </InputAdornment>
-        );
-    };
-
-    // const defaultValue = getValues(name) || "";
     return (
         <Controller
             control={control}
@@ -69,8 +58,7 @@ const N_Input = ({
                     multiline={multiline}
                     rows={multiline && rows ? rows : 1}
                     // InputProps={{
-                    //     endAdornment: type === "password" && <VisibilityBtn />,
-                    //     type: showPassword ? "text" : type,
+                    //     type: type,
                     // }}
                     // onChange={(e) => {
                     //     field.onChange(e.target.value);

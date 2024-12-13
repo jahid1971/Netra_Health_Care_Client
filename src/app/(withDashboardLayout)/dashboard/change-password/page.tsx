@@ -18,6 +18,9 @@ import KeyIcon from "@mui/icons-material/Key";
 import { useChangePasswordMutation } from "@/redux/api/authApi";
 import { logOutUser } from "@/services/actions/logOutuser";
 import { changePasswordSchema } from "@/utils/validationSchemas";
+import { setNotification } from "@/redux/slices/notificationSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useGetMyProfileQuery } from "@/redux/api/myProfileApi";
 
 // .refine((data) => data.oldPassword !== data.newPassword, {
 //     message: "New password must be different from old password",
@@ -25,10 +28,12 @@ import { changePasswordSchema } from "@/utils/validationSchemas";
 // });
 
 const ChangePassword = () => {
+    const dispatch = useAppDispatch();
     const [error, setError] = useState("");
     const router = useRouter();
 
     const [changePassword] = useChangePasswordMutation();
+    const { refetch } = useGetMyProfileQuery(undefined);
 
     const onSubmit = async (data: FieldValues) => {
         await tryCatch(
@@ -36,7 +41,12 @@ const ChangePassword = () => {
             "Changing password",
             "Password changed successfully",
             () => {
-                logOutUser(router, { toastFalse: true });
+                // dispatch(setNotification({})); //temporary test --------------------
+                // refetch();
+                logOutUser(router);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 0);
             }
         );
     };

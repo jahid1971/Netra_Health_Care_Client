@@ -1,5 +1,5 @@
 "use client";
-import logo from "@/assets/svgs/logo.svg";
+import logo from "@/assets/svgs/logo.png";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
@@ -63,7 +63,7 @@ const LogInPage = () => {
                 p={5}
             >
                 <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
-                    <Image src={logo} alt="logo" />
+                    <Image src={logo} alt="logo" width={50}  />
 
                     <Typography variant="h6" fontWeight={600}>
                         Login Netra HealthCare

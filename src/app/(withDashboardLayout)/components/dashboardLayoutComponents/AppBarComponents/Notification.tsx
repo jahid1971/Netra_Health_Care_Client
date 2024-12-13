@@ -39,7 +39,7 @@ export default function Notification() {
     const id = open ? "simple-popover" : undefined;
 
     const truncateText = (str: string) => {
-        return str.length > 50 ? str.substring(0, 50) + "..." : str;
+        return str?.length > 50 ? str.substring(0, 50) + "..." : str;
     };
 
     return (

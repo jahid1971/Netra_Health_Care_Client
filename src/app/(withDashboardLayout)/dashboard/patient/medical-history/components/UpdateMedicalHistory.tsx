@@ -35,8 +35,7 @@ const UpdateMedicalHistory = () => {
     const { data } = useGetPtMedicaltHistoryQuery({ id: patient?.patientId });
 
     const defaultValue = data?.data;
-
-    console.log(defaultValue, "default value");
+ 
 
     const [updatePtMedicalHistory] = useUpdateMedicalHistoryMutation();
 

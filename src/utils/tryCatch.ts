@@ -1,17 +1,21 @@
+import { useAppDispatch } from "@/redux/hooks";
+import { setErrorDetails, setErrorMsg } from "@/redux/slices/generalSlices";
 import { toast } from "sonner";
 
 type tryCatch = (
     action: () => Promise<any>,
     loadingMessage?: string,
     successMessage?: string,
-    successAction?: () => any
+    successAction?: () => any,
+    dispatch?: ReturnType<typeof useAppDispatch>
 ) => Promise<void>;
 
 export const tryCatch: tryCatch = async (
     action,
     loadingMessage,
     successMessage,
-    successAction
+    successAction,
+    dispatch
 ) => {
     const toastId = (
         loadingMessage ? toast.loading(`${loadingMessage}...`) : undefined
@@ -31,6 +35,14 @@ export const tryCatch: tryCatch = async (
             (res?.message || res?.error?.data?.message)
         ) {
             console.log(res, "error response in else if block of tryCatch");
+
+            dispatch &&
+                dispatch(
+                    setErrorMsg(res?.message || res?.error?.data?.message)
+                );
+
+            dispatch &&
+                dispatch(setErrorDetails(res?.error?.data?.errorDetails));
 
             toast.error(res?.message ?? res?.error?.data?.message, {
                 id: toastId,

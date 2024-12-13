@@ -8,6 +8,7 @@ export interface IAdmin {
     isDeleted: boolean;
     adminId?: string;
     role?: string;
+    status?: string;
     createdAt: Date;
     updatedAt: Date;
 }

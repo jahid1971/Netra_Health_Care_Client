@@ -1,3 +1,8 @@
+import { useAppDispatch } from "@/redux/hooks";
+import {
+    setErrorDetails,
+    useSelectErrorDetails,
+} from "@/redux/slices/generalSlices";
 import { debounce } from "@/utils/generalUtils";
 import { Typography } from "@mui/material";
 import { red } from "@mui/material/colors";
@@ -33,6 +38,7 @@ const N_Form = ({
     handleFieldChange,
     query,
 }: TFormProps) => {
+    const dispatch = useAppDispatch();
     const formConfig: TFormConfig = {};
 
     if (resolver) {
@@ -45,12 +51,21 @@ const N_Form = ({
 
     const methods = useForm(formConfig);
 
-    const { handleSubmit, watch, formState, getValues, setValue } = methods;
+    const {
+        handleSubmit,
+        watch,
+        formState,
+        getValues,
+        setValue,
+        setError,
+        clearErrors,
+    } = methods;
 
     const { dirtyFields } = formState;
 
     const submit: SubmitHandler<FieldValues> = (data) => {
-        const filteredData = Object.keys(dirtyFields).reduce(
+        //for update only changed fields --------------------------
+        const changedValues = Object.keys(dirtyFields).reduce(
             (acc: Record<string, any>, field) => {
                 acc[field] = data[field] === "" ? undefined : data[field];
                 return acc;
@@ -58,7 +73,21 @@ const N_Form = ({
             {} as Record<string, any>
         );
 
-        onSubmit && onSubmit(onlyDirtyFields ? filteredData : data);
+        const nonEmptyValues = Object.keys(data).reduce(
+            (acc: Record<string, any>, field) => {
+                acc[field] =
+                    (typeof data[field] === "string" &&
+                        data[field].trim() === "") ||
+                    data[field] === null ||
+                    (Array.isArray(data[field]) && data[field].length === 0)
+                        ? undefined
+                        : data[field];
+                return acc;
+            },
+            {} as Record<string, any>
+        );
+
+        onSubmit && onSubmit(onlyDirtyFields ? changedValues : nonEmptyValues);
     };
 
     const debouncedHandleFieldChange = handleFieldChange
@@ -80,7 +109,7 @@ const N_Form = ({
         }
     }, [watch, debouncedHandleFieldChange, handleFieldChange]);
 
-    // Reset all fields to null when query is empty
+    // Reset all fields to null when query is empty----------------------------
     const resetFieldsToNull = () => {
         const currentValues = getValues();
         Object.keys(currentValues).forEach((field) => {
@@ -94,6 +123,31 @@ const N_Form = ({
             if (Object.keys(newQuery).length === 0) resetFieldsToNull();
         }
     }, [query, setValue, getValues]); //eslint-disable-line
+
+    //server error handling --------------------
+
+    const errorDetails = useSelectErrorDetails();
+
+    useEffect(() => {
+        if (errorDetails?.issues) {
+            clearErrors();
+            errorDetails.issues.forEach((issue: any) => {
+                if (issue.path) {
+                    const fieldName = issue?.path;
+                    setError(fieldName, {
+                        type: "server",
+                        message: issue.message,
+                    });
+                }
+            });
+        }
+    }, [errorDetails, setError, clearErrors]);
+
+    useEffect(() => {
+        return () => {
+            dispatch(setErrorDetails({})); // Clear errors on unmount
+        };
+    }, [dispatch]);
 
     return (
         <FormProvider {...methods}>

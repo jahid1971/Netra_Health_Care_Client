@@ -1,7 +1,6 @@
-import { baseUrl } from "@/constants/commmon";
 import { io } from "socket.io-client";
 
-const socket = io(baseUrl, {
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL, {
     withCredentials: true,
     transports: ["websocket"],
 });

@@ -32,16 +32,12 @@ const LogInForm = () => {
     const searchParams = useSearchParams();
     const redirectPath = searchParams.get("redirect");
 
-
-     const onSubmit = async (data: FieldValues) => {
+    const onSubmit = async (data: FieldValues) => {
         tryCatch(
             async () => {
                 const res = await userLogIn(data);
 
-                
-
                 if (res?.success) {
-                 
                     redirectPath
                         ? router.push(redirectPath)
                         : router.push("/dashboard");
@@ -55,9 +51,6 @@ const LogInForm = () => {
             "Logged in successfully"
         );
     };
-
-
-
 
     return (
         <N_Form

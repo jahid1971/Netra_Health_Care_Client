@@ -34,7 +34,6 @@ const NetraLogo = dynamic(() => import("@/components/NetraLogo"), {
     ssr: false,
 });
 
-
 const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
     const pathname = usePathname();
     const user = useAppSelector(selectUser);
@@ -97,11 +96,13 @@ const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
         <Box whiteSpace={"nowrap"}>
             {/* Sidebar Header....................Sidebar Header */}
             <Toolbar
+                disableGutters
                 sx={{
                     display: "flex",
                     gap: 0,
                     alignItems: "center",
                     justifyContent: "space-between",
+                    px: 2,
                 }}
             >
                 <Stack

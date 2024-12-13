@@ -67,12 +67,6 @@ export function middleware(req: NextRequest) {
 
     if (role && roleBasedPrivateRoutes[role as Role]) {
         const routes = roleBasedPrivateRoutes[role as Role];
-        console.log(
-            role,
-            routes,
-            pathname,
-            "role =====================================================================------------"
-        );
         if (routes.some((route) => pathname.match(route))) {
             return NextResponse.next();
         }
@@ -88,6 +82,6 @@ export const config = {
         "/dashboard/:page*",
         "/doctors",
         "/video/:path*",
-        // "/",
+        "/",
     ],
 };

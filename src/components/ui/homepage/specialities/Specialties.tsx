@@ -8,10 +8,12 @@ import ViewAllButton from "./components/ViewAllButton";
 import { TUserInfo } from "@/services/actions/auth.services";
 
 const specialties = async ({ userInfo }: { userInfo: TUserInfo }) => {
-    const res = await fetch(`${baseUrl}/specialties`, {
-        next: { revalidate: 30 },
+    const res = await fetch(`${baseUrl}/specialty`, {
+        next: { revalidate: 10 },
     });
     const { data: specialities } = await res.json();
+
+    console.log(specialities,"specialities -------------------------");
 
     return (
         <Container>
@@ -50,7 +52,7 @@ const specialties = async ({ userInfo }: { userInfo: TUserInfo }) => {
                                 },
                             }}
                             component={Link}
-                            href={`doctors?specialty=${speciality.title}`}
+                            href={`doctors?specialty=${speciality.id}`}
                         >
                             <Image
                                 src={speciality?.icon || ""}

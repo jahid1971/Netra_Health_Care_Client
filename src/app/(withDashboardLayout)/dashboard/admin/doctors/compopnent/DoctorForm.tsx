@@ -44,11 +44,11 @@ const DoctorForm = ({
             >
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
-                        <N_Input name="name" label="Name" />
+                        <N_Input name="name" label="Name" required />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                        <N_Input name="email" label="Email" />
+                        <N_Input name="email" label="Email" required />
                     </Grid>
 
                     {passwordField && (
@@ -57,6 +57,7 @@ const DoctorForm = ({
                                 name="password"
                                 type="password"
                                 label="Default Password"
+                                required
                                 defaultValue="123456"
                             />
                         </Grid>
@@ -74,6 +75,7 @@ const DoctorForm = ({
                         <N_Input
                             name="registrationNumber"
                             label="Registration Number"
+                            required
                         />
                     </Grid>
 
@@ -83,11 +85,17 @@ const DoctorForm = ({
                             type="number"
                             label="Minimum Experience"
                             placeholder="experience in year  Ex: 5"
+                            required
                         />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                        <N_Select items={Gender} name="gender" label="Gender" />
+                        <N_Select
+                            items={Gender}
+                            name="gender"
+                            label="Gender"
+                            required
+                        />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
@@ -95,11 +103,16 @@ const DoctorForm = ({
                             name="apointmentFee"
                             type="number"
                             label="ApointmentFee"
+                            required
                         />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                        <N_Input name="qualification" label="Qualification" />
+                        <N_Input
+                            name="qualification"
+                            label="Qualification"
+                            required
+                        />
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <N_Input
@@ -109,14 +122,16 @@ const DoctorForm = ({
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                        <N_Input name="designation" label="Designation" />
+                        <N_Input
+                            name="designation"
+                            label="Designation"
+                        />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
                         <Stack direction={"row"}>
                             {specialitiesData && (
                                 <N_MultiSelect
-                                    required={false}
                                     items={specialitiesData}
                                     name="specialties"
                                     label="Specialities"

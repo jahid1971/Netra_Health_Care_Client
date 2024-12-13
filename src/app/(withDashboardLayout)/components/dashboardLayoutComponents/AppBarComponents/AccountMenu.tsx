@@ -15,8 +15,9 @@ import { logOutUser } from "@/services/actions/logOutuser";
 
 import { grey } from "@mui/material/colors";
 import { useAppDispatch } from "@/redux/hooks";
-
-
+import Link from "next/link";
+import { useUserSelector } from "@/redux/slices/authSlice";
+import { USER_ROLE } from "@/constants/role";
 
 const menuStyles = {
     paper: {
@@ -52,6 +53,9 @@ export default function AccountMenu() {
     const open = Boolean(anchorEl);
     const dispatch = useAppDispatch();
     const router = useRouter();
+    const user = useUserSelector();
+    let role = user?.role;
+    if (role === USER_ROLE.SUPER_ADMIN) role = USER_ROLE.ADMIN;
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -122,7 +126,10 @@ export default function AccountMenu() {
                             color: "primary.main",
                         }}
                     />
-                    Profile
+                    <Link href={`/dashboard/${role?.toLowerCase()}/profile`}>
+                        {" "}
+                        Profile
+                    </Link>
                 </MenuItem>
 
                 <Divider />

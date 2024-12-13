@@ -48,12 +48,14 @@ const VideoArea = ({
     currentAppointment,
     isJoined,
     setIsJoined,
+    refetch,
 }: {
     videoCallingId: string;
     userData: any;
     currentAppointment: TAppointment | null;
     isJoined: boolean;
     setIsJoined: (value: boolean) => void;
+    refetch: () => void;
 }) => {
     const dispatch = useAppDispatch();
     const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -70,6 +72,7 @@ const VideoArea = ({
     const appid = process.env.NEXT_PUBLIC_VIDEO_CALL_APP_ID || "";
     const channel = videoCallingId;
     const uid = userData?.doctorId || userData?.patientId;
+
     const [updateStatus] = useUpdateAppointStatusMutation();
 
     const turnOnCamera = async (enabled: boolean = true) => {
@@ -172,19 +175,19 @@ const VideoArea = ({
         }
     };
 
-    const endCall = async () => {
-        const callEnd = async () => {
-            await unpublishTrack(videoTrack, setIsVideoPubed);
-            await unpublishTrack(audioTrack, setIsAudioPubed);
-            await leaveChannel();
-            setIsVideoEnabled(false);
-            setAudioEnabled(false);
-            // await turnOnCamera(false);
-            // await turnOnMicrophone(false);
-            videoTrack = null;
-            audioTrack = null;
-        };
+    const callEnd = async () => {
+        await unpublishTrack(videoTrack, setIsVideoPubed);
+        await unpublishTrack(audioTrack, setIsAudioPubed);
+        await leaveChannel();
+        setIsVideoEnabled(false);
+        setAudioEnabled(false);
+        // await turnOnCamera(false);
+        // await turnOnMicrophone(false);
+        videoTrack = null;
+        audioTrack = null;
+    };
 
+    const endCall = async () => {
         if (isJoined && remoteUsers.length) {
             dispatch(
                 openModal({
@@ -225,6 +228,8 @@ const VideoArea = ({
     }, [showControls, isFullscreen]);
 
     useEffect(() => {
+
+        console.log("useEffect ==========================================================================================================")
         if (isJoined && remoteUsers.length) {
             updateStatus({
                 id: currentAppointment?.id,
@@ -236,10 +241,14 @@ const VideoArea = ({
             setRemoteUsers((prevUsers) => [...prevUsers, user]);
         };
 
-        const handleUserLeft = (user: IAgoraRTCRemoteUser) => {
+        const handleUserLeft = async (user: IAgoraRTCRemoteUser) => {
             setRemoteUsers((prevUsers) =>
                 prevUsers.filter((u) => u.uid !== user.uid)
             );
+            refetch();
+            if (currentAppointment?.status === "COMPLETED") {
+                await callEnd();
+            }
         };
 
         client.on("user-joined", handleUserJoined);
@@ -249,7 +258,7 @@ const VideoArea = ({
             client.off("user-joined", handleUserJoined);
             client.off("user-left", handleUserLeft);
         };
-    }, [client, remoteUsers, isJoined, currentAppointment, updateStatus]); //eslint-disable-line
+    }, [client, isJoined, currentAppointment]); //eslint-disable-line
 
     return (
         <Stack>

@@ -24,18 +24,18 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
         role = USER_ROLE.ADMIN.toLowerCase();
     }
 
-    // const defaultMenus = [
-    //     {
-    //         title: "Profile",
-    //         path: `${role}/profile`,
-    //         icon: PersonIcon,
-    //     },
-    //     {
-    //         title: "Change Password",
-    //         path: `change-password`,
-    //         icon: KeyIcon,
-    //     },
-    // ];
+    const defaultMenus = [
+        {
+            title: "Profile",
+            path: `${role}/profile`,
+            icon: PersonIcon,
+        },
+        {
+            title: "Change Password",
+            path: `change-password`,
+            icon: KeyIcon,
+        },
+    ];
 
     const superAdminMenus = [
         {
@@ -79,6 +79,7 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
             path: `${role}/appointments`,
             icon: BookOnlineIcon,
         },
+        ...defaultMenus,
         // {
         //     title: "Reviews",
         //     path: `${role}/reviews`,
@@ -87,7 +88,7 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
     ];
 
     const adminMenus = superAdminMenus.map((menu) => {
-        if (menu.title === "Users" && menu.childItems) {
+        if (menu.title === "Users" && "childItems" in menu) {
             return {
                 ...menu,
                 childItems: menu.childItems.filter(
@@ -115,11 +116,7 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
             path: `${role}/appointment`,
             icon: BookOnlineIcon,
         },
-        {
-            title: "Change Password",
-            path: `change-password`,
-            icon: KeyIcon,
-        },
+        ...defaultMenus,
     ];
 
     const patientMenus = [
@@ -143,16 +140,12 @@ export const sidebarMenus = (userRole: TUserRole): IDrawerItem[] => {
             path: `${role}/medical-history`,
             icon: HealthAndSafetyIcon,
         },
-        {
-            title: "Payment History",
-            path: `${role}/payment-history`,
-            icon: AttachMoneyIcon,
-        },
-        {
-            title: "Change Password",
-            path: `change-password`,
-            icon: KeyIcon,
-        },
+        // {
+        //     title: "Payment History",
+        //     path: `${role}/payment-history`,
+        //     icon: AttachMoneyIcon,
+        // },
+        ...defaultMenus,
     ];
 
     switch (userRole) {

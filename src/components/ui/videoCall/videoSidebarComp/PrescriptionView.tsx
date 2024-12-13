@@ -4,11 +4,12 @@ import { IDoctor } from "@/types/Doctors";
 import { IPatient } from "@/types/Patient";
 import { TMedication, TPrescription } from "@/types/Prescription";
 import { Box, Stack, Typography } from "@mui/material";
-import logo from "@/assets/svgs/logo.svg";
+import logo from "@/assets/svgs/logo.png";
 import Image from "next/image";
 import DashedLine from "../../DashedLine";
 import { grey } from "@mui/material/colors";
 import NetraLogo from "@/components/NetraLogo";
+import Link from "next/link";
 
 const PrescriptionView = ({ data }: { data?: any; ref?: any }) => {
     const prescriptionData = data?.data as TPrescription;
@@ -28,7 +29,7 @@ const PrescriptionView = ({ data }: { data?: any; ref?: any }) => {
             sx={{ backgroundColor: "secondary.main" }}
             boxShadow={1}
         >
-            <Box textAlign={"center"} py={2}>
+            <Box textAlign={"center"} py={2} component={Link} href={"/"}>
                 <NetraLogo />
             </Box>
 

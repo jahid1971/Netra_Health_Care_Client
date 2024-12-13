@@ -14,21 +14,26 @@ const CreateDoctor = () => {
     const dispatch = useAppDispatch();
 
     const handleSubmit = async (values: FieldValues) => {
+        console.log(values, "updateData in create doctor");
         values.experience = Number(values.experience);
         values.apointmentFee = Number(values.apointmentFee);
 
-
         const updateData = modifyPayload(values);
+
         tryCatch(
             async () => await createDoctor(updateData),
             "Creating Doctor",
             "Doctor created successfully",
-            () => dispatch(closeModal())
+            () => dispatch(closeModal()),
+            dispatch
         );
     };
     return (
         <N_Modal fullScreen title="Create  New Doctor" modalId="createDoctor">
-            <DoctorForm handleSubmit={handleSubmit} submitTitle="Create" />
+            <DoctorForm
+                handleSubmit={handleSubmit}
+                submitTitle="Create"
+            />
         </N_Modal>
     );
 };

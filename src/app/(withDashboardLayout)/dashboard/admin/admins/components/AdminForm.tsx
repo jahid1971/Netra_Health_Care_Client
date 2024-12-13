@@ -12,17 +12,17 @@ const AdminForm = ({
     defaultValue,
     passwordField = true,
     onlyDirtyFields,
-}: any) => {
-    const defaultValueCopy = { ...defaultValue };
-
-    defaultValueCopy.specialties = defaultValue?.specialties?.map(
-        (item: ISpecialties) => item.id
-    );
-
+}: {
+    handleSubmit: any;
+    submitTitle: string;
+    defaultValue: any;
+    passwordField?: boolean;
+    onlyDirtyFields?: boolean;
+}) => {
     return (
         <N_Form
             onSubmit={handleSubmit}
-            defaultValues={defaultValueCopy}
+            defaultValues={defaultValue}
             onlyDirtyFields={onlyDirtyFields}
         >
             <Grid container spacing={2}>

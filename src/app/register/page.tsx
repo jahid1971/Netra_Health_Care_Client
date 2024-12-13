@@ -75,10 +75,10 @@ const RegisterPage = ({ searchParams }: any) => {
                 p={5}
             >
                 <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
-                    <Image src={assets.svgs.logo} alt="logo" />
+                    <Image src={assets.svgs.logo} alt="logo" width={50} />
 
                     <Typography variant="h6" fontWeight={600}>
-                        Patient Register
+                        Register Patient
                     </Typography>
                 </Stack>
 

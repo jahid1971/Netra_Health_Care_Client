@@ -106,7 +106,9 @@ export const Navbar = ({ userInfo }: { userInfo?: TUserInfo }) => {
                         <MenuIcon />
                     </IconButton>
 
-                    <NetraLogo />
+                    <Link href="/">
+                        <NetraLogo />
+                    </Link>
                 </Box>
 
                 <Stack

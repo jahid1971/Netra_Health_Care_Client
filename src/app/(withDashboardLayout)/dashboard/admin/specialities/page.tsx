@@ -25,7 +25,10 @@ const SpecialitiesPage = () => {
     const allSpecailities = data?.data || [];
     const meta = data?.meta;
 
-    console.log(allSpecailities, "allSpecailities ==================================");
+    console.log(
+        allSpecailities,
+        "allSpecailities =================================="
+    );
 
     const [deleteSpeciality] = useDeleteSpecialityMutation();
 
@@ -43,7 +46,7 @@ const SpecialitiesPage = () => {
             headerName: "Title",
             align: "center",
             headerAlign: "center",
-            width: 150,
+            width: 200,
         },
         {
             field: "icon",
@@ -53,7 +56,12 @@ const SpecialitiesPage = () => {
             headerAlign: "center",
             renderCell: ({ row }) => {
                 return (
-                    <Box display="flex" alignItems="center" height="100%">
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        height="100%"
+                        justifyContent="center"
+                    >
                         {row.icon && (
                             <Image
                                 src={row.icon}

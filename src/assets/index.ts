@@ -14,7 +14,7 @@
 //     stethoscope: require("./images/Stetoscope.png"),
 //   },
 //   svgs: {
-//     logo: require("./svgs/logo.svg"),
+//     logo: require("./svgs/logo.png"),
 //     search: require("./svgs/search.svg"),
 //     calender: require("./svgs/calender.svg"),
 //     location: require("./svgs/location.svg"),
@@ -46,7 +46,7 @@ import doctor1 from "./images/doctor1.png";
 import doctor2 from "./images/doctor2.png";
 import doctor3 from "./images/doctor3.png";
 import stethoscope from "./images/Stetoscope.png";
-import logo from "./svgs/logo.svg";
+import logo from "./svgs/logo.png";
 import search from "./svgs/search.svg";
 import calender from "./svgs/calender.svg";
 import location from "./svgs/location.svg";

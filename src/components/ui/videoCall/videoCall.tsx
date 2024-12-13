@@ -27,7 +27,7 @@ function VideoCall({ videoCallingId }: { videoCallingId: string }) {
     const [drawerContainer, setDrawerContainer] = useState("medicalHistory");
     const [isJoined, setIsJoined] = useState(false);
 
-    const { data } = useGetAllAppointmentsQuery({
+    const { data,refetch } = useGetAllAppointmentsQuery({
         videoCallingId: videoCallingId,
     });
 
@@ -107,6 +107,7 @@ function VideoCall({ videoCallingId }: { videoCallingId: string }) {
                     currentAppointment={currentAppointment}
                     isJoined={isJoined}
                     setIsJoined={setIsJoined}
+                    refetch={refetch}
                 />
             </Stack>
             <Stack
