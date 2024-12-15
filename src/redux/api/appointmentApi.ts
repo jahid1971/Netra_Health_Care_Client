@@ -1,4 +1,8 @@
-import { queryApiBuilder, updateApiBuilder } from "@/utils/apiBuilders";
+import {
+    createApiBuilder,
+    queryApiBuilder,
+    updateApiBuilder,
+} from "@/utils/apiBuilders";
 import { baseApi } from "./baseApi";
 import { tagTypes } from "../tagTypes";
 import { TAppointment } from "@/types/Appointment";
@@ -25,12 +29,17 @@ const appointmentApi = baseApi.injectEndpoints({
         updateAppointStatus: updateApiBuilder(build, "/appointment", [
             tagTypes.appointment,
         ]),
+
+        createRating: createApiBuilder(build, "/appointment/review", [
+            tagTypes.review,
+            tagTypes.doctor,
+        ]),
     }),
 });
 
 export const {
-    
     useGetDocotorAppointmentsQuery,
     useGetAllAppointmentsQuery,
     useUpdateAppointStatusMutation,
+    useCreateRatingMutation,
 } = appointmentApi;

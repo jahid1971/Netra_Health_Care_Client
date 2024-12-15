@@ -37,18 +37,21 @@ const servicesData = [
 
 const WhyUs = () => {
     return (
-        <Container>
+        <Container sx={{ top: -100, position: "relative" }}>
             <Box>
                 <Box textAlign={"center"}>
-                    <Typography variant="h6" color={"primary"} fontWeight={700}>
-                        Why Us
-                    </Typography>
-                    <Typography variant="h4" fontWeight={700}>
+                    <Typography variant="h4" fontWeight={700} color={"primary"}>
                         Why Choose Us
                     </Typography>
                 </Box>
             </Box>
-            <Grid container direction={{ md: "row" }} spacing={5} alignItems={"center"} py={2}>
+            <Grid
+                container
+                direction={{ md: "row" }}
+                spacing={5}
+                alignItems={"center"}
+                py={2}
+            >
                 <Grid item md={6}>
                     {servicesData.map((service, index) => (
                         <Box
@@ -57,13 +60,27 @@ const WhyUs = () => {
                             alignItems={"center"}
                             justifyContent={"center"}
                             gap={2}
-                            sx={{ backgroundColor: grey[100], px: 4, py: 3, my: 3 }}
-                            borderRadius={index % 2 === 0 ? "10px 10px 100px 10px" : "10px 100px 10px 10px"}>
+                            sx={{
+                                backgroundColor: grey[100],
+                                px: 4,
+                                py: 3,
+                                my: 3,
+                            }}
+                            borderRadius={
+                                index % 2 === 0
+                                    ? "10px 10px 100px 10px"
+                                    : "10px 100px 10px 10px"
+                            }
+                        >
                             <Box>
-                                <Image src={service?.imageSrc} alt={service.title} width={50} />
+                                <Image
+                                    src={service?.imageSrc}
+                                    alt={service.title}
+                                    width={50}
+                                />
                             </Box>
                             <Box>
-                                <Typography variant="h6" fontWeight={700}>
+                                <Typography variant="h6" fontWeight={700} color={"primary"}>
                                     {service.title}
                                 </Typography>
                                 <Typography>{service.description}</Typography>

@@ -1,13 +1,12 @@
 import defaultDoctorPhoto from "@/assets/icons/doctor_icon.png";
 import { IDoctor } from "@/types/Doctors";
-
+import StarIcon from "@mui/icons-material/Star";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import Image from "next/image";
 import Link from "next/link";
 
 const DoctorCard = async ({ doctor }: { doctor: IDoctor }) => {
-   
-
     return (
         <Stack
             direction={{ xs: "column", md: "row" }}
@@ -47,7 +46,11 @@ const DoctorCard = async ({ doctor }: { doctor: IDoctor }) => {
 
                 <Stack flex={1} justifyContent="space-between">
                     <Box sx={{ flex: 1, mb: { xs: 2, md: 0 } }}>
-                        <Typography fontSize={20} fontWeight={600}>
+                        <Typography
+                            fontSize={20}
+                            fontWeight={600}
+                            color={grey[600]}
+                        >
                             {doctor?.name}
                         </Typography>
                         <Typography
@@ -71,6 +74,7 @@ const DoctorCard = async ({ doctor }: { doctor: IDoctor }) => {
                                         component="span"
                                         fontSize={16}
                                         fontWeight={600}
+                                        color={grey[600]}
                                     >
                                         {doctor.specialties
                                             .map((s) => s.title)
@@ -137,21 +141,40 @@ const DoctorCard = async ({ doctor }: { doctor: IDoctor }) => {
                     <Typography variant="body2" color="text.primary">
                         Working in
                     </Typography>
-                    <Typography sx={{ fontWeight: "600", mt: "3px" }}>
+                    <Typography
+                        sx={{ fontWeight: "600", mt: "3px" }}
+                        color={grey[600]}
+                    >
                         {doctor?.currentWorkingPlace}
                     </Typography>
                 </Box>
 
-                <Stack direction="row" justifyContent="space-between">
-                    <Box>
-                        <Typography variant="body2">
-                            Total Experience
-                        </Typography>
-                        <Typography fontSize={16} sx={{ fontWeight: "600" }}>
-                            {doctor?.experience}+ Years
-                        </Typography>
-                    </Box>
-                    <Box>
+                <Box>
+                    <Stack direction="row" justifyContent="space-between">
+                        <Box>
+                            <Typography variant="body2">
+                                Total Experience
+                            </Typography>
+                            <Typography
+                                fontSize={16}
+                                sx={{ fontWeight: "600" }}
+                                color={grey[600]}
+                            >
+                                {doctor?.experience}+ Years
+                            </Typography>
+                        </Box>
+                        <Box display="flex" alignItems="center" gap={"4px"}>
+                            <StarIcon fontSize="medium" color="primary" />
+                            <Typography variant="body1" color="text.primary">
+                                {" "}
+                                {doctor?.averageRating} ({doctor?.ratingCount ?? 0})
+                                {/* {(doctor?.ratingCount ?? 0) > 0 &&
+                                    `(${doctor?.ratingCount})`} */}
+                            </Typography>
+                        </Box>
+                    </Stack>
+
+                    <Box display="flex" mt={1} justifyContent={"flex-end"}>
                         <Button
                             size="small"
                             component={Link}
@@ -160,7 +183,7 @@ const DoctorCard = async ({ doctor }: { doctor: IDoctor }) => {
                             View Details
                         </Button>
                     </Box>
-                </Stack>
+                </Box>
             </Stack>
         </Stack>
     );

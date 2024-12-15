@@ -26,6 +26,7 @@ export interface IDoctor {
     doctorId?: string;
     needPasswordChange?: boolean;
     averageRating?: number;
+    ratingCount?: number;
     createdAt?: string;
 }
 

@@ -16,10 +16,10 @@ const specialties = async ({ userInfo }: { userInfo: TUserInfo }) => {
     console.log(specialities,"specialities -------------------------");
 
     return (
-        <Container>
+        <Container sx={{ bottom:-50 ,position: "relative"}}>
             <Box mt={2} textAlign={"center"}>
                 <Box>
-                    <Typography variant="h4" fontWeight={600}>
+                    <Typography variant="h4" fontWeight={600} color={"primary"}>
                         Explore Treatments Across Specialties
                     </Typography>
                     <Typography fontSize={18} mt={1}>

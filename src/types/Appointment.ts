@@ -16,3 +16,16 @@ export type TAppointment = {
     status: "SCHEDULED" | "CANCELLED" | "COMPLETED";
     videoCallingId: string;
 };
+
+export type TReview = {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    appointmentId: string;
+    patientId: string;
+    doctorId: string;
+    rating: number;
+    comment?: string;
+    patient?: IPatient;
+    doctor?: IDoctor;
+};

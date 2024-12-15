@@ -8,7 +8,7 @@ import DoctorCard from "@/components/ui/doctor/DoctorCard";
 import DoctorCardSkeleton from "@/components/ui/homepage/skeletons/DoctorCardSkeleton";
 import { baseUrl } from "@/constants/commmon";
 
-import { Box,  Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Suspense } from "react";
 
@@ -25,7 +25,7 @@ const DoctorPageComponent = async ({
     withDashboardLayout?: boolean;
 }) => {
     const data = await fetch(`${baseUrl}/specialty`, {
-        next: { revalidate: 30 },
+        next: { revalidate: 5 },
         // cache: "no-cache",
     }).then((res) => res.json());
 
@@ -54,7 +54,7 @@ const DoctorPageComponent = async ({
 
     const res = await fetch(url, {
         // cache: "no-store",
-        next: { revalidate: 30 },
+        next: { revalidate: 5 },
     });
 
     const { data: doctors } = await res.json();

@@ -33,6 +33,7 @@ import { useUpdateAppointStatusMutation } from "@/redux/api/appointmentApi";
 import { TAppointment } from "@/types/Appointment";
 import { IDoctor } from "@/types/Doctors";
 import { IPatient } from "@/types/Patient";
+import RatingModal from "./videoSidebarComp/Rating";
 
 const client = createClient({
     mode: "rtc",
@@ -115,9 +116,6 @@ const VideoArea = ({
             } else {
                 remoteTrack?.play();
             }
-
-            // setRemoteUsers((prevUsers) => [...prevUsers, user]);
-            // setRemoteUsers(user);
         });
 
         userData && (await client.join(appid, channel, null, uid));
@@ -126,7 +124,6 @@ const VideoArea = ({
 
     const leaveChannel = async () => {
         await client.leave();
-        // setRemoteUsers(null);
         setIsJoined(false);
     };
 
@@ -175,16 +172,38 @@ const VideoArea = ({
         }
     };
 
+    const toggleFullscreen = () => {
+        if (isFullscreen) {
+            document.exitFullscreen();
+        } else {
+            videoContainerRef.current?.requestFullscreen();
+        }
+        setIsFullscreen(!isFullscreen);
+    };
+
+    useEffect(() => {
+        if (!isFullscreen) return setShowControls(true);
+        if (showControls && isFullscreen) {
+            setTimeout(() => {
+                setShowControls(false);
+            }, 4000);
+        }
+    }, [showControls, isFullscreen]);
+
     const callEnd = async () => {
-        await unpublishTrack(videoTrack, setIsVideoPubed);
-        await unpublishTrack(audioTrack, setIsAudioPubed);
-        await leaveChannel();
-        setIsVideoEnabled(false);
-        setAudioEnabled(false);
-        // await turnOnCamera(false);
-        // await turnOnMicrophone(false);
-        videoTrack = null;
-        audioTrack = null;
+        try {
+            await unpublishTrack(videoTrack, setIsVideoPubed);
+            await unpublishTrack(audioTrack, setIsAudioPubed);
+            await leaveChannel();
+            setIsVideoEnabled(false);
+            setAudioEnabled(false);
+            // await turnOnCamera(false);
+            // await turnOnMicrophone(false);
+            videoTrack = null;
+            audioTrack = null;
+        } catch (e) {
+            console.log(e, "error in call end function ---------");
+        }
     };
 
     const endCall = async () => {
@@ -209,36 +228,14 @@ const VideoArea = ({
         await callEnd();
     };
 
-    const toggleFullscreen = () => {
-        if (isFullscreen) {
-            document.exitFullscreen();
-        } else {
-            videoContainerRef.current?.requestFullscreen();
-        }
-        setIsFullscreen(!isFullscreen);
-    };
-
     useEffect(() => {
-        if (!isFullscreen) return setShowControls(true);
-        if (showControls && isFullscreen) {
-            setTimeout(() => {
-                setShowControls(false);
-            }, 4000);
-        }
-    }, [showControls, isFullscreen]);
-
-    useEffect(() => {
-
-        console.log("useEffect ==========================================================================================================")
-        if (isJoined && remoteUsers.length) {
+ 
+        const handleUserJoined = (user: IAgoraRTCRemoteUser) => {
+            setRemoteUsers((prevUsers) => [...prevUsers, user]);
             updateStatus({
                 id: currentAppointment?.id,
                 data: { status: "INPROGRESS" },
             });
-        }
-
-        const handleUserJoined = (user: IAgoraRTCRemoteUser) => {
-            setRemoteUsers((prevUsers) => [...prevUsers, user]);
         };
 
         const handleUserLeft = async (user: IAgoraRTCRemoteUser) => {
@@ -246,9 +243,6 @@ const VideoArea = ({
                 prevUsers.filter((u) => u.uid !== user.uid)
             );
             refetch();
-            if (currentAppointment?.status === "COMPLETED") {
-                await callEnd();
-            }
         };
 
         client.on("user-joined", handleUserJoined);
@@ -259,6 +253,30 @@ const VideoArea = ({
             client.off("user-left", handleUserLeft);
         };
     }, [client, isJoined, currentAppointment]); //eslint-disable-line
+
+    useEffect(() => {
+        const callEndAsync = async () => {
+            if (isJoined && currentAppointment?.status === "COMPLETED") {
+                await callEnd();
+            }
+        };
+
+        callEndAsync();
+    }, [currentAppointment]); //eslint-disable-line
+
+    useEffect(() => {
+        if (
+            userData?.patientId &&
+            !isJoined &&
+            currentAppointment?.status === "COMPLETED"
+        ) {
+            dispatch(
+                openModal({
+                    modalId: "rating",
+                })
+            );
+        }
+    }, [isJoined, currentAppointment, dispatch]); //eslint-disable-line
 
     return (
         <Stack>
@@ -388,6 +406,8 @@ const VideoArea = ({
                 </Box>
             </Box>
             <ConfirmationModal title="if you end this call session  will be completed for this appointment.Will you proceed?" />
+
+            <RatingModal currentAppointment={currentAppointment} />
         </Stack>
     );
 };

@@ -6,7 +6,7 @@ import { USER_ROLE } from "./constants/role";
 
 type Role = keyof typeof roleBasedPrivateRoutes;
 
-const withoutTokenRoutes = ["/login", "/register", "/doctors"];
+const withoutTokenRoutes = ["/login", "/register", "/doctors", "/"];
 
 const commonPrivateRoutes = [
     "/dashboard",
