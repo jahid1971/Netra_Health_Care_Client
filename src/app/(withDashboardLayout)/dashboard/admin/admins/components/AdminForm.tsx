@@ -15,7 +15,7 @@ const AdminForm = ({
 }: {
     handleSubmit: any;
     submitTitle: string;
-    defaultValue: any;
+    defaultValue?: any;
     passwordField?: boolean;
     onlyDirtyFields?: boolean;
 }) => {

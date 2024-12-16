@@ -16,9 +16,9 @@ const RatingModal = ({
     const giveRating = (value: number) => {
         const payload: Partial<TReview> = {
             rating: value,
-            appointmentId: currentAppointment.id,
-            doctorId: currentAppointment.doctorId,
-            patientId: currentAppointment.patientId,
+            appointmentId: currentAppointment?.id,
+            doctorId: currentAppointment?.doctorId,
+            patientId: currentAppointment?.patientId,
         };
         tryCatch(async () => createRating(payload));
     };

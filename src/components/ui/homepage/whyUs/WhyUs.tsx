@@ -80,7 +80,11 @@ const WhyUs = () => {
                                 />
                             </Box>
                             <Box>
-                                <Typography variant="h6" fontWeight={700} color={"primary"}>
+                                <Typography
+                                    variant="h6"
+                                    fontWeight={700}
+                                    color={"primary"}
+                                >
                                     {service.title}
                                 </Typography>
                                 <Typography>{service.description}</Typography>
@@ -89,8 +93,19 @@ const WhyUs = () => {
                     ))}
                 </Grid>
 
-                <Grid item md={6}>
-                    <Image src={chooseUsImg} alt="Why Us" width={480} />
+                <Grid item md={6} position={"relative"}>
+                    <Box
+                        sx={{
+                            backgroundColor: "primary.main",
+                            clipPath:
+                                "polygon(0 0, 100% 25%, 100% 100%, 0 75%)",
+                            width: "100%",
+                            height: 550,
+                        }}
+                    ></Box>
+                    <Box position={"absolute"} top={0} left={0}>
+                        <Image src={chooseUsImg} alt="Why Us" width={600} />
+                    </Box>
                 </Grid>
             </Grid>
         </Container>
