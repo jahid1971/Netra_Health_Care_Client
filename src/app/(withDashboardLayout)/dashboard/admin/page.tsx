@@ -9,7 +9,7 @@ import N_LineChart from "../../../../components/ui/dashboard/LineChart";
 
 const AdminDashboardHome = async () => {
     const res = await fetchWithAuth("/metaData", {
-        cache: "no-cache",
+        next: { revalidate: 5 },
     });
 
 
