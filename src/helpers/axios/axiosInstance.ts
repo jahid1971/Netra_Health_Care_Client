@@ -35,7 +35,7 @@ instance.interceptors.response.use(
     },
 
     async function (error) {
-        console.log(error, "error in axios instance response");
+        console.log(error?.response?.data, "error in axios instance response");
         const originalRequest = error.config;
 
         //to prevent infinite loop by getNewAccessToken()

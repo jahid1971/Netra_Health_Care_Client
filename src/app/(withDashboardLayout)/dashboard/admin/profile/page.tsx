@@ -55,7 +55,6 @@ const AdminProfilePage = () => {
     };
 
     const handleUpdate = (data: FieldValues) => {
-        console.log(data, adminData, "data");
         const modifiedData = { data };
 
         tryCatch(
@@ -94,7 +93,7 @@ const AdminProfilePage = () => {
                             </Box>
                         ) : (
                             <PersonIcon
-                                sx={{ fontSize: 200, color: "#1586FD" }}
+                                sx={{ fontSize: 250, color: "#1586FD" }}
                             />
                         )}
                     </Box>

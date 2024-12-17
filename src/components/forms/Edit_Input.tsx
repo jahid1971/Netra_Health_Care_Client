@@ -37,18 +37,18 @@ const Edit_Input = ({
     editable = true,
     autoSubmitOnBlur = true,
 }: TInputProps) => {
-    const { control } = useFormContext();
+    const { control, formState } = useFormContext();
     const inputRef = useRef<HTMLInputElement>(null);
     const saveButtonRef = useRef<HTMLButtonElement>(null);
     const [isFocused, setIsFocused] = useState(false);
+
+    const { isSubmitting } = formState;
 
     const handleIconClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         inputRef.current?.focus();
         setIsFocused(true);
     };
-
-
 
     useEffect(() => {
         const handleBlur = () => {
@@ -62,16 +62,19 @@ const Edit_Input = ({
 
         const currentInputRef = inputRef.current;
 
-        if (autoSubmitOnBlur && isFocused && !isLoading) {
+        if (isSubmitting)
+            currentInputRef?.removeEventListener("blur", handleBlur);
+
+        if (autoSubmitOnBlur && isFocused ) {
             currentInputRef?.addEventListener("blur", handleBlur);
         } else {
             currentInputRef?.removeEventListener("blur", handleBlur);
         }
 
         return () => {
-            currentInputRef?.removeEventListener("blur", handleBlur); 
+            currentInputRef?.removeEventListener("blur", handleBlur);
         };
-    }, [autoSubmitOnBlur, isLoading, isFocused]);
+    }, [autoSubmitOnBlur, isFocused]);
 
     return (
         <Controller
@@ -87,7 +90,7 @@ const Edit_Input = ({
                         ...sx,
 
                         "& .MuiInputBase-root": {
-                            pointerEvents: "none",
+                            pointerEvents: !isFocused ? "none" : undefined,
                             paddingLeft: "13px",
                             paddingTop: "20px",
                             backgroundColor: "white",
