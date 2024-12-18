@@ -52,9 +52,9 @@ export const tryCatch: tryCatch = async (
 
         return res;
     } catch (err: any) {
-        console.error(err?.message || err, "error in catch block");
+        console.error(err, "error in catch block");
 
-        err.name === "AppError"
+        err?.type === "AppError"
             ? toast.error(err.message, { id: toastId })
             : toast.error("Something went wrong ", { id: toastId });
     }

@@ -13,8 +13,6 @@ const specialties = async ({ userInfo }: { userInfo: TUserInfo }) => {
     });
     const { data: specialities } = await res.json();
 
-    console.log(specialities,"specialities -------------------------");
-
     return (
         <Container sx={{ bottom:-50 ,position: "relative"}}>
             <Box mt={2} textAlign={"center"}>

@@ -66,13 +66,6 @@ export const queryApiBuilder = <T>(
         },
         providesTags: tagTypes,
 
-        // transformResponse: (response: any) => {
-        //     return {
-        //         data: response?.data?.data ?? response?.data,
-        //         meta: response?.data?.meta,
-        //     }
-
-        // }
     });
 };
 

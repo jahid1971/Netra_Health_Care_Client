@@ -13,22 +13,17 @@ import { tryCatch } from "@/utils/tryCatch";
 import { useAppDispatch } from "@/redux/hooks";
 import { openModal } from "@/redux/slices/modalSlice";
 import N_DataGrid from "@/components/dataGrid/DataGrid";
-import N_Pagination from "@/components/pagination/Pagination";
 import ConfirmationModal from "@/components/modals/ConfirmationModal";
+import { defaultQuery } from "@/constants/commmon";
 
 const SpecialitiesPage = () => {
     const dispatch = useAppDispatch();
-    const [query, setQuery] = useState<Record<string, any>>({});
+    const [query, setQuery] = useState<Record<string, any>>(defaultQuery);
 
-    const { data, isLoading } = useGetAllSpecialitiesQuery(query);
+    const { data, isLoading, isFetching } = useGetAllSpecialitiesQuery(query);
 
     const allSpecailities = data?.data || [];
     const meta = data?.meta;
-
-    console.log(
-        allSpecailities,
-        "allSpecailities =================================="
-    );
 
     const [deleteSpeciality] = useDeleteSpecialityMutation();
 
@@ -121,7 +116,7 @@ const SpecialitiesPage = () => {
             <N_DataGrid
                 rows={allSpecailities}
                 columns={columnDef}
-                isLoading={isLoading}
+                isLoading={isLoading || isFetching}
                 notFoundFor="Specialty"
                 setQuery={setQuery}
                 meta={meta}

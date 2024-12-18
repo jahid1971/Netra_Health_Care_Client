@@ -16,7 +16,7 @@ const SideArea = ({
     currentAppointment,
     drawerContainer,
     userData,
-    isJoined
+    isJoined,
 }: {
     appointments: TAppointment[];
     currentAppointment: TAppointment;
@@ -42,7 +42,9 @@ const SideArea = ({
                     userData={userData}
                 />
             )}
-            {drawerContainer === "medicalHistory" && <MedicalHistory />}
+            {drawerContainer === "medicalHistory" && (
+                <MedicalHistory currentAppointment={currentAppointment} />
+            )}
         </Box>
     );
 };

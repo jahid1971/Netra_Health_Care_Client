@@ -1,6 +1,7 @@
 import {
     createApiBuilder,
     queryApiBuilder,
+    singleQueryApiBuilder,
     updateApiBuilder,
 } from "@/utils/apiBuilders";
 import { baseApi } from "./baseApi";
@@ -26,6 +27,13 @@ const appointmentApi = baseApi.injectEndpoints({
             "/appointment",
             [tagTypes.appointment]
         ),
+
+        getCurrentAppointment: singleQueryApiBuilder<TAppointment>(
+            build,
+            "/appointment/current",
+            [tagTypes.appointment]
+        ),
+
         updateAppointStatus: updateApiBuilder(build, "/appointment", [
             tagTypes.appointment,
         ]),
@@ -40,6 +48,7 @@ const appointmentApi = baseApi.injectEndpoints({
 export const {
     useGetDocotorAppointmentsQuery,
     useGetAllAppointmentsQuery,
+    useGetCurrentAppointmentQuery,
     useUpdateAppointStatusMutation,
     useCreateRatingMutation,
 } = appointmentApi;

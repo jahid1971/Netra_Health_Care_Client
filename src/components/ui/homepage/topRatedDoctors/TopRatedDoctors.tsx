@@ -17,6 +17,7 @@ import assets from "@/assets";
 import Link from "next/link";
 import { baseUrl } from "@/constants/commmon";
 import defaultDoctorPhoto from "@/assets/svgs/profile.svg";
+// import defaultDoctorPhoto from "@/assets/icons/doctor_icon.png";
 
 const TopRatedDoctors = async () => {
     const res = await fetch(`${baseUrl}/doctor?page=1&limit=3`);
@@ -47,32 +48,47 @@ const TopRatedDoctors = async () => {
                             <Card>
                                 <Box
                                     sx={{
-                                        // width: "100%",
-                                        // height: 300,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        width: "100%",
+                                        height: "100%",
+                                        overflow: "hidden",
                                         "& img": {
+                                            objectFit: "cover",
                                             width: "100%",
                                             height: "100%",
-                                            overflow: "hidden",
-                                            objectFit: "cover",
                                         },
                                     }}
                                 >
-                                    <Image
-                                        src={
-                                            doctor?.profilePhoto ||
-                                            // assets.images.doctor3
-                                            defaultDoctorPhoto
-                                        }
-                                        alt="doctor"
-                                        width={300}
-                                        height={100}
-                                        objectFit="cover"
-                                    />
+                                    {doctor?.profilePhoto ? (
+                                        <Image
+                                            src={doctor?.profilePhoto}
+                                            alt="doctor"
+                                            width={300}
+                                            height={300}
+                                            objectFit="cover"
+                                        />
+                                    ) : (
+                                        <Box
+                                            p={2}
+                                            sx={{
+                                                bgcolor: grey[100],
+                                                width: "100%",
+                                                height: "100%",
+                                            }}
+                                        >
+                                            <Image
+                                                src={defaultDoctorPhoto}
+                                                alt="doctor"
+                                                width={300}
+                                                height={300}
+                                                objectFit="cover"
+                                            />
+                                        </Box>
+                                    )}
                                 </Box>
 
-                                {/* <CardContent>
-                         
-                                </CardContent> */}
                                 <Box p={1}>
                                     <Stack paddingLeft={"10px"}>
                                         <Typography variant="h5">

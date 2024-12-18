@@ -118,7 +118,12 @@ const DoctorCard = async ({ doctor }: { doctor: IDoctor }) => {
                                 Per consultation
                             </Typography>
                         </Box>
-                        <Box>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "flex-end",
+                            }}
+                        >
                             <Link
                                 href={`/dashboard/patient/doctors/checkout/${doctor?.id}`}
                             >
@@ -167,7 +172,8 @@ const DoctorCard = async ({ doctor }: { doctor: IDoctor }) => {
                             <StarIcon fontSize="medium" color="primary" />
                             <Typography variant="body1" color="text.primary">
                                 {" "}
-                                {doctor?.averageRating} ({doctor?.ratingCount ?? 0})
+                                {doctor?.averageRating} (
+                                {doctor?.ratingCount ?? 0})
                                 {/* {(doctor?.ratingCount ?? 0) > 0 &&
                                     `(${doctor?.ratingCount})`} */}
                             </Typography>
