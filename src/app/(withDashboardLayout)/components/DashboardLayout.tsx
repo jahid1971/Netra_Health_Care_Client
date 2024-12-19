@@ -7,19 +7,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 
 import { useEffect, useState } from "react";
-import { useAppDispatch} from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import { setIsLoadingFalse, setUser } from "@/redux/slices/authSlice";
 
 import DashboardDrawer from "./dashboardLayoutComponents/DashboardDrawer";
 import TopBar from "./dashboardLayoutComponents/AppBar";
 
 import { useGetMyProfileQuery } from "@/redux/api/myProfileApi";
-import {
- 
-    setNotification,
-} from "@/redux/slices/notificationSlice";
-
-
+import { setNotification } from "@/redux/slices/notificationSlice";
+import { USER_ROLE } from "@/constants/role";
 
 export default function DashboardLayout({
     children,
@@ -36,7 +32,11 @@ export default function DashboardLayout({
     useEffect(() => {
         dispatch(setUser(data?.data));
         if (data?.data) dispatch(setIsLoadingFalse());
-        if (data?.data?.needPasswordChange) { //temporary testing --------------------
+        if (
+            data?.data?.needPasswordChange &&
+            data?.data?.role !== USER_ROLE.PATIENT
+        ) {
+            //temporary testing --------------------
             dispatch(
                 setNotification({
                     text: `Please change your Password .To secure your account you must change the default password`,
@@ -44,9 +44,9 @@ export default function DashboardLayout({
                     link: "/dashboard/change-password",
                     linkLabel: "Change Password",
                 })
-            )
+            );
         }
-    }, [data?.data,dispatch]);
+    }, [data?.data, dispatch]);
 
     const handleDrawerClose = () => {
         setIsClosing(true);

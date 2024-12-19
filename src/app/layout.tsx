@@ -4,7 +4,6 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import Providers from "@/lib/Providers/Providers";
 import { Toaster } from "sonner";
 
-
 // const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -24,7 +23,11 @@ export default function RootLayout({
                 {/* <body className={inter.className}> */}
                 <body>
                     <AppRouterCacheProvider>
-                        <Toaster richColors duration={3000} />
+                        <Toaster
+                            richColors
+                            duration={3000}
+                            position="top-center"
+                        />
                         {children}
                     </AppRouterCacheProvider>
                 </body>

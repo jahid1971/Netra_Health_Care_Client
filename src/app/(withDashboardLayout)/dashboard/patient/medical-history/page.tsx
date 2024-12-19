@@ -10,11 +10,14 @@ import { useUserSelector } from "@/redux/slices/authSlice";
 import { useGetPtMedicaltHistoryQuery } from "@/redux/api/patientApi";
 import { TMedicalHistory } from "@/types/Patient";
 import PtMedicalHistory from "@/components/ui/patient/MedicalHistory";
+import { TAppointment } from "@/types/Appointment";
 
-const MedicalHistory = () => {
+const MedicalHistory = ({ currentAppointment }: any) => {
     const dispatch = useAppDispatch();
-    const patient = useUserSelector();
-    const { data } = useGetPtMedicaltHistoryQuery({ id: patient?.patientId });
+
+    const { data } = useGetPtMedicaltHistoryQuery({
+        id: currentAppointment?.patientId,
+    });
     const mediHistory = data?.data as TMedicalHistory;
 
     return (
@@ -28,7 +31,7 @@ const MedicalHistory = () => {
                 Update Medical History
             </Button>
 
-            <PtMedicalHistory noPadding = {true} mediHistory={mediHistory} />
+            <PtMedicalHistory noPadding={true} mediHistory={mediHistory} />
             <UpdateMedicalHistory />
         </Box>
     );

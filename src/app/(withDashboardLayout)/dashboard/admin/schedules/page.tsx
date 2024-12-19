@@ -18,14 +18,14 @@ import ConfirmationModal from "@/components/modals/ConfirmationModal";
 
 import FilterByDate from "@/components/dataGrid/filters/FilterByDate";
 import FilterByTime from "@/components/dataGrid/filters/FilterByTime";
-
+import { defaultQuery } from "@/constants/commmon";
 
 const SchedulePage = () => {
     const [allSchedules, setAllSchedule] = useState<any>([]);
     const [selectedRows, setSelectedRows] = useState<any[]>([]);
     const dispatch = useAppDispatch();
 
-    const [query, setQuery] = useState<Record<string, any>>({});
+    const [query, setQuery] = useState<Record<string, any>>(defaultQuery);
 
     const { data, isFetching } = useGetSchedulesQuery(query);
 

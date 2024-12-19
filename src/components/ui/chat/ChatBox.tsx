@@ -21,7 +21,6 @@ import Image from "next/image";
 import ImageViewer from "react-simple-image-viewer";
 import { useIsSmallScreen } from "@/utils/isSmallScreen";
 
-
 const ChatBox = ({
     currentAppointment,
     userData,
@@ -29,11 +28,12 @@ const ChatBox = ({
     currentAppointment: TAppointment;
     userData: TUser;
 }) => {
+    const dispatch = useAppDispatch();
     const [messages, setMessages] = useState<TChatMessage[]>([]);
     const [newMessage, setNewMessage] = useState("");
     const [currentImage, setCurrentImage] = useState("");
 
-     const isSmallScreen = useIsSmallScreen()
+    const isSmallScreen = useIsSmallScreen();
 
     const msgsBoxRef = useRef<HTMLDivElement | null>(null);
 
@@ -91,7 +91,7 @@ const ChatBox = ({
     const sendMessage = () => {
         if (newMessage.trim() === "") return;
 
-        const messageData:TChatMessage = {
+        const messageData: TChatMessage = {
             senderId: userId as string,
             receiverId: receiverId as string,
             message: newMessage,
@@ -114,7 +114,28 @@ const ChatBox = ({
         uploadFileMsg(modifiedPayload);
     };
 
+    useEffect(() => {
+        const markMessagesAsRead = async () => {
+            for (const msg of messages) {
+                if (!msg.read && msg.receiverId === userId) {
+                    try {
+                        const result = await updateMessage({
+                            id: msg.id,
+                            data: { read: true },
+                        }).unwrap();
 
+                        dispatch(
+                            setCountUnread((result?.data as any)?.unreadCount)
+                        );
+                    } catch (error) {
+                        console.error("Failed to update message:", error);
+                    }
+                }
+            }
+        };
+
+        markMessagesAsRead();
+    }, [messages, userId, updateMessage, dispatch]);
 
     return (
         <Box
@@ -152,20 +173,6 @@ const ChatBox = ({
                     p={2}
                 >
                     {messages.map((msg, index) => {
-                        if (msg?.read === false && msg?.receiverId === userId) {
-                            updateMessage({
-                                id: msg?.id,
-                                data: { read: true },
-                            });
-
-                            setMessages((prev) =>
-                                prev.map((item) =>
-                                    item?.id === msg?.id
-                                        ? { ...item, read: true }
-                                        : item
-                                )
-                            );
-                        }
                         return (
                             <Box
                                 key={index}

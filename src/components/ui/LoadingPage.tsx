@@ -11,7 +11,7 @@ const LoadingPage = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 height: "100vh",
-                backgroundColor: "#f0f0f0",
+                backgroundColor: "#F4F7FE",
             }}
         >
             <CircularProgress />

@@ -40,10 +40,12 @@ const MessageIcon = ({ userData, currentAppointment }: any) => {
             console.log("count_unread-----------", data);
         });
 
-        // return () => {
-        //     socket.off("receive_message");
-        // };
+        return () => {
+            socket.off("count_unread");
+        };
     }, [userId, dispatch]);
+
+
     return (
         <Badge badgeContent={countUnread} color="error">
             <EmailIcon />
