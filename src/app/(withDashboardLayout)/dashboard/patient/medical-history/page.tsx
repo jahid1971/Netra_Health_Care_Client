@@ -12,9 +12,19 @@ import { TMedicalHistory } from "@/types/Patient";
 import PtMedicalHistory from "@/components/ui/patient/MedicalHistory";
 import { TAppointment } from "@/types/Appointment";
 
+<<<<<<< HEAD
 const MedicalHistory = ({ currentAppointment }: any) => {
     const dispatch = useAppDispatch();
 
+=======
+const MedicalHistory = ({
+    currentAppointment,
+}: {
+    currentAppointment: TAppointment;
+}) => {
+    const dispatch = useAppDispatch();
+    
+>>>>>>> f2d52b7132c3412eb8c486d772895914e8f441b0
     const { data } = useGetPtMedicaltHistoryQuery({
         id: currentAppointment?.patientId,
     });
