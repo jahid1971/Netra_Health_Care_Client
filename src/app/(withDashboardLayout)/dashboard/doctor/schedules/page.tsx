@@ -17,7 +17,7 @@ import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
 import { useMemo, useState } from "react";
 
 import { tryCatch } from "@/utils/tryCatch";
-import {  TDoctorSchedule } from "@/types/schedules";
+import { TDoctorSchedule } from "@/types/schedules";
 
 import ConfirmationModal from "@/components/modals/ConfirmationModal";
 import FilterByDate from "@/components/dataGrid/filters/FilterByDate";
@@ -46,15 +46,7 @@ const DoctorSchedulePage = () => {
     const doctorSchedules =
         useMemo(() => {
             return data?.data?.map((item: TDoctorSchedule, index) => {
-                // console.log(
-                //     index,
-                //     query.page,
-                //     query.limit,
-                //     (query.page - 1) * query.limit + index + 1,
-                //     "item -----------------------------------------------------------"
-                // );
                 return {
-                    sl: (query.page - 1) * query.limit + index + 1 + ".",
                     id: item?.scheduleId,
                     startDate: dateFaormatter(item?.schedule?.startDateTime),
                     // endDate: dateFaormatter(item?.schedule?.endDateTime),
@@ -62,16 +54,9 @@ const DoctorSchedulePage = () => {
                     endTime: timeFormatter(item?.schedule?.endDateTime),
                 };
             });
-        }, [data, query]) || [];
+        }, [data]) || [];
 
     const columns: GridColDef[] = [
-        {
-            field: "sl",
-            headerName: "SL",
-            headerAlign: "center",
-            width: 130,
-            align: "center",
-        },
         { field: "startDate", headerName: "Date", flex: 1 },
         { field: "startTime", headerName: "Start Time", flex: 1 },
         { field: "endTime", headerName: "End Time", flex: 1 },

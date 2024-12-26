@@ -67,6 +67,7 @@ const UpdatePatientProfile = ({ patientData }: { patientData: IPatient }) => {
                         onSubmit={handleUpdate}
                         resolver={zodResolver(updatePatiientSchema)}
                         defaultValues={patientData}
+                        onlyDirtyFields={true}
                         // error={error}
                     >
                         <Stack spacing={2} mt={2}>

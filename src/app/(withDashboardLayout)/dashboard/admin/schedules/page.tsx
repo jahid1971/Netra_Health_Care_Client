@@ -49,7 +49,6 @@ const SchedulePage = () => {
     useEffect(() => {
         const schedulesData = schedules?.map(
             (schedule: TSchedule, index: number) => ({
-                sl: (query.page - 1) * query.limit + index + 1 + ".",
                 id: schedule?.id,
                 scheduleDate: schedule?.startDateTime,
                 startTime: schedule?.startDateTime,
@@ -60,13 +59,6 @@ const SchedulePage = () => {
     }, [schedules, query]);
 
     const columns: GridColDef[] = [
-        {
-            field: "sl",
-            headerName: "SL",
-            width: 80,
-            headerAlign: "center",
-            align: "center",
-        },
         {
             field: "scheduleDate",
             headerName: "Date",

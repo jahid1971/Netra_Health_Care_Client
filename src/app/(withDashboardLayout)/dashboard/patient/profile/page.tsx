@@ -62,7 +62,7 @@ const PatientProfilePage = () => {
                         <PersonIcon sx={{ fontSize: 250, color: "#1586FD" }} />
                     )}
                 </Box>
-                <Stack my={2} width={300} spacing={1}>
+                <Stack  width={300} spacing={1}>
                     <AutoFileUploader
                         name="file"
                         label="Upload Profile Photo"

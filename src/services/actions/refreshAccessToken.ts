@@ -26,16 +26,19 @@ export async function refreshAccessToken() {
         const { data } = (await refreshResponse.json()) || {};
 
         if (data?.accessToken) {
-            cookieStore.set(authKey, data.accessToken); 
+            cookieStore.set(authKey, data.accessToken);
 
             return data.accessToken;
         }
 
         handleUnAuthenticated();
-        
+
         return null;
     } catch (error) {
-        console.log(error, "Error refreshing access token........................");
+        console.log(
+            error,
+            "Error refreshing access token........................"
+        );
 
         handleUnAuthenticated();
         return null;

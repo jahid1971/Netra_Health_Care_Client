@@ -10,6 +10,7 @@ import {
     SelectChangeEvent,
     Typography,
 } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import { useEffect, useState } from "react";
 
 interface PaginationProps {
@@ -30,6 +31,10 @@ const N_Pagination = ({ setQuery, meta }: PaginationProps) => {
         setQuery((prev: any) => ({ ...prev, page, limit }));
     }, [page, limit, setQuery]);
 
+    useEffect(() => {
+        if (meta?.page) setPage(meta.page);
+    }, [meta?.page]);
+
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
@@ -42,11 +47,13 @@ const N_Pagination = ({ setQuery, meta }: PaginationProps) => {
             sx={{
                 mb: 2,
                 display: "flex",
-                justifyContent: "center",
+                justifyContent: "space-between",
                 alignItems: "center",
-                position: "relative",
+                // position: "relative",
             }}
         >
+            <Typography>Total: {meta?.total}</Typography>
+
             <Pagination
                 color="primary"
                 count={pageCount}
@@ -58,8 +65,8 @@ const N_Pagination = ({ setQuery, meta }: PaginationProps) => {
                 sx={{
                     display: "flex",
                     alignItems: "center",
-                    position: "absolute",
-                    left: 0,
+                    // position: "absolute",
+                    // left: 0,
                 }}
             >
                 <Typography variant="body2">Rows Per Page:</Typography>

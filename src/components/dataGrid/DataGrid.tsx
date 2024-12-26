@@ -2,7 +2,7 @@
 
 import { Box, Button, Slide, Stack, Typography } from "@mui/material";
 import { DataGrid, GridSortModel } from "@mui/x-data-grid";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import N_Pagination from "../pagination/Pagination";
 
 import { blue } from "@mui/material/colors";
@@ -11,6 +11,7 @@ import N_Input from "../forms/N_Input";
 import N_Form from "../forms/N_Form";
 import CloseIcon from "@mui/icons-material/Close";
 import { defaultQuery } from "@/constants/commmon";
+import tableSerial from "@/utils/tableSerial";
 
 type TDataGridProps = {
     rows: any[];
@@ -35,6 +36,7 @@ type TDataGridProps = {
     checkedRowsActionBtn?: any;
     searchField?: boolean;
     query?: any;
+    serial?: boolean;
 };
 
 const N_DataGrid = ({
@@ -59,6 +61,7 @@ const N_DataGrid = ({
     selectedRows,
     checkedRowsActionBtn,
     searchField = true,
+    serial = true,
 }: TDataGridProps) => {
     const [showFilters, setShowFilters] = useState(false);
 
@@ -72,9 +75,33 @@ const N_DataGrid = ({
         }
     }, [rows?.length, meta?.page, setQuery]);
 
-    const styledColumns = columns.map((col) => ({
-        ...col,
+    const { rowData, columnDefs } = useMemo(() => {
+        if (serial && query && rows) {
+            const updatedRows = rows?.map((row, index) => ({
+                ...row,
+                sl: tableSerial(query, index),
+                key: index,
+            }));
+            const updatedColumns = [
+                {
+                    field: "sl",
+                    headerName: "SL",
+                    width: 80,
+                    headerAlign: "center",
+                    align: "center",
+                    sortable: false,
+                },
+                ...columns,
+            ];
+            return { rowData: updatedRows, columnDefs: updatedColumns };
+        }
+        return { rowData: rows, columnDefs: columns };
+    }, [serial, columns, rows, query]);
+
+    const styledColumns = columnDefs?.map((col) => ({
+        sortable: false,
         headerClassName: headerClassName,
+        ...col,
     }));
 
     const CustomNoRowsOverlay = () => {
@@ -96,7 +123,7 @@ const N_DataGrid = ({
             setQuery &&
                 setQuery((prev: any) => ({
                     ...prev,
-                    page: 0,
+                    page: 1,
                     sortBy: sortModel[0]?.field,
                     sortOrder: sortModel[0]?.sort,
                 }));
@@ -167,22 +194,30 @@ const N_DataGrid = ({
                                     >
                                         {children}
                                     </N_Form>
-
-                                    <Button
-                                        variant="outlined"
-                                        color="error"
-                                        size="small"
-                                        onClick={() => {
-                                            setQuery &&
-                                                setQuery({ ...defaultQuery });
-                                        }}
-                                        endIcon={<CloseIcon />}
-                                    >
-                                        reset
-                                    </Button>
                                 </Box>
                             </Slide>
                         )}
+                        {query &&
+                            Object.keys(query).some(
+                                (key) =>
+                                    !["page", "limit"].includes(key) &&
+                                    query[key]
+                            ) && (
+                                <Button
+                                    // variant="outlined"
+                                    color="error"
+                                    size="small"
+                                    onClick={() => {
+                                        setQuery &&
+                                            setQuery({
+                                                ...defaultQuery,
+                                            });
+                                    }}
+                                    endIcon={<CloseIcon />}
+                                >
+                                    reset
+                                </Button>
+                            )}
                     </Stack>
 
                     {searchField && (
@@ -225,7 +260,7 @@ const N_DataGrid = ({
 
                 <Box sx={{ backgroundColor: "white", mb: 2 }}>
                     <DataGrid
-                        rows={rows}
+                        rows={rowData}
                         checkboxSelection={rowSelection}
                         disableColumnSorting={sorting ? false : true}
                         sortingMode="server"

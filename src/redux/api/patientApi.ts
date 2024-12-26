@@ -1,4 +1,5 @@
 import {
+    deleteApiBuilder,
     queryApiBuilder,
     singleQueryApiBuilder,
     updateApiBuilder,
@@ -21,6 +22,8 @@ export const patientApi = baseApi.injectEndpoints({
                 contentType: "multipart/form-data",
             }
         ),
+
+        deletePation: deleteApiBuilder(build, "/patient", [tagTypes.user]),
 
         updateMedicalHistory: updateApiBuilder(
             build,
@@ -45,4 +48,5 @@ export const {
     useUpdatePatientMutation,
     useUpdateMedicalHistoryMutation,
     useGetPtMedicaltHistoryQuery,
+    useDeletePationMutation,
 } = patientApi;

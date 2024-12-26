@@ -12,20 +12,17 @@ const AdminDashboardHome = async () => {
         next: { revalidate: 5 },
     });
 
+    const metaData: any = res?.data || {};
 
-
-    const metaData: any = res?.data  || {};
-
-    const pieChartData = metaData?.appointmentsPieData?.map((item:any) => ({
-        value: item.count,
-        label: item.status,
-    })) || [];
-
+    const pieChartData =
+        metaData?.appointmentsPieData?.map((item: any) => ({
+            value: item.count,
+            label: item.status,
+        })) || [];
 
     return (
         <Box>
             <SummaryCards metaData={metaData} />
-
 
             <Grid container spacing={2} mt={2}>
                 <Grid item xs={12} md={7}>
@@ -40,8 +37,6 @@ const AdminDashboardHome = async () => {
             </Grid>
 
             <N_LineChart />
-
-
         </Box>
     );
 };

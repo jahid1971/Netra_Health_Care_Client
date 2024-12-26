@@ -4,20 +4,20 @@ import SubmitButton from "@/components/ui/SubmitButton";
 
 import { Grid, Stack } from "@mui/material";
 
-import { ISpecialties } from "@/types/Doctors";
 
 const AdminForm = ({
     handleSubmit,
     submitTitle,
     defaultValue,
-    passwordField = true,
+
     onlyDirtyFields,
+    editMode,
 }: {
     handleSubmit: any;
     submitTitle: string;
     defaultValue?: any;
-    passwordField?: boolean;
     onlyDirtyFields?: boolean;
+    editMode?: boolean;
 }) => {
     return (
         <N_Form
@@ -30,11 +30,13 @@ const AdminForm = ({
                     <N_Input name="name" label="Name" />
                 </Grid>
 
-                <Grid item xs={12} md={4}>
-                    <N_Input name="email" label="Email" />
-                </Grid>
+                {!editMode && (
+                    <Grid item xs={12} md={4}>
+                        <N_Input name="email" label="Email" />
+                    </Grid>
+                )}
 
-                {passwordField && (
+                {!editMode && (
                     <Grid item xs={12} md={4}>
                         <N_Input
                             name="password"

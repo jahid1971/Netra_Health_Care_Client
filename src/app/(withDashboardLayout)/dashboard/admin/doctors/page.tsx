@@ -10,7 +10,7 @@ import {
     useDeleteDoctorMutation,
     useGetDoctorsQuery,
 } from "@/redux/api/doctorsApi";
-import { useAppDispatch} from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import N_DataGrid from "@/components/dataGrid/DataGrid";
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -51,13 +51,12 @@ const DoctorsPage = () => {
     };
     const columnDef: GridColDef[] = [
         {
-            field: "sl",
-            headerName: "SL",
-            width: 80,
-            headerAlign: "center",
-            align: "center",
+            field: "name",
+            headerName: "Name",
+            flex: 1,
+            sortable: true,
+            // filterable: false,
         },
-        { field: "name", headerName: "Name", flex: 1, filterable: false },
         { field: "email", headerName: "Email", minWidth: 200 },
         { field: "contactNumber", headerName: "Contact Number", flex: 1 },
         {
@@ -67,7 +66,12 @@ const DoctorsPage = () => {
             valueOptions: ["Male", "Female"],
             flex: 1,
         },
-        { field: "apointmentFee", headerName: "Appointment Fee", flex: 1 },
+        {
+            field: "apointmentFee",
+            headerName: "Appointment Fee",
+            flex: 1,
+            sortable: true,
+        },
         {
             field: "action",
             headerName: "Action",
@@ -121,6 +125,7 @@ const DoctorsPage = () => {
     return (
         <Box>
             <N_DataGrid
+                serial={true}
                 createButton={createButton}
                 rows={doctors}
                 columns={columnDef}

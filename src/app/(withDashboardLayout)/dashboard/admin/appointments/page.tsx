@@ -61,19 +61,12 @@ const DoctorAppointment = () => {
 
     const appointmentsData = appointments?.map((appointment, index) => ({
         ...appointment,
-        sl: tableSerial(query, index),
     }));
 
     const meta = data?.meta;
 
     const columns: GridColDef[] = [
-        {
-            field: "sl",
-            headerName: "SL",
-            width: 120,
-            headerAlign: "center",
-            align: "center",
-        },
+ 
         {
             field: "patientName",
             headerName: "Patient Name",

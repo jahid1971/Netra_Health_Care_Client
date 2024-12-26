@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { IconButton, InputAdornment, SxProps, TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
@@ -20,6 +21,7 @@ type TInputProps = {
     isLoading?: boolean;
     editable?: boolean;
     autoSubmitOnBlur?: boolean;
+    disabled?: boolean;
 };
 
 const Edit_Input = ({
@@ -36,6 +38,7 @@ const Edit_Input = ({
     isLoading,
     editable = true,
     autoSubmitOnBlur = true,
+    disabled
 }: TInputProps) => {
     const { control, formState } = useFormContext();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -130,6 +133,7 @@ const Edit_Input = ({
                     multiline={multiline}
                     rows={multiline && rows ? rows : 1}
                     inputRef={inputRef}
+                    disabled={disabled }
                     InputProps={{
                         endAdornment: editable && (
                             <InputAdornment position="end">

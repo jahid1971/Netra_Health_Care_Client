@@ -25,17 +25,10 @@ const DoctorAppointment = () => {
         sl: tableSerial(query, index),
     }));
 
-    console.log(appointmentsData,"appointmentsData");
+    console.log(appointmentsData, "appointmentsData");
     const meta = data?.meta;
 
     const columns: GridColDef[] = [
-        {
-            field: "sl",
-            headerName: "SL",
-            width: 120,
-            headerAlign: "center",
-            align: "center",
-        },
         {
             field: "name",
             headerName: "Patient Name",
@@ -92,6 +85,7 @@ const DoctorAppointment = () => {
             <N_DataGrid
                 // sorting={false}
                 setQuery={setQuery}
+                query={query}
                 rows={appointmentsData || []}
                 columns={columns}
                 isLoading={isFetching}

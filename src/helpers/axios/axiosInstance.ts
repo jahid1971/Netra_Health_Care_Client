@@ -1,6 +1,7 @@
 import { authKey, refreshKey } from "@/constants/authKey";
 import { baseUrl } from "@/constants/commmon";
 import { deleteCookies, setTokenToCookies } from "@/services/actions/cookies";
+import { refreshAccessToken } from "@/services/actions/refreshAccessToken";
 import { IMeta, TResponse } from "@/types/common";
 
 import axios, { AxiosResponse } from "axios";
@@ -39,19 +40,21 @@ instance.interceptors.response.use(
         const originalRequest = error.config;
 
         //to prevent infinite loop by getNewAccessToken()
-        if (originalRequest.url === `${baseUrl}/auth/refresh-token`) {
-            return Promise.reject(error);
-        }
+        // if (originalRequest.url === `${baseUrl}/auth/refresh-token`) {
+        //     return Promise.reject(error);
+        // }
 
-        //  ._retry is to prevent infinite loop
+
         if (error?.response?.status === 401 && !originalRequest._retry) {
             console.log("refresh req sentttttttttttttttttttttttttttt");
 
             originalRequest._retry = true;
             try {
-                const response = await getNewAccessToken();
+                // const response = await getNewAccessToken();
+                const accessToken = await refreshAccessToken();
+                console.log(accessToken, "accessToken in axios instance -------------------");
 
-                if (response?.status === 200) {
+                if (accessToken) {
                     try {
                         const res = await instance(originalRequest);
 

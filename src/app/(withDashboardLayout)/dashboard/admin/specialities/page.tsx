@@ -119,6 +119,7 @@ const SpecialitiesPage = () => {
                 isLoading={isLoading || isFetching}
                 notFoundFor="Specialty"
                 setQuery={setQuery}
+                query={query}
                 meta={meta}
                 createButton={createButton}
                 filter={false}

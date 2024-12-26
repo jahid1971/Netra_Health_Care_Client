@@ -20,6 +20,7 @@ import N_Select from "@/components/forms/N_Select";
 import { defaultQuery, userStatus } from "@/constants/commmon";
 
 import {
+    useDeletePationMutation,
     useGetAllPatientsQuery,
     useUpdatePatientMutation,
 } from "@/redux/api/patientApi";
@@ -35,6 +36,7 @@ const PatientPage = () => {
 
     const [updatePatient] = useUpdatePatientMutation();
 
+    const [deletePatient] = useDeletePationMutation();
     const patientData = data?.data || [];
 
     const meta = data?.meta;
@@ -45,11 +47,10 @@ const PatientPage = () => {
     }));
 
     const handleDelete = (id: string) => {
-        const payload = modifyPayload({ isDeleted: true }); //as per the apiBuilder with multipart/form-data
         tryCatch(
-            async () => await updatePatient({ id: id, data: payload }),
-            "Deleting docotr",
-            "Doctor Deleted Successfully"
+            async () => await deletePatient(id),
+            "Deleting patient",
+            "Patient Deleted Successfully"
         );
     };
 
@@ -68,15 +69,7 @@ const PatientPage = () => {
     };
 
     const columnDef: GridColDef[] = [
-        {
-            field: "sl",
-            headerName: "SL",
-            width: 80,
-            headerAlign: "center",
-            align: "center",
-            sortable: false,
-        },
-        { field: "name", headerName: "Name", flex: 1 },
+        { field: "name", headerName: "Name", flex: 1, sortable: true },
         { field: "email", headerName: "Email", minWidth: 200 },
         { field: "contactNumber", headerName: "Contact Number", flex: 1 },
 
@@ -149,11 +142,9 @@ const PatientPage = () => {
         },
     ];
 
-
     return (
         <Box>
             <N_DataGrid
-           
                 rows={patients}
                 columns={columnDef}
                 isLoading={isFetching}

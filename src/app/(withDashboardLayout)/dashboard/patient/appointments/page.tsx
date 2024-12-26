@@ -31,13 +31,6 @@ const PatientAppoinmtntPage = () => {
 
     const columns: GridColDef[] = [
         {
-            field: "sl",
-            headerName: "SL",
-            width: 120,
-            headerAlign: "center",
-            align: "center",
-        },
-        {
             field: "name",
             headerName: "Doctor Name",
             flex: 1,
@@ -49,14 +42,14 @@ const PatientAppoinmtntPage = () => {
             headerName: "Appointment Date",
             flex: 1,
             renderCell: ({ row }) =>
-                dateFaormatter(row?.schedule.startDateTime),
+                dateFaormatter(row?.schedule?.startDateTime),
         },
         {
             field: "appointmentTime",
             headerName: "Appointment Time",
             flex: 1,
             width: 200,
-            renderCell: ({ row }) => timeFormatter(row?.schedule.startDateTime),
+            renderCell: ({ row }) => timeFormatter(row?.schedule?.startDateTime),
         },
         {
             field: "status",

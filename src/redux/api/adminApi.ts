@@ -2,6 +2,7 @@ import {
     createApiBuilder,
     queryApiBuilder,
     updateApiBuilder,
+    deleteApiBuilder,
 } from "@/utils/apiBuilders";
 import { baseApi } from "./baseApi";
 import { tagTypes } from "../tagTypes";
@@ -28,8 +29,16 @@ export const adminApi = baseApi.injectEndpoints({
             [tagTypes.doctor, tagTypes.user],
             { contentType: "multipart/form-data" }
         ),
+        
+        deleteAdmin: deleteApiBuilder(build, "/admin", [
+            tagTypes.user,
+        ]),
     }),
 });
 
-export const { useCraeteAdminMutation, useGetAllAdminsQuery, useUpdateAdminMutation } =
-    adminApi;
+export const { 
+    useCraeteAdminMutation, 
+    useGetAllAdminsQuery, 
+    useUpdateAdminMutation,
+    useDeleteAdminMutation
+} = adminApi;

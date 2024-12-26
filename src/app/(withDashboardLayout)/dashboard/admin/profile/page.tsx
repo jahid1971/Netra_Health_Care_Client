@@ -13,7 +13,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useUpdateAdminMutation } from "@/redux/api/adminApi";
 import { toast } from "sonner";
 import { tryCatch } from "@/utils/tryCatch";
-import UpdateAdminForm from "./components/updateAdminForm";
 import Edit_Input from "@/components/forms/Edit_Input";
 import N_Form from "@/components/forms/N_Form";
 import { FieldValues } from "react-hook-form";
@@ -149,6 +148,7 @@ const AdminProfilePage = () => {
                                     name="email"
                                     label="Email"
                                     isLoading={isLoading}
+                                    editable={false}
                                 />
                             </Grid>
                             <Grid item>
@@ -179,7 +179,7 @@ const AdminProfilePage = () => {
                     </N_Form>
                 </Box>
             </Stack>
-            {/* <UpdateAdminForm adminData={adminData} /> */}
+            
         </Box>
     );
 };

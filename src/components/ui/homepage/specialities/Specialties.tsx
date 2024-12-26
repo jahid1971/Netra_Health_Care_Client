@@ -5,14 +5,16 @@ import { grey } from "@mui/material/colors";
 import Image from "next/image";
 import Link from "next/link";
 
+import { TUserInfo } from "@/services/actions/auth.services";
+
 const specialties = async () => {
     const res = await fetch(`${baseUrl}/specialty`, {
-        next: { revalidate: 10 },
+        next: { revalidate: 5 },
     });
     const { data: specialities } = await res.json();
 
     return (
-        <Container sx={{ position: "relative" , mb:-7, zIndex:100 }}>
+        <Container sx={{ bottom: -50, position: "relative" }}>
             <Box mt={2} textAlign={"center"}>
                 <Box>
                     <Typography variant="h4" fontWeight={600} color={"primary"}>
@@ -66,9 +68,9 @@ const specialties = async () => {
                 </Stack>
 
                 <Box mt={2}>
-                    <Button variant="outlined" component={Link} href="doctors">
-                        View All
-                    </Button>
+                    <Link href={"doctors"}>
+                        <Button >View All </Button>
+                    </Link>
                 </Box>
             </Box>
         </Container>
