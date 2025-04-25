@@ -59,17 +59,17 @@ const PatientAppoinmtntPage = () => {
             renderCell: ({ row }) => timeFormatter(row?.schedule.startDateTime),
         },
         {
-            field: "paymentStatus",
-            headerName: "Payment Status",
+            field: "status",
+            headerName: " Status",
             flex: 1,
             maxWidth: 150,
-            renderCell: ({ row }) => {
-                return row?.paymentStatus === "PAID" ? (
-                    <N_Chips label={row?.paymentStatus} type="success" />
-                ) : (
-                    <N_Chips label={row?.paymentStatus} type="error" />
-                );
-            },
+            // renderCell: ({ row }) => {
+            //     return row?.paymentStatus === "PAID" ? (
+            //         <N_Chips label={row?.paymentStatus} type="success" />
+            //     ) : (
+            //         <N_Chips label={row?.paymentStatus} type="error" />
+            //     );
+            // },
         },
         {
             field: "action",

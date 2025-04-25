@@ -21,15 +21,16 @@ export async function setTokenToCookies(
     const options: {
         httpOnly?: boolean;
         secure?: boolean;
-        //   sameSite?: 'strict' | 'lax' | 'none';
+        sameSite?: "strict" | "lax" | "none";
         path?: string;
     } = {};
 
-    
     if (option.httpOnly) {
         options.httpOnly = true;
         options.secure = process.env.NODE_ENV === "production";
         options.path = "/";
+        options.sameSite =
+            process.env.NODE_ENV === "production" ? "none" : "lax";
     }
 
     cookies().set(key, token, options);
