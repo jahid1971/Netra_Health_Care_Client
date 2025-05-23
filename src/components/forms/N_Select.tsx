@@ -23,7 +23,7 @@ interface ITextField {
 }
 
 const N_Select = ({
-    items,
+    items=[],
     name,
     label,
     size = "small",

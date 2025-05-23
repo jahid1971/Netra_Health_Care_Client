@@ -20,10 +20,9 @@ type TMultiselect = {
     defaultValue?: any[];
 };
 
-
 export default function N_MultiSelect({
     name,
-    items,
+    items = [],
     label,
     disabled,
     required = true,
@@ -56,24 +55,40 @@ export default function N_MultiSelect({
                         multiple
                         value={value || []}
                         onChange={(event) => {
-                            onChange(event.target.value);
+                            const val = event.target.value;
+                            onChange(Array.isArray(val) ? val : [val]);
                         }}
                         input={<OutlinedInput id={name} label={label} />}
-                        renderValue={(selected) => (
-                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.7 }}>
-                                {selected?.map((value: any) => (
-                                    
-                                    <Box key={value}> {valueToLabelMap?.[value]},</Box>
-                                ))}
-                            </Box>
-                        )}
+                        renderValue={(selected) => {
+                            const safeSelected = Array.isArray(selected)
+                                ? selected
+                                : [];
+                            return (
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        gap: 0.7,
+                                    }}
+                                >
+                                    {safeSelected.map((value: any) => (
+                                        <Box key={value}>
+                                            {" "}
+                                            {valueToLabelMap?.[value]},
+                                        </Box>
+                                    ))}
+                                </Box>
+                            );
+                        }}
                         disabled={disabled}
 
                         // MenuProps={MenuProps}
                     >
                         {items?.map((item) => (
                             <MenuItem key={item.value} value={item.value}>
-                                <Checkbox checked={value.indexOf(item.value) > -1} />
+                                <Checkbox
+                                    checked={value.indexOf(item.value) > -1}
+                                />
                                 <ListItemText primary={item.label} />
                             </MenuItem>
                         ))}
