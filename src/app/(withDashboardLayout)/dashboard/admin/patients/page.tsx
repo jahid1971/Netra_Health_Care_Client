@@ -148,7 +148,7 @@ const PatientPage = () => {
                 rows={patients}
                 columns={columnDef}
                 isLoading={isFetching}
-                notFoundFor="Doctor"
+                notFoundFor="Patient"
                 setQuery={setQuery}
                 query={query}
                 meta={meta}

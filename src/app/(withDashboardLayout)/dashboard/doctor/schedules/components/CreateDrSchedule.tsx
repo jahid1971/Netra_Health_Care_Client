@@ -94,6 +94,7 @@ const CreateDrSchedule = () => {
                         label="Available Schedule"
                         methods={methods}
                         disabled={!schedules || schedulesData?.length === 0}
+                        selectAllOption
                     />
                     {hasNoSchedulesError && (
                         <Typography color="error">

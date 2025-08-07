@@ -1,6 +1,8 @@
 import { useAppDispatch } from "@/redux/hooks";
 import {
+    selectErrorMsg,
     setErrorDetails,
+    setErrorMsg,
     useSelectErrorDetails,
     useSelectErrorMsg,
 } from "@/redux/slices/generalSlices";
@@ -152,9 +154,11 @@ const N_Form = ({
 
     useEffect(() => {
         return () => {
-            dispatch(setErrorDetails({})); // Clear errors on unmount
+            dispatch(setErrorMsg("")); // Clear error message on unmount
+            dispatch(setErrorDetails({}));
         };
     }, [dispatch]);
+
 
     return (
         <FormProvider {...methods}>
@@ -169,7 +173,7 @@ const N_Form = ({
                     }}
                     textAlign={"center"}
                 >
-                    {error || errorMessage}
+                    {errorMessage}
                 </Typography>
             )}
             <form onSubmit={handleSubmit(submit)}>{children}</form>

@@ -1,0 +1,19 @@
+{
+    "servers": {
+        "filesystem": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-filesystem",
+                "${input:allowed_dirs}"
+            ]
+        }
+    },
+    "inputs": [
+        {
+            "id": "allowed_dirs",
+            "type": "promptString",
+            "description": "Allowed directories for the filesystem MCP server (comma separated)"
+        }
+    ]
+}

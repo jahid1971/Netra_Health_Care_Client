@@ -28,16 +28,20 @@ const DoctorSchedulePage = () => {
     const dispatch = useAppDispatch();
 
     const [query, setQuery] = useState<Record<string, any>>(defaultQuery);
+    const [selectedRows, setSelectedRows] = useState<any[]>([]);
 
     const { data, isLoading, isFetching } = useGetMySchedulesQuery(query);
 
     const [deleteDoctorSchedule] = useDeleteDoctorScheduleMutation();
 
-    const handleDelete = (id: string) => {
+    const handleDelete = (ids: string | string[]) => {
         tryCatch(
-            async () => await deleteDoctorSchedule(id),
+            async () =>
+                await deleteDoctorSchedule({
+                    data: Array.isArray(ids) ? ids : [ids],
+                }),
             "Deleting doctor Schedule",
-            " Doctor Schedule Deleted Successfully"
+            "Doctor Schedule Deleted Successfully"
         );
     };
 
@@ -74,8 +78,7 @@ const DoctorSchedulePage = () => {
                                 openModal({
                                     modalId: "confirm",
                                     modalData: {
-                                        action: () =>
-                                            handleDelete(row.id as string),
+                                        action: () => handleDelete(row.id),
                                     },
                                 })
                             )
@@ -99,6 +102,25 @@ const DoctorSchedulePage = () => {
         </Button>
     );
 
+    const actionButton = (
+        <Button
+            color="error"
+            size="small"
+            onClick={() =>
+                dispatch(
+                    openModal({
+                        modalId: "confirm",
+                        modalData: {
+                            action: () => handleDelete(selectedRows.map((row) => row.id)),
+                        },
+                    })
+                )
+            }
+        >
+            Delete (Selected Rows)
+        </Button>
+    );
+
     return (
         <Box>
             <N_DataGrid
@@ -110,7 +132,9 @@ const DoctorSchedulePage = () => {
                 meta={meta}
                 searchField={false}
                 createButton={createButton}
-                rowSelection={false}
+                setSelectedRows={setSelectedRows}
+                selectedRows={selectedRows}
+                checkedRowsActionBtn={actionButton}
                 query={query}
             >
                 <Stack

@@ -18,6 +18,7 @@ type TMultiselect = {
     required?: boolean;
     size?: "small" | "medium";
     defaultValue?: any[];
+    selectAllOption?: boolean;
 };
 
 export default function N_MultiSelect({
@@ -29,6 +30,7 @@ export default function N_MultiSelect({
     methods,
     size = "small",
     defaultValue = [],
+    selectAllOption = false,
 }: TMultiselect) {
     const {
         control,
@@ -48,52 +50,88 @@ export default function N_MultiSelect({
                 name={name}
                 defaultValue={defaultValue}
                 rules={{ required: required ? `${label} is required` : false }}
-                render={({ field: { onChange, value } }) => (
-                    <Select
-                        labelId={`${name}-label`}
-                        id={name}
-                        multiple
-                        value={value || []}
-                        onChange={(event) => {
-                            const val = event.target.value;
-                            onChange(Array.isArray(val) ? val : [val]);
-                        }}
-                        input={<OutlinedInput id={name} label={label} />}
-                        renderValue={(selected) => {
-                            const safeSelected = Array.isArray(selected)
-                                ? selected
-                                : [];
-                            return (
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        flexWrap: "wrap",
-                                        gap: 0.7,
-                                    }}
-                                >
-                                    {safeSelected.map((value: any) => (
-                                        <Box key={value}>
-                                            {" "}
-                                            {valueToLabelMap?.[value]},
-                                        </Box>
-                                    ))}
-                                </Box>
-                            );
-                        }}
-                        disabled={disabled}
+                render={({ field: { onChange, value } }) => {
+                    const allValues = items
+                        .filter((i) => i.value !== "__all__")
+                        .map((i) => i.value);
+                    const isAllSelected =
+                        allValues.length > 0 &&
+                        allValues.every((v) => value?.includes(v));
+                    return (
+                        <Select
+                            labelId={`${name}-label`}
+                            id={name}
+                            multiple
+                            value={value || []}
+                            onChange={(event) => {
+                                const val = event.target.value;
+                                // Handle select all logic
+                                if (
+                                    Array.isArray(val) &&
+                                    val.includes("__all__")
+                                ) {
+                                    if (!isAllSelected) {
+                                        onChange(allValues);
+                                    } else {
+                                        onChange([]);
+                                    }
+                                } else {
+                                    onChange(val);
+                                }
+                            }}
+                            input={<OutlinedInput id={name} label={label} />}
+                            renderValue={(selected) => {
+                                const safeSelected = Array.isArray(selected)
+                                    ? selected
+                                    : [];
+                                return (
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            flexWrap: "wrap",
+                                            gap: 0.7,
+                                        }}
+                                    >
+                                        {safeSelected.map((value: any) => (
+                                            <Box key={value}>
+                                                {valueToLabelMap?.[value]},
+                                            </Box>
+                                        ))}
+                                    </Box>
+                                );
+                            }}
+                            disabled={disabled}
+                        >
+                            {selectAllOption && (
+                                <MenuItem value="__all__">
+                                    <Checkbox
+                                        checked={isAllSelected}
+                                        indeterminate={
+                                            !isAllSelected && value?.length > 0
+                                        }
+                                    />
+                                    <ListItemText primary="Select All" />
+                                </MenuItem>
+                            )}
 
-                        // MenuProps={MenuProps}
-                    >
-                        {items?.map((item) => (
-                            <MenuItem key={item.value} value={item.value}>
-                                <Checkbox
-                                    checked={value.indexOf(item.value) > -1}
-                                />
-                                <ListItemText primary={item.label} />
-                            </MenuItem>
-                        ))}
-                    </Select>
-                )}
+                            {items
+                                ?.filter((i) => i.value !== "__all__")
+                                .map((item) => (
+                                    <MenuItem
+                                        key={item.value}
+                                        value={item.value}
+                                    >
+                                        <Checkbox
+                                            checked={
+                                                value.indexOf(item.value) > -1
+                                            }
+                                        />
+                                        <ListItemText primary={item.label} />
+                                    </MenuItem>
+                                ))}
+                        </Select>
+                    );
+                }}
             />
             {errors[name] && (
                 <Typography variant="body2" color="error">

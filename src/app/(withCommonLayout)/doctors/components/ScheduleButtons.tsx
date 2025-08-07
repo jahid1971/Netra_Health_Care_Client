@@ -40,7 +40,7 @@ const ScheduleButtons = ({
             })}
         </Stack>
     ) : (
-        <Typography variant="body1" color="error" fontWeight={600}>
+        <Typography variant="body1" color="error" textAlign="center" fontWeight={600}>
             No slots available
         </Typography>
     );

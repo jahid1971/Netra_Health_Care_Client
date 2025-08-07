@@ -1,110 +1,173 @@
 "use client";
-import { Box, IconButton } from "@mui/material";
-
-import { GridColDef } from "@mui/x-data-grid";
-import N_DataGrid from "@/components/dataGrid/DataGrid";
-
-import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
+import {
+    Box,
+    Typography,
+    Paper,
+    Avatar,
+    Chip,
+    Stack,
+    Button,
+} from "@mui/material";
 import { useState } from "react";
 import N_Pagination from "@/components/pagination/Pagination";
 import { useGetAllAppointmentsQuery } from "@/redux/api/appointmentApi";
-import N_Chips from "@/components/ui/N_Chips";
+import { dateFaormatter, timeFormatter } from "@/utils/dateFormatter";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import Link from "next/link";
-import tableSerial from "@/utils/tableSerial";
-import { IMeta } from "@/types/common";
+import { TAppointment } from "@/types/Appointment";
 
 const PatientAppoinmtntPage = () => {
     const [query, setQuery] = useState<Record<string, any>>({});
-
     const { data, isFetching } = useGetAllAppointmentsQuery(query);
-
-    const appointments = data?.data;
-    const appointmentsData = appointments?.map((appointment, index) => ({
-        ...appointment,
-        sl: tableSerial(query, index),
-    }));
-
-    console.log(appointmentsData, "appointmentdataaa");
-
-    const meta = data?.meta as IMeta;
-
-    const columns: GridColDef[] = [
-        {
-            field: "name",
-            headerName: "Doctor Name",
-            flex: 1,
-
-            renderCell: ({ row }) => row?.doctor?.name,
-        },
-        {
-            field: "appointmentDate",
-            headerName: "Appointment Date",
-            flex: 1,
-            renderCell: ({ row }) =>
-                dateFaormatter(row?.schedule?.startDateTime),
-        },
-        {
-            field: "appointmentTime",
-            headerName: "Appointment Time",
-            flex: 1,
-            width: 200,
-            renderCell: ({ row }) => timeFormatter(row?.schedule?.startDateTime),
-        },
-        {
-            field: "status",
-            headerName: " Status",
-            flex: 1,
-            maxWidth: 150,
-            // renderCell: ({ row }) => {
-            //     return row?.paymentStatus === "PAID" ? (
-            //         <N_Chips label={row?.paymentStatus} type="success" />
-            //     ) : (
-            //         <N_Chips label={row?.paymentStatus} type="error" />
-            //     );
-            // },
-        },
-        {
-            field: "action",
-            headerName: "Join",
-            flex: 1,
-            headerAlign: "center",
-            align: "center",
-            renderCell: ({ row }) => {
-                return (
-                    <IconButton
-                        component={Link}
-                        href={`/video?videoCallingId=${row?.videoCallingId}`}
-                        disabled={row?.paymentStatus === "UNPAID"}
-                    >
-                        <VideocamIcon
-                            sx={{
-                                color:
-                                    row?.paymentStatus === "PAID"
-                                        ? "primary.main"
-                                        : "",
-                            }}
-                        />
-                    </IconButton>
-                );
-            },
-        },
-    ];
+    const appointments: TAppointment[] = data?.data || [];
 
     return (
-        <Box>
-            <N_DataGrid
-                sorting={false}
-                setQuery={setQuery}
-                rows={appointmentsData || []}
-                columns={columns}
-                isLoading={isFetching}
-                notFoundFor="appointment"
-                meta={meta}
-                rowSelection={false}
-                searchField={false}
-                filter={false}
-            />
+        <Box sx={{ px: { xs: 1, sm: 2, md: 4 }, py: 2 }}>
+            <Typography
+                variant="h4"
+                fontWeight={700}
+                mb={2}
+                color="primary.main"
+            >
+                My Appointments
+            </Typography>
+            <Paper
+                elevation={2}
+                sx={{
+                    borderRadius: 3,
+                    p: { xs: 1, sm: 2 },
+                    mb: 2,
+                    background: "#fafbfc",
+                }}
+            >
+                <Typography
+                    variant="subtitle1"
+                    fontWeight={500}
+                    mb={2}
+                    color="text.secondary"
+                >
+                    Upcoming and past appointments
+                </Typography>
+                <Stack spacing={2}>
+                    {isFetching ? (
+                        <Typography>Loading...</Typography>
+                    ) : appointments.length === 0 ? (
+                        <Typography color="text.secondary">
+                            No appointments found.
+                        </Typography>
+                    ) : (
+                        appointments.map((appointment) => (
+                            <Paper
+                                key={appointment.id}
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: { xs: "column", sm: "row" },
+                                    alignItems: { sm: "center" },
+                                    justifyContent: "space-between",
+                                    p: 2,
+                                    borderRadius: 2,
+                                    boxShadow: 1,
+                                    gap: 2,
+                                }}
+                            >
+                                <Stack
+                                    direction="row"
+                                    spacing={2}
+                                    alignItems="center"
+                                >
+                                    <Avatar
+                                        src={
+                                            appointment?.doctor?.profilePhoto ||
+                                            ""
+                                        }
+                                        alt={
+                                            appointment?.doctor?.name ||
+                                            "Doctor"
+                                        }
+                                    />
+                                    <Box>
+                                        <Typography
+                                            fontWeight={600}
+                                            fontSize={16}
+                                        >
+                                            {appointment?.doctor?.name ||
+                                                "Doctor"}
+                                        </Typography>
+                                        <Typography
+                                            color="text.secondary"
+                                            fontSize={14}
+                                        >
+                                            {dateFaormatter(
+                                                appointment?.schedule
+                                                    ?.startDateTime
+                                            ) || "-"}
+                                            {" | "}
+                                            {timeFormatter(
+                                                appointment?.schedule
+                                                    ?.startDateTime
+                                            ) || "-"}
+                                        </Typography>
+                                    </Box>
+                                </Stack>
+                                <Stack
+                                    direction="row"
+                                    spacing={2}
+                                    alignItems="center"
+                                >
+                                    <Chip
+                                        label={
+                                            appointment?.paymentStatus ===
+                                            "PAID"
+                                                ? "Paid"
+                                                : "Unpaid"
+                                        }
+                                        color={
+                                            appointment?.paymentStatus ===
+                                            "PAID"
+                                                ? "success"
+                                                : "error"
+                                        }
+                                        variant="outlined"
+                                    />
+                                    <Chip
+                                        label={appointment?.status || "-"}
+                                        color={
+                                            appointment?.status === "COMPLETED"
+                                                ? "success"
+                                                : appointment?.status ===
+                                                  "CANCELLED"
+                                                ? "error"
+                                                : "info"
+                                        }
+                                        variant="outlined"
+                                    />
+                                    {appointment?.paymentStatus === "PAID" ? (
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            size="small"
+                                            component={Link}
+                                            href={`/video?videoCallingId=${appointment?.videoCallingId}`}
+                                            startIcon={<VideocamIcon />}
+                                        >
+                                            Join
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="outlined"
+                                            color="warning"
+                                            size="small"
+                                            disabled
+                                        >
+                                            Payment Required
+                                        </Button>
+                                    )}
+                                </Stack>
+                            </Paper>
+                        ))
+                    )}
+                </Stack>
+            </Paper>
         </Box>
     );
 };

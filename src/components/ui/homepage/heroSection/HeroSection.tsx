@@ -5,6 +5,7 @@ import { Container } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Link from "next/link";
+import PsychologyIcon from "@mui/icons-material/Psychology";
 
 const HeroSection = () => {
     return (
@@ -24,7 +25,7 @@ const HeroSection = () => {
                     sx={{
                         position: "absolute",
                         width: { xs: "100%", md: "700px" },
-                        left: { xs: "0px", md: "-90px" }, 
+                        left: { xs: "0px", md: "-90px" },
                         top: "-120px",
                         overflow: "hidden",
                         maxWidth: "100vw",
@@ -73,10 +74,17 @@ const HeroSection = () => {
                     recusandae atque sed. Saepe, vitae id?
                 </Typography>
                 <Box sx={{ display: "flex", gap: 2 }}>
-                    <Link href="/dashboard">
-                        <Button>Make Appointment </Button>
+                    <Link href="/doctors?ai=1" prefetch>
+                        <Button
+                            startIcon={<PsychologyIcon />}
+                            sx={{ whiteSpace: "nowrap" }}
+                        >
+                            Find Doctors with AI Assistance
+                        </Button>
                     </Link>
-                    <Button variant="outlined">Contact us </Button>
+                    <Link href="/dashboard">
+                        <Button variant="outlined">Make Appointment </Button>
+                    </Link>
                 </Box>
             </Box>
 

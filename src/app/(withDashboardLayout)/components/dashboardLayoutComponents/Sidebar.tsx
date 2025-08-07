@@ -132,7 +132,7 @@ const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
                     onClick={drawerToggle}
                     sx={{
                         opacity: drawerWidth === 60 ? 1 : 0,
-                        transition: "opacity 0.1s ease-in-out",
+                        transition: "opacity 0.3s ease-in-out",
                         "& svg": { color: "#1586FD" },
                     }}
                 >
@@ -144,8 +144,9 @@ const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
                     onClick={drawerToggle}
                     sx={{
                         opacity: drawerWidth === 60 ? 0 : 1,
-                        transition: "opacity .1s ease-in-out",
+                        transition: "opacity .3s ease-in-out",
                         "& svg": { color: "#1586FD" },
+                        ml:"-15px"
                     }}
                 >
                     <ChevronLeftIcon />

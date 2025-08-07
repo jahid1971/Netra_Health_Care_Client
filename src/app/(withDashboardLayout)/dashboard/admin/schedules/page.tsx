@@ -65,6 +65,7 @@ const SchedulePage = () => {
             flex: 1,
             type: "date",
             valueFormatter: (param) => dayjs(param).format("DD-MM-YYYY"),
+            sortable: true,
         },
         {
             field: "startTime",

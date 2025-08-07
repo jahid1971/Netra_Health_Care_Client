@@ -66,7 +66,6 @@ const N_DataGrid = ({
     serial = true,
     rowHeight,
     autoRowHeight,
-  
 }: TDataGridProps) => {
     const [showFilters, setShowFilters] = useState(false);
 
@@ -289,7 +288,17 @@ const N_DataGrid = ({
                             noRowsOverlay: CustomNoRowsOverlay,
                             ...slots,
                         }}
-            sx={{
+                        sortModel={
+                            query?.sortBy
+                                ? [
+                                      {
+                                          field: query.sortBy,
+                                          sort: query.sortOrder,
+                                      },
+                                  ]
+                                : []
+                        }
+                        sx={{
                             "& .default-header": {
                                 border: "none",
                                 backgroundColor: blue[50],
@@ -319,6 +328,31 @@ const N_DataGrid = ({
                                 autoRowHeight ? { py: "15px" } : undefined,
                             "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell":
                                 autoRowHeight ? { py: "22px" } : undefined,
+
+                            "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within":
+                                {
+                                    outline: "none",
+                                },
+                            "& .MuiDataGrid-iconButtonContainer": {
+                                visibility: "visible",
+                                width: "auto !important",
+                            },
+                            "& .MuiDataGrid-columnHeader--sorted .MuiDataGrid-sortIcon":
+                                {
+                                    color: query?.sortBy
+                                        ? "primary.main"
+                                        : "rgba(0, 0, 0, 0.54)",
+                                    opacity: "1 !important",
+                                },
+                            "& .MuiDataGrid-sortIcon": {
+                                opacity: "1 !important",
+                                color: "rgba(0, 0, 0, 0.54)", // default for inactive
+                            },
+                            "& .MuiDataGrid-menuIconButton": {
+                                visibility: "visible",
+                                width: "auto !important",
+                                opacity: "1 !important",
+                            },
                         }}
                         rowHeight={rowHeight}
                     />

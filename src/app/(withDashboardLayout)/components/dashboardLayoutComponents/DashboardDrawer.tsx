@@ -47,7 +47,7 @@ const DashboardDrawer = ({
                     "& .MuiDrawer-paper": {
                         boxSizing: "border-box",
                         width: drawerWidth,
-                        transition: "width 0.1s",
+                        transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)", 
                     },
                 }}
                 open

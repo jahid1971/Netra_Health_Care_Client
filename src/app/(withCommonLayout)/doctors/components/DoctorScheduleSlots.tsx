@@ -9,11 +9,11 @@ import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
 import { createAppointment } from "@/services/actions/appointment";
 
 import { useRouter } from "next/navigation";
-import SubmitButton from "@/components/ui/SubmitButton";
-import AppError from "@/utils/AppError";
-
 import ScheduleButtonsSkeleton from "./ScheduleButtonsSkeleton";
 import { toast } from "sonner";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const DoctorScheduleSlots = ({
     doctorId,
@@ -23,14 +23,15 @@ const DoctorScheduleSlots = ({
     adminView?: boolean;
 }) => {
     const [scheduleId, setScheduleID] = useState("");
+    const [pickedDate, setPickedDate] = useState<dayjs.Dayjs | null>(null);
     const router = useRouter();
 
     const todayQuery = useMemo(
         () => ({
             doctorId,
-            startDate: dayjs().startOf("day").toISOString(), // Current date
+            startDate: dayjs().startOf("day").toISOString(),
             endDate: dayjs().endOf("day").toISOString(),
-            limit: 100, // as there is no pagination here
+            limit: 100,
             isBooked: false,
         }),
         [doctorId]
@@ -42,7 +43,7 @@ const DoctorScheduleSlots = ({
     const tomorrowQuery = useMemo(
         () => ({
             doctorId,
-            startDate: dayjs().add(1, "day").startOf("day").toISOString(), // Tomorrow's date
+            startDate: dayjs().add(1, "day").startOf("day").toISOString(),
             endDate: dayjs().add(1, "day").endOf("day").toISOString(),
             limit: 100,
             isBooked: false,
@@ -52,6 +53,21 @@ const DoctorScheduleSlots = ({
 
     const { data: tomorrowSlots, isLoading: isTomorrowLoading } =
         useGetDoctorSchedulesQuery(tomorrowQuery);
+
+    // Calendar date query
+    const calendarQuery = useMemo(() => {
+        if (!pickedDate) return null;
+        return {
+            doctorId,
+            startDate: pickedDate.startOf("day").toISOString(),
+            endDate: pickedDate.endOf("day").toISOString(),
+            limit: 100,
+            isBooked: false,
+        };
+    }, [doctorId, pickedDate]);
+
+    const { data: calendarSlots, isFetching: isCalendarLoading } =
+        useGetDoctorSchedulesQuery(calendarQuery ?? {}, { skip: !pickedDate });
 
     const handleBookAppointment = async () => {
         if (doctorId && scheduleId) {
@@ -120,20 +136,73 @@ const DoctorScheduleSlots = ({
                 />
             )}
 
-            {/* <SubmitButton
-                onClick={handleBookAppointment}
-                sx={{ mt: 2 }}
-                label=" Book Appointment Now"
-                fullWidth={false}
-            /> */}
+            {/* Calendar section */}
+            <Box
+                mt={3}
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+            >
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        label="Pick a date "
+                        value={pickedDate}
+                        onChange={setPickedDate}
+                        disablePast
+                        slotProps={{
+                            textField: {
+                                size: "small",
+                                fullWidth: false,
+                                sx: {
+                                    mt: 2,
+                                    "& .MuiInputLabel-root": {
+                                        color: "primary.main",
+                                    },
+                                    "& .MuiOutlinedInput-notchedOutline": {
+                                        borderColor: "primary.main",
+                                    },
+                                    "& .MuiSvgIcon-root": {
+                                        color: "primary.main",
+                                    },
+                                },
+                            },
+                        }}
+                    />
+                </LocalizationProvider>
+                {pickedDate && (
+                    <Box width="100%" mt={2}>
+                        <Typography
+                            variant="h6"
+                            fontSize={15}
+                            fontWeight={600}
+                            mb={1}
+                            textAlign={"center"}
+                        >
+                            {pickedDate.format("MMMM D, YYYY, dddd")}
+                        </Typography>
+                        {isCalendarLoading ? (
+                            <ScheduleButtonsSkeleton />
+                        ) : (
+                            <ScheduleButtons
+                                setScheduleID={setScheduleID}
+                                scheduleId={scheduleId}
+                                doctorSchedules={calendarSlots?.data ?? []}
+                            />
+                        )}
+                    </Box>
+                )}
+            </Box>
+
             {!adminView && (
-                <Button
-                    onClick={handleBookAppointment}
-                    sx={{ mt: 2 }}
-                    fullWidth={false}
-                >
-                    Book Appointment Now
-                </Button>
+                <Box display="flex" justifyContent="right" width="100%" >
+                    <Button
+                        onClick={handleBookAppointment}
+                        sx={{ mt: 2 }}
+                        fullWidth={false}
+                    >
+                        Book Appointment Now
+                    </Button>
+                </Box>
             )}
         </Box>
     );

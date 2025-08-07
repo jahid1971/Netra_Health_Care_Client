@@ -1,18 +1,12 @@
 import CategoryTabs from "@/components/ui/doctor/CategoryTabs";
-
 import { IDoctor } from "@/types/Doctors";
-
 import DashedLine from "@/components/ui/DashedLine";
-
 import DoctorCard from "@/components/ui/doctor/DoctorCard";
 import DoctorCardSkeleton from "@/components/ui/homepage/skeletons/DoctorCardSkeleton";
 import { baseUrl } from "@/constants/commmon";
-
 import { Box, Typography } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { Suspense } from "react";
-
-import SearchBar from "./Searchbar";
+import DoctorPageClientWrapper from "./DoctorPageClientWrapper";
 
 const DoctorPageComponent = async ({
     searchParams,
@@ -55,58 +49,34 @@ const DoctorPageComponent = async ({
     const { data: doctors } = await res.json();
 
     return (
-        <Box
-            px={!withDashboardLayout ? { xs: 0, md: 3 } : 0}
-            py={!withDashboardLayout ? 3 : 0}
-            // bgcolor={!withDashboardLayout ? grey[100] : "transparent"}
-            sx={{
-                position: "relative",
-                maxWidth: "100%",
-                boxSizing: "border-box",
-                width: "100%",
-            }}
-        >
-            <Box
-                sx={{
-                    position: "sticky",
-                    top: 64,
-                    zIndex: 1201,
-                    background: grey[100],
-                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                    width: "100%",
-                    marginLeft: 0,
-                    marginRight: 0,
-                    left: 0,
-                }}
-            >
-                <CategoryTabs specialty={specialty?.id} />
-            </Box>
-
-            <SearchBar />
-
-            {doctors?.length ? (
-                doctors?.map((doctor: IDoctor, index: number) => (
-                    <Box key={doctor.id}>
-                        <Box my={3}>
-                            <Suspense fallback={<DoctorCardSkeleton />}>
-                                <DoctorCard doctor={doctor} />
-                            </Suspense>
+        <DoctorPageClientWrapper withDashboardLayout={withDashboardLayout}>
+            <CategoryTabs specialty={specialty?.id} />
+            
+            <Box mt={4}>
+                {doctors?.length ? (
+                    doctors?.map((doctor: IDoctor, index: number) => (
+                        <Box key={doctor.id}>
+                            <Box my={3}>
+                                <Suspense fallback={<DoctorCardSkeleton />}>
+                                    <DoctorCard doctor={doctor} />
+                                </Suspense>
+                            </Box>
+                            {index !== doctors.length - 1 && <DashedLine />}
                         </Box>
-                        {index !== doctors.length - 1 && <DashedLine />}
-                    </Box>
-                ))
-            ) : (
-                <Box my={10} textAlign={"center"}>
-                    <Typography variant="h6" color={"primary.main"}>
-                        No Doctor found for{" "}
-                        {!searchParams?.searchTerm && "SPECIALIST in "}
-                        <Typography fontSize={"20px"} fontWeight={800}>
-                            {searchParams?.searchTerm || specialty?.title}
+                    ))
+                ) : (
+                    <Box my={10} textAlign={"center"}>
+                        <Typography variant="h6" color={"primary.main"}>
+                            No Doctor found for{" "}
+                            {!searchParams?.searchTerm && "SPECIALIST in "}
+                            <Typography fontSize={"20px"} fontWeight={800}>
+                                {searchParams?.searchTerm || specialty?.title}
+                            </Typography>
                         </Typography>
-                    </Typography>
-                </Box>
-            )}
-        </Box>
+                    </Box>
+                )}
+            </Box>
+        </DoctorPageClientWrapper>
     );
 };
 

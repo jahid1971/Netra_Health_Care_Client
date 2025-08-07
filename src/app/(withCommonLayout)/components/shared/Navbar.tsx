@@ -91,8 +91,9 @@ export const Navbar = ({ userInfo }: { userInfo?: TUserInfo }) => {
                 right: 0,
                 width: "100%",
                 zIndex: 1000, 
-                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                // boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                 bgcolor: "background.paper",
+                borderBottom: `1px solid ${grey[300]}`,
             }}
         >
             <Stack

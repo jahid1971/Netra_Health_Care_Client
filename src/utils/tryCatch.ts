@@ -1,13 +1,13 @@
-import { useAppDispatch } from "@/redux/hooks";
 import { setErrorDetails, setErrorMsg } from "@/redux/slices/generalSlices";
 import { toast } from "sonner";
+import { store } from "@/redux/store";
 
 type tryCatch = (
     action: () => Promise<any>,
     loadingMessage?: string,
     successMessage?: string,
     successAction?: () => any,
-    dispatch?: ReturnType<typeof useAppDispatch>
+    dispatch?: typeof store.dispatch
 ) => Promise<void>;
 
 export const tryCatch: tryCatch = async (
@@ -21,6 +21,8 @@ export const tryCatch: tryCatch = async (
         loadingMessage ? toast.loading(`${loadingMessage}...`) : undefined
     ) as string | undefined;
 
+    const dispatchFn = dispatch || store.dispatch;
+
     try {
         const res = await action();
 
@@ -31,20 +33,18 @@ export const tryCatch: tryCatch = async (
 
             if (successAction) await successAction();
 
-            dispatch && dispatch(setErrorMsg(""));
+            dispatchFn(setErrorMsg(""));
         } else if (
             (res?.success === false || res?.error) &&
             (res?.message || res?.error?.data?.message)
         ) {
             console.log(res, "error response in else if block of tryCatch");
 
-            dispatch &&
-                dispatch(
-                    setErrorMsg(res?.message || res?.error?.data?.message)
-                );
+            dispatchFn(setErrorMsg(res?.message || res?.error?.data?.message));
 
-            dispatch &&
-                dispatch(setErrorDetails(res?.error?.data?.errorDetails));
+            if (res?.error?.data?.errorDetails) {
+                dispatchFn(setErrorDetails(res?.error?.data?.errorDetails));
+            }
 
             toast.error(res?.message ?? res?.error?.data?.message, {
                 id: toastId,
@@ -55,6 +55,8 @@ export const tryCatch: tryCatch = async (
         return res;
     } catch (err: any) {
         console.error(err, "error in catch block");
+
+        dispatchFn(setErrorMsg(err?.message || "Something went wrong"));
 
         err?.type === "AppError"
             ? toast.error(err.message, { id: toastId })
