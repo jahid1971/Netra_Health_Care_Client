@@ -93,7 +93,7 @@ const WhyUs = () => {
                     ))}
                 </Grid>
 
-                <Grid item md={6} position={"relative"}>
+                <Grid item md={6} position={"relative"}  display={{ xs: "none", md: "block" }}>
                     <Box
                         sx={{
                             backgroundColor: "primary.main",
@@ -103,7 +103,12 @@ const WhyUs = () => {
                             height: 550,
                         }}
                     ></Box>
-                    <Box position={"absolute"} top={0} left={0}>
+                    <Box
+                        position={"absolute"}
+                        top={0}
+                        left={0}
+                        display={{ xs: "none", md: "block" }}
+                    >
                         <Image src={chooseUsImg} alt="Why Us" width={600} />
                     </Box>
                 </Grid>

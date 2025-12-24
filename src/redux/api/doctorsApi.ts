@@ -30,7 +30,7 @@ const doctorsApi = baseApi.injectEndpoints({
             tagTypes.doctor,
         ]),
 
-        deleteDoctor: deleteApiBuilder(build, "/doctor/soft", [
+        deleteDoctor: deleteApiBuilder(build, "/doctor/soft-delete", [
             tagTypes.doctor,
         ]),
     }),

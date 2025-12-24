@@ -14,12 +14,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 const UpdatePatientProfile = ({ patientData }: { patientData: IPatient }) => {
     const dispatch = useAppDispatch();
     const [updatePatient] = useUpdatePatientMutation();
 
     const handleUpdate = (values: FieldValues) => {
+        if (!values) return toast.error("No changes made");
         const payload = modifyPayload(values);
 
         tryCatch(
@@ -69,7 +71,6 @@ const UpdatePatientProfile = ({ patientData }: { patientData: IPatient }) => {
                     >
                         <Stack spacing={2} mt={2}>
                             <N_Input label="Name" name="name" />
-                       
 
                             <N_Input
                                 label="Contact Number"

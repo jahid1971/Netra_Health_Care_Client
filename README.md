@@ -7,6 +7,24 @@ Frontend application for Netra Healthcare, a comprehensive telemedicine platform
 
 - **Backend Repository**: [Netra Healthcare Server](https://github.com/jahid1971/Netra_Healthcare_server)
 
+
+## 🧪 Demo Credentials
+
+Use the following accounts to explore different user roles on the platform:
+
+### 🔐 Super Admin
+- **Email**: `superAdmin@gmail.com`  
+- **Password**: `123456`
+
+### 🩺 Doctor
+- **Email**: `doctor2@gmail.com`  
+- **Password**: `123456`
+
+### 👤 Patient
+- **Email**: `patient2@gmail.com`  
+- **Password**: `123456`
+
+
 ## ✨ Features
 
 ### For Patients

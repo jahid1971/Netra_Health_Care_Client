@@ -37,16 +37,18 @@ export const Navbar = ({ userInfo }: { userInfo?: TUserInfo }) => {
         const isActive = pathname === href;
         return (
             <Link href={href}>
-                <Typography
-                    onClick={toggleDrawer(false)}
-                    sx={{
-                        textDecoration: "none",
-                        color: isActive ? "primary.main" : "inherit",
-                        fontWeight: isActive ? 600 : 400,
-                    }}
-                >
-                    {children}
-                </Typography>
+                <Box zIndex={1000}>
+                    <Typography
+                        onClick={toggleDrawer(false)}
+                        sx={{
+                            textDecoration: "none",
+                            color: isActive ? "primary.main" : "inherit",
+                            fontWeight: isActive ? 600 : 400,
+                        }}
+                    >
+                        {children}
+                    </Typography>
+                </Box>
             </Link>
         );
     };
@@ -87,7 +89,7 @@ export const Navbar = ({ userInfo }: { userInfo?: TUserInfo }) => {
                 px: { xs: 2, md: 5 },
                 position: "sticky",
                 top: 0,
-                zIndex: 1,
+                zIndex: 1000, 
                 boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                 bgcolor: "background.paper",
             }}

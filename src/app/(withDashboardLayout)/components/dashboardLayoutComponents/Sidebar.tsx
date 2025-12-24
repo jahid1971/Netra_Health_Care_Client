@@ -11,6 +11,7 @@ import {
     ListItemText,
     Stack,
     Toolbar,
+    useIsFocusVisible,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -28,6 +29,7 @@ import { useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { IDrawerItem } from "@/types/common";
+import { useIsSmallScreen } from "@/utils/isSmallScreen";
 // import NetraLogo from "@/components/NetraLogo";
 
 const NetraLogo = dynamic(() => import("@/components/NetraLogo"), {
@@ -35,6 +37,7 @@ const NetraLogo = dynamic(() => import("@/components/NetraLogo"), {
 });
 
 const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
+    const isSmallScreen = useIsSmallScreen();
     const pathname = usePathname();
     const user = useAppSelector(selectUser);
     const [collapseValue, setCollapseValue] = useState("");
@@ -153,10 +156,10 @@ const Sidebar = ({ drawerWidth, setDrawerWidth, handleDrawerToggle }: any) => {
             {/* SideBar Items.......................SideBar Items */}
             <List
                 onMouseEnter={() => {
-                    !noHoverEffect && setDrawerWidth(250);
+                    !isSmallScreen && !noHoverEffect && setDrawerWidth(250);
                 }}
                 onMouseLeave={() => {
-                    !noHoverEffect && setDrawerWidth(60);
+                    !isSmallScreen && !noHoverEffect && setDrawerWidth(60);
                 }}
                 sx={{ height: "100%" }}
             >

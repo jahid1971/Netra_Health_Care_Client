@@ -28,10 +28,9 @@ const LogInPage = () => {
             async () => {
                 const res = await userLogIn(data);
 
-                
+                console.log("res ---------------", res);
 
                 if (res?.success) {
-                 
                     redirectPath
                         ? router.push(redirectPath)
                         : router.push("/dashboard");
@@ -63,7 +62,7 @@ const LogInPage = () => {
                 p={5}
             >
                 <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
-                    <Image src={logo} alt="logo" width={50}  />
+                    <Image src={logo} alt="logo" width={50} />
 
                     <Typography variant="h6" fontWeight={600}>
                         Login Netra HealthCare
@@ -74,6 +73,10 @@ const LogInPage = () => {
                     onSubmit={onSubmit}
                     resolver={zodResolver(logInvalidationSchema)}
                     error={error}
+                    defaultValues={{
+                        email: process.env.NEXT_PUBLIC_SUPER_ADMIN_EMAIL,
+                        password: process.env.NEXT_PUBLIC_SUPER_ADMIN_PASSWORD,
+                    }}
                 >
                     <Stack
                         direction={{ xs: "column", md: "row" }}

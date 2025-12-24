@@ -5,11 +5,20 @@ import { Box } from "@mui/material";
 import { ReactNode } from "react";
 
 const CommonLayout = ({ children }: { children: ReactNode }) => {
-    const userInfo = getUserInfo() as TUserInfo
+    const userInfo = getUserInfo() as TUserInfo;
     return (
         <Box>
             <Navbar userInfo={userInfo} />
-            <Box minHeight={"100vh"}> {children}</Box>
+            <Box
+                overflow={"hidden"}
+                // display={"flex"}
+                // flexDirection={"column"}
+                // justifyContent={"space-between"}
+                minHeight={"100vh"}
+            >
+                {" "}
+                {children}
+            </Box>
             <Footer />
         </Box>
     );

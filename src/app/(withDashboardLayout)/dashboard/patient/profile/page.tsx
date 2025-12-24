@@ -14,6 +14,7 @@ import UpdatePatientProfile from "./components/UpdatePatientProfile";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { useUpdatePatientMutation } from "@/redux/api/patientApi";
 import { tryCatch } from "@/utils/tryCatch";
+import PersonIcon from "@mui/icons-material/Person";
 
 const PatientProfilePage = () => {
     const { data, isLoading } = useGetMyProfileQuery(undefined);
@@ -50,12 +51,16 @@ const PatientProfilePage = () => {
         >
             <Box width={{ sx: "100%", md: "40%" }} sx={{ flexGrow: 1 }}>
                 <Box mt={{ md: 5 }}>
-                    <Image
-                        src={patientData?.profilePhoto ?? ""}
-                        width={300}
-                        height={200}
-                        alt="doctor"
-                    />
+                    {patientData?.profilePhoto ? (
+                        <Image
+                            src={patientData?.profilePhoto ?? ""}
+                            width={300}
+                            height={200}
+                            alt="doctor"
+                        />
+                    ) : (
+                        <PersonIcon sx={{ fontSize: 250, color: "#1586FD" }} />
+                    )}
                 </Box>
                 <Stack my={2} width={300} spacing={1}>
                     <AutoFileUploader

@@ -34,6 +34,7 @@ import { TAppointment } from "@/types/Appointment";
 import { IDoctor } from "@/types/Doctors";
 import { IPatient } from "@/types/Patient";
 import RatingModal from "./videoSidebarComp/Rating";
+import { useIsSmallScreen } from "@/utils/isSmallScreen";
 
 const client = createClient({
     mode: "rtc",
@@ -58,6 +59,7 @@ const VideoArea = ({
     setIsJoined: (value: boolean) => void;
     refetch: () => void;
 }) => {
+    const isSmallScreen = useIsSmallScreen();
     const dispatch = useAppDispatch();
     const videoContainerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -229,7 +231,6 @@ const VideoArea = ({
     };
 
     useEffect(() => {
- 
         const handleUserJoined = (user: IAgoraRTCRemoteUser) => {
             setRemoteUsers((prevUsers) => [...prevUsers, user]);
             updateStatus({
@@ -311,7 +312,8 @@ const VideoArea = ({
 
                 <video
                     ref={videoRef}
-                    id={isJoined ? "remote-video" : "camera-video"}
+                    // id={isJoined ? "remote-video" : "camera-video"}
+                    id={"remote-video"}
                     style={{ width: "100%", height: "100%" }}
                     autoPlay
                 ></video>
@@ -327,10 +329,25 @@ const VideoArea = ({
                     }}
                 >
                     <Box
-                        id={isJoined ? "camera-video" : "remote-video"}
+                        // id={isJoined ? "camera-video" : "remote-video"}
+                        id={"camera-video"}
                         sx={{
-                            width: isFullscreen ? "200px" : "150px",
-                            height: isFullscreen ? "150px" : 100,
+                            // width: isFullscreen ? "200px" : "150px",
+                            // height: isFullscreen ? "150px" : 100,
+                            width: {
+                                xs: "100px",   
+                                sm: "120px",   
+                                md: "150px",   
+                                lg: "180px",  
+                                xl: "200px",  
+                            },
+                            height: {
+                                xs: "75px",
+                                sm: "90px",
+                                md: "100px",
+                                lg: "130px",
+                                xl: "150px",
+                            },
                         }}
                     ></Box>
                 </Box>

@@ -13,6 +13,7 @@ import SubmitButton from "@/components/ui/SubmitButton";
 import AppError from "@/utils/AppError";
 
 import ScheduleButtonsSkeleton from "./ScheduleButtonsSkeleton";
+import { toast } from "sonner";
 
 const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
     const [scheduleId, setScheduleID] = useState("");
@@ -47,8 +48,8 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
         useGetDoctorSchedulesQuery(tomorrowQuery);
 
     const handleBookAppointment = async () => {
-        tryCatch(async () => {
-            if (doctorId && scheduleId) {
+        if (doctorId && scheduleId) {
+            tryCatch(async () => {
                 const res = await createAppointment({ doctorId, scheduleId });
 
                 const paymentUrl = res?.data?.paymentUrl;
@@ -56,9 +57,8 @@ const DoctorScheduleSlots = ({ doctorId }: { doctorId: string }) => {
                 if (paymentUrl) {
                     router.push(paymentUrl);
                 } else return res;
-            } else
-                throw new AppError("Select a schedule to book an appointment");
-        }, "Processing your appointment");
+            }, "Processing your appointment");
+        } else toast.error("Please select a schedule first");
     };
 
     return (

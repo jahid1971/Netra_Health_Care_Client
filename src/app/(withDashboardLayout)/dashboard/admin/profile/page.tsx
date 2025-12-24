@@ -54,15 +54,23 @@ const AdminProfilePage = () => {
         );
     };
 
-    const handleUpdate = (data: FieldValues) => {
+    const handleUpdate = (data: FieldValues, options: any) => {
+        if (Object.keys(data).length === 0)
+            return toast.error("No changes made");
+
         const modifiedData = { data };
 
         tryCatch(
-            async () =>
-                await updateAdmin({
+            async () => {
+                const res = await updateAdmin({
                     data: modifiedData,
                     id: adminData?.adminId,
-                }),
+                });
+
+                if (res?.data) options?.reset(res?.data?.data);
+
+                return res;
+            },
             "Updating Admin Profile",
             "Admin Profile Updated Successfully"
         );
@@ -171,7 +179,7 @@ const AdminProfilePage = () => {
                     </N_Form>
                 </Box>
             </Stack>
-            <UpdateAdminForm adminData={adminData} />
+            {/* <UpdateAdminForm adminData={adminData} /> */}
         </Box>
     );
 };

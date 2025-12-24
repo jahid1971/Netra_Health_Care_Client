@@ -92,7 +92,7 @@ const WritePrescription = ({
         setMedicineCount((prev) => prev.filter((_, idx) => idx !== index));
     };
 
-    const handleSubmit = (data: any) => {
+    const handleSubmit = (data: any, options: any) => {
         const medications = medicineCount.map(
             (item) => data[`medicine${item}`]
         );
@@ -107,11 +107,12 @@ const WritePrescription = ({
         tryCatch(
             async () => await createPrescription(payload),
             "Submitting Prescription",
-            "Prescription Submitted Successfully"
+            "Prescription Submitted Successfully",
+            () => options.reset()
         );
     };
 
-    const handlePreview = (data:any) => {
+    const handlePreview = (data: any) => {
         const medications = medicineCount.map(
             (item) => data[`medicine${item}`]
         );

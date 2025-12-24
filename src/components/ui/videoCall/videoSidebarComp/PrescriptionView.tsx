@@ -13,14 +13,13 @@ import Link from "next/link";
 
 const PrescriptionView = ({ data }: { data?: any; ref?: any }) => {
     const prescriptionData = data?.data as TPrescription;
-    const medications = data?.medications;
+    const medications = data?.data?.medications;
     const patient = data?.patient as IPatient;
 
     // const patientAge = patient?. ? new Date().getFullYear() - new Date(patient?.dob).getFullYear() : 0;
 
     const doctor = data?.doctor as IDoctor;
 
-    console.log(data, "data");
 
     return (
         <Box

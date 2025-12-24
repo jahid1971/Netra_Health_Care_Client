@@ -21,7 +21,7 @@ type TFormConfig = {
 
 type TFormProps = {
     children: React.ReactNode;
-    onSubmit?: SubmitHandler<FieldValues>;
+    onSubmit?: (data: FieldValues, context: { reset: () => void }) => void;
     error?: string;
     onlyDirtyFields?: boolean;
     handleFieldChange?: (field: string, value: any) => void;
@@ -59,6 +59,7 @@ const N_Form = ({
         setValue,
         setError,
         clearErrors,
+        reset,
     } = methods;
 
     const { dirtyFields } = formState;
@@ -87,7 +88,10 @@ const N_Form = ({
             {} as Record<string, any>
         );
 
-        onSubmit && onSubmit(onlyDirtyFields ? changedValues : nonEmptyValues);
+        onSubmit &&
+            onSubmit(onlyDirtyFields ? changedValues : nonEmptyValues, {
+                reset,
+            });
     };
 
     const debouncedHandleFieldChange = handleFieldChange

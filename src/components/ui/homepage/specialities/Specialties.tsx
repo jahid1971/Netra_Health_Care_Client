@@ -30,6 +30,7 @@ const specialties = async ({ userInfo }: { userInfo: TUserInfo }) => {
                     alignItems={"center"}
                     justifyContent="space-between"
                     mt={2}
+                    flexWrap="wrap" 
                 >
                     {specialities?.slice(0, 6).map((speciality: TSpecialty) => (
                         <Box

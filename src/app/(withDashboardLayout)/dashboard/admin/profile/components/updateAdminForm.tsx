@@ -5,11 +5,15 @@ import { useUpdateAdminMutation } from "@/redux/api/adminApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { tryCatch } from "@/utils/tryCatch";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 const UpdateAdminForm = ({ adminData }: { adminData: IAdmin }) => {
     const [updateAdmin] = useUpdateAdminMutation();
 
     const handleUpdateAdmin = async (data: FieldValues) => {
+        if (Object.keys(data).length === 0)
+            return toast.error("No changes made");
+
         const modifiedData = modifyPayload(data);
 
         tryCatch(
