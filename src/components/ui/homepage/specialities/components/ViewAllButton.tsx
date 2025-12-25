@@ -3,7 +3,7 @@ import { TUserInfo } from "@/services/actions/auth.services";
 import { Button } from "@mui/material";
 import Link from "next/link";
 
-const ViewAllButton = ({ userInfo }: { userInfo: TUserInfo }) => {
+const ViewAllButton = () => {
     return (
         <Button
             variant="outlined"

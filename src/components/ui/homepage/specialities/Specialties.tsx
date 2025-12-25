@@ -4,17 +4,15 @@ import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import Image from "next/image";
 import Link from "next/link";
-import ViewAllButton from "./components/ViewAllButton";
-import { TUserInfo } from "@/services/actions/auth.services";
 
-const specialties = async ({ userInfo }: { userInfo: TUserInfo }) => {
+const specialties = async () => {
     const res = await fetch(`${baseUrl}/specialty`, {
         next: { revalidate: 10 },
     });
     const { data: specialities } = await res.json();
 
     return (
-        <Container sx={{ bottom:-50 ,position: "relative"}}>
+        <Container sx={{ position: "relative" , mb:-7, zIndex:100 }}>
             <Box mt={2} textAlign={"center"}>
                 <Box>
                     <Typography variant="h4" fontWeight={600} color={"primary"}>
@@ -30,7 +28,7 @@ const specialties = async ({ userInfo }: { userInfo: TUserInfo }) => {
                     alignItems={"center"}
                     justifyContent="space-between"
                     mt={2}
-                    flexWrap="wrap" 
+                    flexWrap="wrap"
                 >
                     {specialities?.slice(0, 6).map((speciality: TSpecialty) => (
                         <Box
@@ -68,7 +66,7 @@ const specialties = async ({ userInfo }: { userInfo: TUserInfo }) => {
                 </Stack>
 
                 <Box mt={2}>
-                    <Button href="/doctors" component={Link}>
+                    <Button variant="outlined" component={Link} href="doctors">
                         View All
                     </Button>
                 </Box>

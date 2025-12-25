@@ -18,6 +18,7 @@ import ProfileUpdate from "./components/ProfileUpdate";
 import { useEditDoctorMutation } from "@/redux/api/doctorsApi";
 import { modifyPayload } from "@/utils/modifyPayload";
 import defaultDoctorPhoto from "@/assets/svgs/profile.svg";
+import { imageStyles } from "@/constants/imageStyles";
 
 const ProfilePage = () => {
     const { data } = useGetMyProfileQuery(undefined);
@@ -60,8 +61,9 @@ const ProfilePage = () => {
                             width={300}
                             height={250}
                             alt="doctor"
-                            layout="responsive"
-                            objectFit="cover"
+                            style={{
+                                objectFit: "cover",
+                            }}
                         />
                     </Box>
                     <Stack my={2} width={{ xs: 400, md: "100%" }} spacing={1}>

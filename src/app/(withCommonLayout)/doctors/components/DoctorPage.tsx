@@ -37,11 +37,6 @@ const DoctorPageComponent = async ({
           )
         : specialties?.[0];
 
-    // const url = specialty
-    //     ? `${baseUrl}/doctor?specialties=${specialty?.id}`
-    //     ? (specialty && searchParams?.searchTerm) ? `${baseUrl}/doctor?specialties=${specialty?.id}&searchTerm=${searchParams?.searchTerm}`
-    //     : `${baseUrl}/doctor`
-
     let url;
 
     if (searchParams?.searchTerm) {
@@ -64,12 +59,14 @@ const DoctorPageComponent = async ({
             px={!withDashboardLayout ? { xs: 0, md: 3 } : 0}
             py={!withDashboardLayout ? 3 : 0}
             bgcolor={!withDashboardLayout ? grey[100] : "transparent"}
+            sx={{ position: "relative" }}
         >
             <Box
                 sx={{
                     position: "sticky",
                     top: 64,
-                    zIndex: 10,
+                    zIndex: 1201,
+                    background: grey[100],
                     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
             >

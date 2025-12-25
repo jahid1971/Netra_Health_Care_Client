@@ -2,6 +2,7 @@ import Footer from "@/app/(withCommonLayout)/components/shared/Footer";
 import Navbar from "@/app/(withCommonLayout)/components/shared/Navbar";
 import { getUserInfo, TUserInfo } from "@/services/actions/auth.services";
 import { Box } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import { ReactNode } from "react";
 
 const CommonLayout = ({ children }: { children: ReactNode }) => {
@@ -10,7 +11,7 @@ const CommonLayout = ({ children }: { children: ReactNode }) => {
         <Box>
             <Navbar userInfo={userInfo} />
             <Box
-                overflow={"hidden"}
+                // overflow={"hidden"}
                 // display={"flex"}
                 // flexDirection={"column"}
                 // justifyContent={"space-between"}

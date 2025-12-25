@@ -136,13 +136,13 @@ const DoctorCard = async ({ doctor }: { doctor: IDoctor }) => {
 
             <Stack
                 sx={{
-                    height: 235,
+                    height: { md: 235, xs: "auto" },
                     bgcolor: "white",
                     p: 3,
                 }}
                 width={{ xs: "100%", md: "35%" }}
             >
-                <Box flex={1}>
+                <Box flex={1} display={{ xs: "none", md: "block" }}>
                     <Typography variant="body2" color="text.primary">
                         Working in
                     </Typography>

@@ -6,11 +6,11 @@ import WhyUs from "@/components/ui/homepage/whyUs/WhyUs";
 import { getUserInfo, TUserInfo } from "@/services/actions/auth.services";
 
 const HomePage = () => {
-    const userInfo = getUserInfo() as TUserInfo;
+   
     return (
         <>
             <HeroSection />
-            <Specialties userInfo={userInfo} />
+            <Specialties />
             <TopRatedDoctors />
             <WhyUs />
         </>

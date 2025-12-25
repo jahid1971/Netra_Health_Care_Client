@@ -13,7 +13,6 @@ import {
 import { grey } from "@mui/material/colors";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Image from "next/image";
-import assets from "@/assets";
 import Link from "next/link";
 import { baseUrl } from "@/constants/commmon";
 import defaultDoctorPhoto from "@/assets/svgs/profile.svg";
@@ -77,46 +76,32 @@ const TopRatedDoctors = async () => {
                                 <Card sx={{ width: "100%" }}>
                                     <Box
                                         sx={{
-                                            color: "red",
+                                            bgcolor: grey[100],
+                                            width: "100%",
+                                            height: 300,
                                             display: "flex",
                                             justifyContent: "center",
                                             alignItems: "center",
-                                            width: "100%",
-                                            height: "100%",
                                             overflow: "hidden",
-                                            "& img": {
-                                                objectFit: "cover",
-                                                width: "100%",
-                                                height: "100%",
-                                            },
+                                            p: 0,
                                         }}
                                     >
-                                        {doctor?.profilePhoto ? (
-                                            <Image
-                                                src={doctor?.profilePhoto}
-                                                alt="doctor"
-                                                width={300}
-                                                height={300}
-                                                objectFit="cover"
-                                            />
-                                        ) : (
-                                            <Box
-                                                p={2}
-                                                sx={{
-                                                    bgcolor: grey[100],
-                                                    width: "100%",
-                                                    height: "100%",
-                                                }}
-                                            >
-                                                <Image
-                                                    src={defaultDoctorPhoto}
-                                                    alt="doctor"
-                                                    width={300}
-                                                    height={300}
-                                                    objectFit="cover"
-                                                />
-                                            </Box>
-                                        )}
+                                        <Image
+                                            src={
+                                                doctor?.profilePhoto ||
+                                                defaultDoctorPhoto
+                                            }
+                                            alt={doctor?.name || "doctor"}
+                                            width={300}
+                                            height={300}
+                                            style={{
+                                                objectFit: "cover",
+                                                width: doctor?.profilePhoto
+                                                    ? "100%"
+                                                    : "80%",
+                                                height: "100%",
+                                            }}
+                                        />
                                     </Box>
 
                                     <Box p={1}>
